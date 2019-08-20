@@ -40,10 +40,11 @@ public class LoedgerDetailsModel extends ViewModel {
         Map<String, String> map = new HashMap<>();
         map.put("specialItemMainId", specialItemMainId);
         map.put("taskId", taskId);
-        NetWork.getHttp(Api.SPECIALITEMMAINDELLIST, map, new NetWork.networkCallBack() {
+        NetWork.postHttp(Api.SPECIALITEMMAINDELLIST, map, new NetWork.networkCallBack() {
             @Override
             public void onSuccess(String s, Call call, Response response) {
                 try {
+                    list.clear();
                     JSONObject jsonObject = new JSONObject(s);
                     int ret = jsonObject.getInt("ret");
                     JSONObject mData = jsonObject.getJSONObject("data");

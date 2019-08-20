@@ -73,10 +73,15 @@ public class Dates {
      */
     public static String stampToDate(String s) {
         String res;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        long lt = Long.valueOf(s);
-        Date date = new Date(lt);
-        res = simpleDateFormat.format(date);
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            long lt = Long.valueOf(s);
+            Date date = new Date(lt);
+            res = simpleDateFormat.format(date);
+        }catch (Exception e){
+            return "";
+        }
+
         return res;
     }
 
@@ -85,10 +90,16 @@ public class Dates {
      */
     public static String stampToDates(String s) {
         String res;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        long lt = Long.valueOf(s);
-        Date date = new Date(lt);
-        res = simpleDateFormat.format(date);
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            long lt = Long.valueOf(s);
+            Date date = new Date(lt);
+            res = simpleDateFormat.format(date);
+        }catch (Exception e){
+            return "";
+        }
+
+
         return res;
     }
 

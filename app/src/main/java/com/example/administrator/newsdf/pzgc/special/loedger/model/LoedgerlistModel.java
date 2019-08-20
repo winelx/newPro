@@ -3,11 +3,11 @@ package com.example.administrator.newsdf.pzgc.special.loedger.model;
 import android.arch.lifecycle.MutableLiveData;
 
 import com.example.administrator.newsdf.pzgc.special.loedger.activity.LoedgerlistActivity;
-import com.example.administrator.newsdf.pzgc.special.loedger.bean.LoedgerListbean;
+import com.example.administrator.newsdf.pzgc.special.loedger.bean.LoedgerAllListbean;
+import com.example.administrator.newsdf.pzgc.special.loedger.bean.LoedgerMineListbean;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.base.BaseViewModel;
 import com.example.baselibrary.utils.Api;
-import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.utils.network.NetWork;
 
 import org.json.JSONArray;
@@ -22,6 +22,7 @@ import java.util.Map;
 import okhttp3.Call;
 import okhttp3.Response;
 
+
 /**
  * @Author lx
  * @创建时间 2019/7/31 0031 13:46
@@ -30,10 +31,10 @@ import okhttp3.Response;
  **/
 
 public class LoedgerlistModel extends BaseViewModel {
-    private MutableLiveData<List<LoedgerListbean>> data;
-    private List<LoedgerListbean> list;
+    private MutableLiveData<List<Object>> data;
+    private List<Object> list;
 
-    public MutableLiveData<List<LoedgerListbean>> getAllData(String choice, String orgid, int page) {
+    public MutableLiveData<List<Object>> getAllData(String choice, String orgid, int page) {
         if (data == null) {
             data = new MutableLiveData<>();
         }
@@ -62,7 +63,9 @@ public class LoedgerlistModel extends BaseViewModel {
                 try {
                     JSONObject jsonObject = new JSONObject(s);
                     JSONArray result = jsonObject.getJSONArray("results");
-                    list = com.alibaba.fastjson.JSONObject.parseArray(result.toString(), LoedgerListbean.class);
+                    List<LoedgerAllListbean> datas = new ArrayList<>();
+                    datas = com.alibaba.fastjson.JSONObject.parseArray(result.toString(), LoedgerAllListbean.class);
+                    list.addAll(datas);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -86,7 +89,7 @@ public class LoedgerlistModel extends BaseViewModel {
      * @param page   页数
      * @return
      */
-    public MutableLiveData<List<LoedgerListbean>> getMyData(String choice, String orgid, int page) {
+    public MutableLiveData<List<Object>> getMyData(String choice, String orgid, int page) {
         if (data == null) {
             data = new MutableLiveData<>();
         }
@@ -115,7 +118,9 @@ public class LoedgerlistModel extends BaseViewModel {
                 try {
                     JSONObject jsonObject = new JSONObject(s);
                     JSONArray result = jsonObject.getJSONArray("results");
-                    list = com.alibaba.fastjson.JSONObject.parseArray(result.toString(), LoedgerListbean.class);
+                    List<LoedgerMineListbean> datas = new ArrayList<>();
+                    datas = com.alibaba.fastjson.JSONObject.parseArray(result.toString(), LoedgerMineListbean.class);
+                    list.addAll(datas);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

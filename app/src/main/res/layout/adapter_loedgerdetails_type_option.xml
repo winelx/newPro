@@ -5,7 +5,6 @@
     android:background="@color/white"
     android:gravity="center"
     android:layout_marginBottom="1dp"
-    android:minHeight="60dp"
     android:orientation="horizontal"
     android:paddingRight="10dp">
 
@@ -15,7 +14,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="8"
-        android:minHeight="60dp"
         android:orientation="vertical"
         android:paddingLeft="10dp"
         android:paddingBottom="@dimen/dp10">
@@ -34,16 +32,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:ellipsize="end"
             android:lineSpacingExtra="3dp"
-            android:maxLines="2"
             android:paddingRight="10dp"
             android:text="专项施工方案名称实例专项施工方案名称实例专项施工方案名称实例专项施工方案名称实例专项施工方案名称实例"
             android:textSize="15sp" />
     </LinearLayout>
 
     <ImageView
-
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:background="@mipmap/arrow_right" />

@@ -120,7 +120,6 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listtread);
-
         TaskCallbackUtils.setCallBack(this);
         floatMeunAnims = new FloatMeunAnims();
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
@@ -250,7 +249,6 @@ public class AllListmessageActivity extends BaseActivity implements View.OnClick
                 MeunPop();
             }
         });
-
         okgoall(null, null, page);
         OrganizationEntity bean = new OrganizationEntity(wbsid, "",
                 name, "0", false,

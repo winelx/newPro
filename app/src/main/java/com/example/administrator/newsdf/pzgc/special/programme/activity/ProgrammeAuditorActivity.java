@@ -23,12 +23,14 @@ import com.example.administrator.newsdf.pzgc.special.programme.adapter.Programme
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.DividerItemDecoration;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
+import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.bean.bean;
 import com.example.baselibrary.utils.Requests;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,7 +52,8 @@ import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
 public class ProgrammeAuditorActivity extends BaseActivity implements View.OnClickListener {
     private EditText searchEditext;
-    private TextView delete_search, com_button,title;
+    private TextView delete_search, com_button, title;
+    private SmartRefreshLayout refreshlayout;
     private Context mContext;
     private RecyclerView recycler_list;
     private RelativeLayout list_search;
@@ -67,15 +70,19 @@ public class ProgrammeAuditorActivity extends BaseActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_list);
-        Intent intent = getIntent();
-        orgId = intent.getStringExtra("orgid");
         mContext = this;
-
         emptyUtils = new EmptyUtils(this);
         findViewById(R.id.com_back).setOnClickListener(this);
         findViewById(R.id.toolbar_menu).setOnClickListener(this);
         searchEditext = findViewById(R.id.search_editext);
         title = findViewById(R.id.com_title);
+        refreshlayout = findViewById(R.id.refreshlayout);
+        //禁止下拉
+        refreshlayout.setEnableRefresh(false);
+        //禁止上拉
+        refreshlayout.setEnableLoadmore(false);
+        //仿ios越界
+        refreshlayout.setEnableOverScrollBounce(true);
         title.setText("选择下一节点审核人");
         com_button = findViewById(R.id.com_button);
         list_search = findViewById(R.id.list_search);
@@ -168,7 +175,6 @@ public class ProgrammeAuditorActivity extends BaseActivity implements View.OnCli
 
     public void rquest() {
         OkGo.post(Requests.GET_PERSON_DATA_APP)
-                .params("orgId", orgId)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -203,7 +209,7 @@ public class ProgrammeAuditorActivity extends BaseActivity implements View.OnCli
     public void callback() {
         ArrayList<Audio> mData = new ArrayList<>();
         for (int i = 0; i < searchlist.size(); i++) {
-            if (searchlist.get(i).isLean()){
+            if (searchlist.get(i).isLean()) {
                 String name = searchlist.get(i).getPartContent();
                 String id = searchlist.get(i).getId();
                 mData.add(new Audio(name, id));

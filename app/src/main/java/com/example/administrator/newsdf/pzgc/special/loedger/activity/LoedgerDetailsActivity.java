@@ -69,20 +69,16 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
         utils = new Utils();
         findViewById(R.id.com_back).setOnClickListener(this);
         title = findViewById(R.id.com_title);
+        title.setText(intent.getStringExtra("title"));
         //审核按钮
         examine = findViewById(R.id.examine);
+        examine.setVisibility(View.GONE);
         examine.setOnClickListener(this);
         recyclerView = findViewById(R.id.recycler_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mDetailAdapter = new LoedgerDetailAdapter(new ArrayList<>());
         recyclerView.setAdapter(mDetailAdapter);
         mDetailAdapter.setEmptyView(emptyUtils.init());
-        mDetailAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
-            }
-        });
         detailsModel = ViewModelProviders.of(this).get(LoedgerDetailsModel.class);
         observer = new Observer<List<Object>>() {
             @Override
@@ -100,7 +96,7 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
                     if ("1".equals(str)) {
                         examine.setVisibility(View.VISIBLE);
                         utils.setMargins(refreshlayout, 0, Utils.dp2px(mContext, 50), 0, Utils.dp2px(mContext, 45));
-                    }else {
+                    } else {
                         examine.setVisibility(View.GONE);
                         utils.setMargins(refreshlayout, 0, Utils.dp2px(mContext, 50), 0, Utils.dp2px(mContext, 0));
                     }
@@ -124,7 +120,8 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
                 .observe(this, new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
-
+                        request();
+                        examine.setVisibility(View.GONE);
 
                     }
                 });

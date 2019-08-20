@@ -50,7 +50,7 @@ public class Api {
     /**
      * 通过施工方案Id获取施工方案详情数据
      */
-    public static final String SPECIALITEMMAINDELLIST = Requests.networks + "/iface/mobile/special/getspecialItemMainDelList";
+    public static final String SPECIALITEMMAINDELLIST = Requests.networks + "iface/mobile/special/getspecialItemMainDelList";
     /**
      * 获取专项施工方案 细明 数据详情
      */

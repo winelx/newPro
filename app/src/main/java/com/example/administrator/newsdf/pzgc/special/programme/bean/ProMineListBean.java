@@ -1,33 +1,41 @@
-package com.example.administrator.newsdf.pzgc.special.loedger.bean;
+package com.example.administrator.newsdf.pzgc.special.programme.bean;
 
-public class LoedgerListbean {
+public class ProMineListBean {
 
 
     /**
-     * dealDate : 1564641139000
-     * id : 5128e0d78a9b400ca7ac09ab19c7ab7a
-     * isDeal : 2
-     * modelType : 4
-     * name : 测试一标专项施工方案台账
+     * createPerson : 周冉
+     * dealDate : 1565592559000
+     * id : a526403dd10a4721beb19515dc373227
+     * isDeal : 1
+     * modelType : 5
      * orgName : 测试一标
-     * receivePerson : 系统管理员
+     * receivePerson : 周冉
      * specialItemBaseName : 公路项目
-     * submitDate : 1564641139000
-     * submitPersonName : 系统管理员
-     * taskId : c79e420c9abb48249a5ba38cd16daae4
+     * specialItemDelName : 基坑开挖
+     * submitDate : 1565592558000
+     * taskId : d66a2bbfd6dd4304999bcdf854867f51
      */
 
+    private String createPerson;
     private String dealDate;
     private String id;
     private int isDeal;
     private int modelType;
-    private String name;
     private String orgName;
     private String receivePerson;
     private String specialItemBaseName;
+    private String specialItemDelName;
     private String submitDate;
-    private String submitPersonName;
     private String taskId;
+
+    public String getCreatePerson() {
+        return createPerson;
+    }
+
+    public void setCreatePerson(String createPerson) {
+        this.createPerson = createPerson;
+    }
 
     public String getDealDate() {
         return dealDate;
@@ -61,14 +69,6 @@ public class LoedgerListbean {
         this.modelType = modelType;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getOrgName() {
         return orgName;
     }
@@ -93,20 +93,20 @@ public class LoedgerListbean {
         this.specialItemBaseName = specialItemBaseName;
     }
 
+    public String getSpecialItemDelName() {
+        return specialItemDelName;
+    }
+
+    public void setSpecialItemDelName(String specialItemDelName) {
+        this.specialItemDelName = specialItemDelName;
+    }
+
     public String getSubmitDate() {
         return submitDate;
     }
 
     public void setSubmitDate(String submitDate) {
         this.submitDate = submitDate;
-    }
-
-    public String getSubmitPersonName() {
-        return submitPersonName;
-    }
-
-    public void setSubmitPersonName(String submitPersonName) {
-        this.submitPersonName = submitPersonName;
     }
 
     public String getTaskId() {

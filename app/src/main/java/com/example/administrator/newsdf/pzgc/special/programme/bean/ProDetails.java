@@ -15,9 +15,18 @@ public class ProDetails {
 
     private DataBean data;
     private int permission;
+    private String msg;
     private String isAssign;
     private List<RecordListBean> recordList;
     private List<FileResultListBean> fileResultList;
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
 
     public DataBean getData() {
         return data;
@@ -74,10 +83,11 @@ public class ProDetails {
         private String id;
         private String specialItemDelName;
         private String specialItemMainName;
-        private String createPerosn;
+        private String createPerson;
         private String submitDate;
         private String projectDescription;
         private String orgName;
+        private String status;
         private String specialItemBaseName;
 
         public String getId() {
@@ -104,12 +114,12 @@ public class ProDetails {
             this.specialItemMainName = specialItemMainName;
         }
 
-        public String getCreatePerosn() {
-            return createPerosn;
+        public String getCreatePerson() {
+            return createPerson;
         }
 
-        public void setCreatePerosn(String createPerosn) {
-            this.createPerosn = createPerosn;
+        public void setCreatePerson(String createPerson) {
+            this.createPerson = createPerson;
         }
 
         public String getSubmitDate() {
@@ -134,6 +144,14 @@ public class ProDetails {
 
         public void setOrgName(String orgName) {
             this.orgName = orgName;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
         }
 
         public String getSpecialItemBaseName() {

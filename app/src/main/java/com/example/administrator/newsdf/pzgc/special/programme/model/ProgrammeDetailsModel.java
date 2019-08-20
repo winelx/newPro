@@ -32,15 +32,21 @@ public class ProgrammeDetailsModel extends BaseViewModel {
     public void request(String id, String taskid) {
         Map<String, String> map = new HashMap<>();
         map.put("specialitemprojectId", id);
-        map.put("taskId ", taskid);
-        NetWork.postHttp(Api.SPECIALITEMPROJECTDETAIL, map, new NetWork.networkCallBack() {
+        String url = Api.SPECIALITEMPROJECTDETAIL + "?specialitemprojectId=" + id + "&taskId=" + taskid;
+//        map.put("taskId ", taskid);
+        NetWork.getHttp(url, new HashMap<>(), new NetWork.networkCallBack() {
             @Override
             public void onSuccess(String s, Call call, Response response) {
                 try {
                     JSONObject jsonObject = new JSONObject(s);
-                    JSONObject mdata = jsonObject.getJSONObject("data");
-                    ProDetails bean = com.alibaba.fastjson.JSONObject.parseObject(mdata.toString(), ProDetails.class);
-                    data.setValue(bean);
+                    int ret = jsonObject.getInt("ret");
+                    if (ret == 0) {
+                        JSONObject mdata = jsonObject.getJSONObject("data");
+                        ProDetails bean = com.alibaba.fastjson.JSONObject.parseObject(mdata.toString(), ProDetails.class);
+                        data.setValue(bean);
+                    } else {
+                        modelinface.onerror();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -48,7 +54,7 @@ public class ProgrammeDetailsModel extends BaseViewModel {
 
             @Override
             public void onError(Call call, Response response, Exception e) {
-
+                modelinface.onerror();
             }
         });
     }

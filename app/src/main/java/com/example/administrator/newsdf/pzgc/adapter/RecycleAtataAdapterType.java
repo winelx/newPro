@@ -119,8 +119,6 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         holder.audioAddress.setText(mDatas.get(posotion).getUploadAddr());
         //评论条数
         holder.commentCount.setText(mDatas.get(posotion).getCommentCount());
-        //是否被提亮
-
         //提亮等级
         final int SmartProjectType = mDatas.get(posotion).getSmartProjectType();
         final int IssmartProjectType = mDatas.get(posotion).getIsSmartProject();
@@ -204,13 +202,6 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
         DividerItemDecoration divider1 = new DividerItemDecoration(mContext, DividerItemDecoration.HORIZONTAL);
         divider1.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.recycler_divider));
         holder.audioRec.addItemDecoration(divider1);
-        int filelenght = mDatas.get(posotion).getFilename().size();
-
-        if (mDatas.get(posotion).getAttachments().size() > 0) {
-            holder.audioNotimage.setVisibility(View.GONE);
-        } else {
-            holder.audioNotimage.setVisibility(View.VISIBLE);
-        }
         RectifierAdapter adapter = new RectifierAdapter(mContext, mDatas.get(posotion).getAttachments(), mDatas.get(posotion).getFilename());
         adapter.setHasStableIds(true);
         holder.audioRec.setAdapter(adapter);

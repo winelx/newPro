@@ -28,6 +28,7 @@ import com.example.administrator.newsdf.pzgc.utils.DialogUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.adapter.PshooseFragAdapte;
 import com.example.baselibrary.base.BaseActivity;
+import com.example.baselibrary.base.BaseViewModel;
 import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.utils.rx.LiveDataBus;
 import com.example.baselibrary.view.PermissionListener;
@@ -82,7 +83,6 @@ public class ProgrammeDetailsActivity extends BaseActivity implements View.OnCli
         findViewById(R.id.com_back).setOnClickListener(this);
         checkDownViewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             private int currentPosition = 1;
-
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (position > currentPosition) {
@@ -93,7 +93,6 @@ public class ProgrammeDetailsActivity extends BaseActivity implements View.OnCli
                     currentPosition = position;
                 }
             }
-
             @Override
             public void onPageSelected(int position) {
                 switch (position) {
@@ -107,12 +106,9 @@ public class ProgrammeDetailsActivity extends BaseActivity implements View.OnCli
                         break;
                 }
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
-
         });
         LiveDataBus.get().with("prodetails", String.class)
                 .observe(this, new Observer<String>() {
@@ -129,6 +125,12 @@ public class ProgrammeDetailsActivity extends BaseActivity implements View.OnCli
                 LiveDataBus.get().with("prodetails_scr").setValue(prodetails);
             }
         };
+        model.setRequestError(new BaseViewModel.Modelinface() {
+            @Override
+            public void onerror() {
+                ToastUtils.showShortToast("请求失败");
+            }
+        });
         reqeuset();
     }
 

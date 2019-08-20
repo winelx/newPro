@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -51,6 +52,7 @@ public class ProgrammeDetailsContentFragment extends LazyloadFragment implements
     private RecyclerView proRecycler;
     private FiletypeAdapter filetypeAdapter;
     private ProgrammeDetailsActivity activity;
+    private String isAssign;
 
     @Override
     protected int setContentView() {
@@ -69,20 +71,39 @@ public class ProgrammeDetailsContentFragment extends LazyloadFragment implements
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onChanged(@Nullable ProDetails proDetails) {
+                        isAssign = proDetails.getIsAssign();
                         programmename.setText("专项施工方案名称：" + proDetails.getData().getSpecialItemDelName());
                         ascriptionorgname.setText("所属标段：" + proDetails.getData().getOrgName());
                         ascriptionloedger.setText("所属管理台账：" + proDetails.getData().getSpecialItemMainName());
                         ascriptiontype.setText("所属类型：" + proDetails.getData().getSpecialItemBaseName());
-                        username.setText("编制人：" + proDetails.getData().getCreatePerosn());
-                        applydata.setText("申报日期：" + proDetails.getData().getSubmitDate().substring(0, 10));
-                        describe.setText("项目简述：" + proDetails.getData().getProjectDescription());
+                        String CreatePerosn = proDetails.getData().getCreatePerson();
+                        if (CreatePerosn == null) {
+                            username.setText("编制人：");
+                        } else {
+                            username.setText("编制人：" + proDetails.getData().getCreatePerson());
+                        }
+                        if (TextUtils.isEmpty(proDetails.getData().getSubmitDate())) {
+                            applydata.setText("申报日期：");
+                        } else {
+                            applydata.setText("申报日期：" + proDetails.getData().getSubmitDate().substring(0, 10));
+                        }
+                        if (TextUtils.isEmpty(proDetails.getData().getProjectDescription())) {
+                            describe.setText("项目简述：" + proDetails.getData().getProjectDescription());
+                        } else {
+                            describe.setText("项目简述：" + proDetails.getData().getProjectDescription());
+                        }
+                        //判断是否有权限操作
                         int per = proDetails.getPermission();
-                        if (per == 0 | per == -2) {
-                            tips.setVisibility(View.GONE);
+                        if (per == 0 | per == 2) {
                             approval.setVisibility(View.GONE);
                         } else {
-                            tips.setVisibility(View.VISIBLE);
                             approval.setVisibility(View.VISIBLE);
+                        }
+                        //判断是否需要显示提示
+                        if (TextUtils.isEmpty(proDetails.getMsg())) {
+                            tips.setVisibility(View.GONE);
+                        } else {
+                            tips.setVisibility(View.VISIBLE);
                         }
                         List<ProDetails.FileResultListBean> list = proDetails.getFileResultList();
                         ArrayList<FileTypeBean> filelist = new ArrayList<>();
@@ -139,6 +160,7 @@ public class ProgrammeDetailsContentFragment extends LazyloadFragment implements
                 Intent intent = new Intent(getContext(), ProgrammeApprovalActivity.class);
                 intent.putExtra("orgid", activity.getOrgid());
                 intent.putExtra("id", activity.getId());
+                intent.putExtra("isAssign", isAssign);
                 startActivity(intent);
                 break;
             default:

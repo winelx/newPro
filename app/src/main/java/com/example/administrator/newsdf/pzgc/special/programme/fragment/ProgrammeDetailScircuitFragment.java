@@ -14,6 +14,7 @@ import com.example.administrator.newsdf.pzgc.special.programme.adapter.Programme
 import com.example.administrator.newsdf.pzgc.special.programme.bean.ProDetails;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.utils.rx.LiveDataBus;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class ProgrammeDetailScircuitFragment extends LazyloadFragment {
                     public void onChanged(@Nullable ProDetails bean) {
                         ArrayList<ProDetails.RecordListBean> list = (ArrayList<ProDetails.RecordListBean>) bean.getRecordList();
                         if (list != null) {
-                            process(list);
+                            process(list, bean.getData().getStatus());
                         } else {
                             emptyUtils.noData("暂无记录");
                         }
@@ -66,35 +67,48 @@ public class ProgrammeDetailScircuitFragment extends LazyloadFragment {
 
     }
 
-    public void process(ArrayList<ProDetails.RecordListBean> list) {
+    public void process(ArrayList<ProDetails.RecordListBean> list,String status) {
         ArrayList<String> title = new ArrayList<>();
         title.add("头部");
         for (int i = 0; i < list.size(); i++) {
             String org = list.get(i).getOwnOrg();
-            if (!title.contains(org)) {
-                if ("0".equals(org)) {
+            if ("0".equals(org)) {
+                if (!title.contains("申报")) {
                     title.add("申报");
                     procedure(list, "申报", org);
-                } else if ("1".equals(org)) {
+                }
+
+            } else if ("1".equals(org)) {
+                if (!title.contains("申报单位审查意见")) {
                     title.add("申报单位审查意见");
                     procedure(list, "申报单位审查意见", org);
-                } else if ("2".equals(org)) {
+                }
+
+            } else if ("2".equals(org)) {
+                if (!title.contains("分公司审查意见")) {
                     title.add("分公司审查意见");
                     procedure(list, "分公司审查意见", org);
-                } else if ("3".equals(org)) {
+                }
+            } else if ("3".equals(org)) {
+                if (!title.contains("集团公司总工办时效审查")) {
                     title.add("集团公司总工办时效审查");
                     procedure(list, "集团公司总工办时效审查", org);
-                } else if ("4".equals(org)) {
+                }
+            } else if ("4".equals(org)) {
+                if (!title.contains("集团公司总工办及相关部门审查")) {
                     title.add("集团公司总工办及相关部门审查");
                     procedure(list, "集团公司总工办及相关部门审查", org);
-                } else if ("5".equals(org)) {
+                }
+            } else if ("5".equals(org)) {
+                if (!title.contains("集团公司总工程师审批")) {
                     title.add("集团公司总工程师审批");
                     procedure(list, "集团公司总工程师审批", org);
                 }
             }
+
         }
         title.add("尾部");
-        mAdapter.setNewData(map, title);
+        mAdapter.setNewData(map, title,status);
     }
 
     public void procedure(ArrayList<ProDetails.RecordListBean> list, String str, String num) {

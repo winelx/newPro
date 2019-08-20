@@ -38,6 +38,11 @@ public class DetailRecordAdapter extends BaseItemProvider<DetailRecord, BaseView
         } else {
             helper.setTextColor(R.id.record_status, Color.parseColor("#f88c37"));
         }
+        if (data.getDealOpinion() == null) {
+            helper.setText(R.id.record_content, "意见：");
+        } else {
+            helper.setText(R.id.record_content, "意见：" + data.getDealOpinion());
+        }
 
     }
 }

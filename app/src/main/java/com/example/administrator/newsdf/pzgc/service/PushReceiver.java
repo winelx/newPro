@@ -92,7 +92,7 @@ public class PushReceiver extends BroadcastReceiver {
             onOpenNotification(context, bundle);
         } else {
             //+ intent.getAction()
-            LogUtil.d(TAG, "Unhandled intent - " );
+//            LogUtil.d(TAG, "Unhandled intent - " );
         }
     }
 

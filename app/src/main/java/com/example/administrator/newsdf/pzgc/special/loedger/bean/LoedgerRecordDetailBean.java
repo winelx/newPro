@@ -20,6 +20,8 @@ public class LoedgerRecordDetailBean {
     String approvedDate1;        //1次报批日期
     String approvedDate2;        //二次报批日期
     String partUrl;    //使用部位
+    String constructionName;
+    String argumentName;
 
     public String getPlanApprovedDate() {
         return planApprovedDate;
@@ -163,5 +165,21 @@ public class LoedgerRecordDetailBean {
 
     public void setPartUrl(String partUrl) {
         this.partUrl = partUrl;
+    }
+
+    public String getConstructionName() {
+        return constructionName;
+    }
+
+    public void setConstructionName(String constructionName) {
+        this.constructionName = constructionName;
+    }
+
+    public String getArgumentName() {
+        return argumentName;
+    }
+
+    public void setArgumentName(String argumentName) {
+        this.argumentName = argumentName;
     }
 }

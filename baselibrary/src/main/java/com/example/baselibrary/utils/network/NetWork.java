@@ -118,7 +118,6 @@ public class NetWork {
         if (map != null) {
             for (Map.Entry<String, String> entry : map.entrySet()) {
                 post.params(entry.getKey(), entry.getValue());
-
             }
         }
         post.execute(new StringCallback() {

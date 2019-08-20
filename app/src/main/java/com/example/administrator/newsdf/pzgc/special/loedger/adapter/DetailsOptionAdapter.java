@@ -27,7 +27,7 @@ public class DetailsOptionAdapter extends BaseItemProvider<DetailsOption, BaseVi
     @Override
     public void convert(BaseViewHolder helper, DetailsOption data, int position) {
         helper.addOnClickListener(R.id.content);
-        helper.setText(R.id.option_title, data.getSpecialItemBaseName());
+        helper.setText(R.id.option_title, data.getSpecialItemDelName());
         helper.setText(R.id.option_content, data.getPartUrl());
     }
 }

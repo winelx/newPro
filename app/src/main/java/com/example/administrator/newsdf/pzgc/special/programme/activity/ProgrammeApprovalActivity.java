@@ -54,6 +54,7 @@ public class ProgrammeApprovalActivity extends BaseActivity implements View.OnCl
     private TextView title;
     private String orgid, id;
     private ArrayList<Audio> mdata;
+    private String isAssign;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,7 @@ public class ProgrammeApprovalActivity extends BaseActivity implements View.OnCl
         Intent intent = getIntent();
         mdata = new ArrayList<>();
         orgid = intent.getStringExtra("orgid");
+        isAssign = intent.getStringExtra("isAssign");
         id = intent.getStringExtra("id");
         findViewById(R.id.com_back).setOnClickListener(this);
         title = findViewById(R.id.com_title);
@@ -73,6 +75,9 @@ public class ProgrammeApprovalActivity extends BaseActivity implements View.OnCl
         usernames = findViewById(R.id.usernames);
         approvaluser = findViewById(R.id.approvaluser);
         approvaluser.setOnClickListener(this);
+        if ("0".equals(isAssign)) {
+            approvaluser.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -94,7 +99,11 @@ public class ProgrammeApprovalActivity extends BaseActivity implements View.OnCl
                                 //处理确认按钮的点击事件
                                 categoryItem.setText("通过");
                                 categoryItem.setTextColor(Color.parseColor("#28c26A"));
-                                approvaluser.setVisibility(View.VISIBLE);
+                                if ("0".equals(isAssign)) {
+                                    approvaluser.setVisibility(View.GONE);
+                                }else {
+                                    approvaluser.setVisibility(View.VISIBLE);
+                                }
                                 status = "1";
                             }
                         })
@@ -111,11 +120,16 @@ public class ProgrammeApprovalActivity extends BaseActivity implements View.OnCl
                 break;
             case R.id.submit:
                 if (!status.isEmpty()) {
-                    if (mdata.size() > 0) {
+                    if ("0".equals(isAssign)) {
                         reqeust();
                     } else {
-                        ToastUtils.showShortToast("还未选择下一节点审核人");
+                        if (mdata.size() > 0) {
+                            reqeust();
+                        } else {
+                            ToastUtils.showShortToast("还未选择下一节点审核人");
+                        }
                     }
+
                 } else {
                     ToastUtils.showShortToast("请确认是否审批通过");
                 }
@@ -139,7 +153,7 @@ public class ProgrammeApprovalActivity extends BaseActivity implements View.OnCl
     }
 
     public void reqeust() {
-        Dates.getDialog(this, "提交中...");
+        Dates.getDialogs(this, "提交中...");
         ArrayList<String> idlsit = new ArrayList<>();
         for (int i = 0; i < mdata.size(); i++) {
             idlsit.add(mdata.get(i).getContent());
@@ -148,13 +162,16 @@ public class ProgrammeApprovalActivity extends BaseActivity implements View.OnCl
         map.put("id", id);
         map.put("isby", status);
         map.put("verificationOpinion", replyDescription.getText().toString());
-        map.put("assignPersonId", Dates.listToStrings(idlsit));
+        if ("0".equals(isAssign)) {
+            map.put("assignPersonId", Dates.listToStrings(idlsit));
+        }
         NetWork.postHttp(Api.SPECIALITEMPROJECTVERIFICATION, map, new NetWork.networkCallBack() {
             @Override
             public void onSuccess(String s, Call call, Response response) {
                 try {
                     JSONObject json = new JSONObject(s);
                     int ret = json.getInt("ret");
+                    ToastUtils.showShortToast(json.getString("msg"));
                     if (ret == 0) {
                         //刷新详情界面
                         LiveDataBus.get().with("prodetails").setValue("");

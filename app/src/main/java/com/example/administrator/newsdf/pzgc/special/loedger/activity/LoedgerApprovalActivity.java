@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.special.loedger.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Api;
@@ -33,18 +35,22 @@ import okhttp3.Response;
 
 public class LoedgerApprovalActivity extends BaseActivity implements View.OnClickListener {
     private String status;
-    private TextView category_item;
+    private TextView category_item,com_title;
     private EditText replyDescription;
     private String id;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loedgerapproval);
+        mContext = this;
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
         findViewById(R.id.com_back).setOnClickListener(this);
         category_item = findViewById(R.id.category_item);
+        com_title = findViewById(R.id.com_title);
+        com_title.setText("审批");
         replyDescription = findViewById(R.id.replyDescription);
         findViewById(R.id.approvaluser).setOnClickListener(this);
         findViewById(R.id.btn).setOnClickListener(this);
@@ -87,6 +93,7 @@ public class LoedgerApprovalActivity extends BaseActivity implements View.OnClic
     }
 
     public void request() {
+        Dates.getDialog(LoedgerApprovalActivity.this,"提交数据");
         Map<String, String> map = new HashMap<>();
         map.put("id", id);
         map.put("isby", status);
@@ -98,6 +105,7 @@ public class LoedgerApprovalActivity extends BaseActivity implements View.OnClic
                     JSONObject jsonObject = new JSONObject(s);
                     int ret = jsonObject.getInt("ret");
                     ToastUtils.showShortToast(jsonObject.getString("msg"));
+                    Dates.disDialog();
                     if (ret == 0) {
                         LiveDataBus.get().with("details").setValue("");
                         LiveDataBus.get().with("loedgerlist").setValue("");
@@ -110,7 +118,7 @@ public class LoedgerApprovalActivity extends BaseActivity implements View.OnClic
 
             @Override
             public void onError(Call call, Response response, Exception e) {
-
+                Dates.disDialog();
             }
         });
     }

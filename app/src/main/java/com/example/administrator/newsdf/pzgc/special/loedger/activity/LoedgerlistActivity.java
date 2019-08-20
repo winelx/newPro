@@ -16,10 +16,12 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.special.loedger.adapter.LoedgerlistAdapter;
-import com.example.administrator.newsdf.pzgc.special.loedger.bean.LoedgerListbean;
+import com.example.administrator.newsdf.pzgc.special.loedger.bean.LoedgerAllListbean;
+import com.example.administrator.newsdf.pzgc.special.loedger.bean.LoedgerMineListbean;
 import com.example.administrator.newsdf.pzgc.special.loedger.model.LoedgerlistModel;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.baselibrary.base.BaseActivity;
+import com.example.baselibrary.bean.bean;
 import com.example.baselibrary.utils.rx.LiveDataBus;
 import com.example.baselibrary.view.EmptyRecyclerView;
 import com.example.baselibrary.view.PullDownMenu;
@@ -41,7 +43,7 @@ public class LoedgerlistActivity extends BaseActivity implements View.OnClickLis
     private Context mContext;
 
     private LoedgerlistModel loedgerlistModel;
-    private Observer<List<LoedgerListbean>> observer;
+    private Observer<List<Object>> observer;
 
     private EmptyRecyclerView recyclerList;
     private ImageView toolbarImage;
@@ -69,7 +71,7 @@ public class LoedgerlistActivity extends BaseActivity implements View.OnClickLis
         toolbarImage.setImageResource(R.mipmap.meun);
         toolbarImage.setVisibility(View.VISIBLE);
         title = findViewById(R.id.com_title);
-        title.setText(intent.getStringExtra("orgName"));
+        title.setText("专项施工方案管理台账");
         recyclerList = findViewById(R.id.recycler_list);
         recyclerList.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new LoedgerlistAdapter(R.layout.adapter_loedger_item, new ArrayList<>());
@@ -79,17 +81,26 @@ public class LoedgerlistActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent1 = new Intent(mContext, LoedgerDetailsActivity.class);
-                LoedgerListbean bean = (LoedgerListbean) adapter.getData().get(position);
-                intent1.putExtra("id", bean.getId());
-                intent1.putExtra("taskId", bean.getTaskId());
+                if (type) {
+                    LoedgerMineListbean bean = (LoedgerMineListbean) adapter.getData().get(position);
+                    intent1.putExtra("id", bean.getId());
+                    intent1.putExtra("taskId", bean.getTaskId());
+                    intent1.putExtra("title", bean.getName());
+                } else {
+                    LoedgerAllListbean bean = (LoedgerAllListbean) adapter.getData().get(position);
+                    intent1.putExtra("id", bean.getId());
+                    intent1.putExtra("taskId", bean.getTaskId());
+                    intent1.putExtra("title", bean.getName());
+                }
                 intent1.putExtra("type", type);
+
                 startActivity(intent1);
             }
         });
         loedgerlistModel = ViewModelProviders.of(this).get(LoedgerlistModel.class);
-        observer = new Observer<List<LoedgerListbean>>() {
+        observer = new Observer<List<Object>>() {
             @Override
-            public void onChanged(@Nullable List<LoedgerListbean> strings) {
+            public void onChanged(@Nullable List<Object> strings) {
                 if (strings.size() == 0) {
                     emptyUtils.noData("暂无数据");
                 }

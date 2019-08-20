@@ -17,6 +17,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckNewAddActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckNewAddsActivity;
+import com.example.administrator.newsdf.pzgc.special.loedger.activity.LoedgerDetailsActivity;
+import com.example.administrator.newsdf.pzgc.special.loedger.activity.LoedgerRecordDetailActivity;
+import com.example.administrator.newsdf.pzgc.special.programme.activity.ProgrammeDetailsActivity;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.adapter.CompleteBean;
 import com.example.administrator.newsdf.pzgc.adapter.NoticeAdapter;
@@ -386,6 +389,21 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             intent.putExtra("id", bean.getModelId());
             intent.putExtra("type", "3");
             startActivity(intent);
+        } else if (modelType == 4) {
+            //台账
+            Intent intent = new Intent(mContext, LoedgerDetailsActivity.class);
+            intent.putExtra("id", bean.getModelId());
+            intent.putExtra("taskId", bean.getId());
+            intent.putExtra("type", true);
+            intent.putExtra("title", bean.getSendOrgName());
+            startActivity(intent);
+        } else if (modelType == 6) {
+            //方案报批
+            Intent intent = new Intent(mContext, ProgrammeDetailsActivity.class);
+            intent.putExtra("id", bean.getModelId());
+            intent.putExtra("taskid", bean.getId());
+            intent.putExtra("orgid", bean.getSendOrgId());
+            startActivity(intent);
         }
     }
 
@@ -415,6 +433,21 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
             intent.putExtra("id", bean.getModelId());
             intent.putExtra("type", 3);
+            startActivity(intent);
+        } else if (modelType == 4) {
+            //台账
+            Intent intent = new Intent(mContext, LoedgerDetailsActivity.class);
+            intent.putExtra("id", bean.getModelId());
+            intent.putExtra("taskId", "");
+            intent.putExtra("type", true);
+            intent.putExtra("title", bean.getSendOrgName());
+            startActivity(intent);
+        } else if (modelType == 6) {
+            //方案报批
+            Intent intent = new Intent(mContext, ProgrammeDetailsActivity.class);
+            intent.putExtra("id", bean.getModelId());
+            intent.putExtra("taskid", "");
+            intent.putExtra("orgid", bean.getSendOrgId());
             startActivity(intent);
         }
     }

@@ -30,6 +30,7 @@ import java.util.Map;
 public class ProgrammedetailscircuitAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Map<String, ArrayList<ProDetails.RecordListBean>> list;
     private ArrayList<String> titlelist;
+    private String status = "1";
     private final static int HEAD_COUNT = 1;
     private static final int TYPE_HEARD = 2;
     private static final int TYPE_END = 3;
@@ -74,6 +75,11 @@ public class ProgrammedetailscircuitAdapter extends RecyclerView.Adapter<Recycle
         runEnterAnimation(holder.itemView, position);
         if (holder instanceof TypeHeadViewHolder) {
         } else if (holder instanceof TypeEndViewHolder) {
+                if (status.equals("4")){
+                    ((TypeEndViewHolder) holder).footer.setVisibility(View.VISIBLE);
+                }else {
+                    ((TypeEndViewHolder) holder).footer.setVisibility(View.GONE);
+                }
         } else if (holder instanceof TypeEmptyViewHolder) {
 
         } else {
@@ -109,7 +115,7 @@ public class ProgrammedetailscircuitAdapter extends RecyclerView.Adapter<Recycle
         }
     }
 
-    //头部
+    //空白
     public class TypeEmptyViewHolder extends RecyclerView.ViewHolder {
         public TypeEmptyViewHolder(View itemView) {
             super(itemView);
@@ -131,11 +137,11 @@ public class ProgrammedetailscircuitAdapter extends RecyclerView.Adapter<Recycle
 
     //尾部
     public class TypeEndViewHolder extends RecyclerView.ViewHolder {
+        private RelativeLayout footer;
 
         public TypeEndViewHolder(View itemView) {
             super(itemView);
-
-
+            footer = itemView.findViewById(R.id.footer);
         }
     }
 
@@ -206,9 +212,10 @@ public class ProgrammedetailscircuitAdapter extends RecyclerView.Adapter<Recycle
         mItemClickListener = itemClickListener;
     }
 
-    public void setNewData(Map<String, ArrayList<ProDetails.RecordListBean>> lsit, ArrayList<String> titlelist) {
+    public void setNewData(Map<String, ArrayList<ProDetails.RecordListBean>> lsit, ArrayList<String> titlelist, String status) {
         this.list = lsit;
         this.titlelist = titlelist;
+        this.status = status;
         notifyDataSetChanged();
     }
 

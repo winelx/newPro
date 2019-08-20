@@ -15,14 +15,7 @@
         android:paddingRight="@dimen/dp10">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="第一项"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp" />
-
-        <TextView
+            android:id="@+id/constructionname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -35,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="fdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaf"
+            android:text=""
             android:textColor="#000"
             android:textSize="15sp" />
 
@@ -52,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="fdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaf"
+            android:text=""
             android:textColor="#000"
             android:textSize="15sp" />
 
@@ -76,7 +69,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:text="是"
+
                 android:textColor="#000"
                 android:textSize="15sp" />
         </RelativeLayout>
@@ -89,6 +82,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/argumentname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="建办质{2018}31号文件附件1规定条件之"
@@ -100,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="fdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaffdsaf"
+                android:text=""
                 android:textColor="#000"
                 android:textSize="15sp" />
         </LinearLayout>
@@ -125,7 +119,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:text="2019-00-00"
+
                 android:textColor="#000"
                 android:textSize="15sp" />
         </RelativeLayout>
@@ -150,7 +144,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:text="2019-00-00"
+
                 android:textColor="#000"
                 android:textSize="15sp" />
         </RelativeLayout>
@@ -175,7 +169,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:text="2019-00-00"
+
                 android:textColor="#000"
                 android:textSize="15sp" />
         </RelativeLayout>
@@ -200,7 +194,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:text="2019-00-00"
+
                 android:textColor="#000"
                 android:textSize="15sp" />
         </RelativeLayout>
@@ -210,8 +204,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:paddingBottom="10dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -226,7 +220,6 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:text="2019-00-00"
                 android:textColor="#000"
                 android:textSize="15sp" />
         </RelativeLayout>
