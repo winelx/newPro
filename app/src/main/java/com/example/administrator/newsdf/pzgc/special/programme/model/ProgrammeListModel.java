@@ -75,7 +75,7 @@ public class ProgrammeListModel extends BaseViewModel {
 
             @Override
             public void onError(Call call, Response response, Exception e) {
-
+                modelinface.onerror();
             }
         });
 
@@ -123,7 +123,7 @@ public class ProgrammeListModel extends BaseViewModel {
 
             @Override
             public void onError(Call call, Response response, Exception e) {
-
+                modelinface.onerror();
             }
         });
         data.setValue(list);

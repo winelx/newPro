@@ -41,6 +41,9 @@ public class LoedgerlistModel extends BaseViewModel {
         if (list == null) {
             list = new ArrayList<>();
         }
+        if (page == 1) {
+            list.clear();
+        }
         allrequest(choice, orgid, page);
         return data;
     }
@@ -68,6 +71,7 @@ public class LoedgerlistModel extends BaseViewModel {
                     list.addAll(datas);
                 } catch (JSONException e) {
                     e.printStackTrace();
+
                 }
                 data.setValue(list);
             }
@@ -95,6 +99,9 @@ public class LoedgerlistModel extends BaseViewModel {
         }
         if (list == null) {
             list = new ArrayList<>();
+        }
+        if (page==1){
+            list.clear();
         }
         myrequest(choice, orgid, page);
         return data;

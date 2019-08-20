@@ -1,13 +1,16 @@
 package com.example.administrator.newsdf.pzgc.special.loedger.activity;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,6 +28,10 @@ import com.example.baselibrary.bean.bean;
 import com.example.baselibrary.utils.rx.LiveDataBus;
 import com.example.baselibrary.view.EmptyRecyclerView;
 import com.example.baselibrary.view.PullDownMenu;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +48,7 @@ public class LoedgerlistActivity extends BaseActivity implements View.OnClickLis
     private PullDownMenu pullDownMenu;
     private EmptyUtils emptyUtils;
     private Context mContext;
-
+    private SmartRefreshLayout refreshlayout;
     private LoedgerlistModel loedgerlistModel;
     private Observer<List<Object>> observer;
 
@@ -67,6 +74,7 @@ public class LoedgerlistActivity extends BaseActivity implements View.OnClickLis
         emptyUtils = new EmptyUtils(mContext);
         findViewById(R.id.com_back).setOnClickListener(this);
         findViewById(R.id.toolbar_menu).setOnClickListener(this);
+        refreshlayout = findViewById(R.id.refreshlayout);
         toolbarImage = findViewById(R.id.com_img);
         toolbarImage.setImageResource(R.mipmap.meun);
         toolbarImage.setVisibility(View.VISIBLE);
@@ -128,6 +136,32 @@ public class LoedgerlistActivity extends BaseActivity implements View.OnClickLis
                         request(orgId, choice);
                     }
                 });
+        /**
+         *   下拉刷新
+         */
+        refreshlayout.setOnRefreshListener(new OnRefreshListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                page = 1;
+                //网络请求
+                request(orgId, choice);
+                refreshlayout.finishRefresh();
+            }
+        });
+        /**
+         * 上拉加载
+         */
+        refreshlayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @TargetApi(Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                page++;
+                //网络请求
+                request(orgId, choice);
+                refreshlayout.finishLoadmore();
+            }
+        });
     }
 
     @Override

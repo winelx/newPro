@@ -67,24 +67,21 @@ public class LoedgerlistAdapter extends BaseQuickAdapter<Object, BaseViewHolder>
             helper.setText(R.id.orgname, "所属标段：" + bean.getOrgName());
             //当前
             int isDeal = bean.getStatus();
+            solvepeople.setText("待处理人：" + bean.getReceivePerson());
             //全部的显示样式
             if (isDeal == 4) {
+                slante.setTextString(" 通过");
+                slante.setSlantedBackgroundColor(R.color.finish_green);
+            } else if (isDeal == 2) {
                 slante.setTextString("审核中");
                 slante.setSlantedBackgroundColor(R.color.Orange);
-                solvepeople.setText("待处理人：" + bean.getReceivePerson());
-            } else if (isDeal == 2) {
-                slante.setTextString("审核通过");
-                slante.setSlantedBackgroundColor(R.color.finish_green);
-                solvepeople.setVisibility(View.GONE);
             } else if (isDeal == 3) {
                 slante.setTextString("打回");
                 slante.setSlantedBackgroundColor(R.color.red);
-                solvepeople.setVisibility(View.GONE);
-                solvepeople.setText("待处理人：" + bean.getReceivePerson());
             } else if (isDeal == 0) {
                 slante.setTextString("保存");
                 slante.setSlantedBackgroundColor(R.color.gray);
-                solvepeople.setVisibility(View.GONE);
+
             }
         }
         //根据状态处理现实样式

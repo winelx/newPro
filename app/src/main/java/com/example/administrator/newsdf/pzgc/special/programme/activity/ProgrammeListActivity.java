@@ -24,6 +24,7 @@ import com.example.administrator.newsdf.pzgc.special.programme.bean.ProMineListB
 import com.example.administrator.newsdf.pzgc.special.programme.model.ProgrammeListModel;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.baselibrary.base.BaseActivity;
+import com.example.baselibrary.base.BaseViewModel;
 import com.example.baselibrary.bean.bean;
 import com.example.baselibrary.utils.rx.LiveDataBus;
 import com.example.baselibrary.view.EmptyRecyclerView;
@@ -97,7 +98,6 @@ public class ProgrammeListActivity extends BaseActivity implements View.OnClickL
                 mAdapter.setNewData(strings);
             }
         };
-
         //请求失败的回调
         programmeListModel.setRequestError(new ProgrammeListModel.Modelinface() {
             @Override
@@ -109,6 +109,7 @@ public class ProgrammeListActivity extends BaseActivity implements View.OnClickL
                 }
             }
         });
+
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {

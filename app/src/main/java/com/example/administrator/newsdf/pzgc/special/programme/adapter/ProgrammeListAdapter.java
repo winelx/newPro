@@ -62,7 +62,7 @@ public class ProgrammeListAdapter extends BaseQuickAdapter<Object, BaseViewHolde
             helper.setText(R.id.orgname, "所属标段：" + item.getOrgName());
             int isDeal = item.getStatus();
             if (isDeal == 4) {
-                slante.setTextString("审核通过");
+                slante.setTextString("完成");
                 slante.setSlantedBackgroundColor(R.color.finish_green);
             } else if (isDeal == 2) {
                 slante.setTextString("审核中");
