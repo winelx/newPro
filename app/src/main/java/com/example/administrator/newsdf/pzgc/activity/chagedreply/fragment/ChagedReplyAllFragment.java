@@ -85,11 +85,7 @@ public class ChagedReplyAllFragment extends Fragment {
         return view;
     }
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//
-//    }
+
 
     public void getdata() {
         OkGo.get(Requests.GETORGINFOBYCRF)

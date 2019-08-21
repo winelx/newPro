@@ -49,7 +49,8 @@ public class LoedgerDetailsModel extends ViewModel {
                     int ret = jsonObject.getInt("ret");
                     JSONObject mData = jsonObject.getJSONObject("data");
                     String permission = mData.getString("permission");
-                    permissioncallback.callback(permission);
+                    String msg = mData.getString("msg");
+                    permissioncallback.callback(permission, msg);
                     if (ret == 0) {
                         JSONArray data1 = mData.getJSONArray("list");
                         list.addAll(com.alibaba.fastjson.JSONObject.parseArray(data1.toString(), DetailsOption.class));
@@ -73,7 +74,7 @@ public class LoedgerDetailsModel extends ViewModel {
     }
 
     public interface Permissioncallback {
-        void callback(String str);
+        void callback(String str, String msg);
     }
 
     private Permissioncallback permissioncallback;

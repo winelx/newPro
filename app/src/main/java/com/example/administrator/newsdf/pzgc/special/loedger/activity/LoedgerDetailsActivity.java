@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -38,7 +39,7 @@ import java.util.List;
 
 @SuppressLint("Registered")
 public class LoedgerDetailsActivity extends BaseActivity implements View.OnClickListener {
-    private TextView title;
+    private TextView title, toolbar_title;
     private Button examine;
     private SmartRefreshLayout refreshlayout;
     private EmptyRecyclerView recyclerView;
@@ -55,9 +56,11 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loedgerdetails);
+        mContext = this;
+        emptyUtils = new EmptyUtils(this);
+        utils = new Utils();
         intent = getIntent();
         type = intent.getBooleanExtra("type", false);
-        mContext = this;
         refreshlayout = findViewById(R.id.refreshlayout);
         //禁止下拉
         refreshlayout.setEnableRefresh(false);
@@ -65,11 +68,11 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
         refreshlayout.setEnableLoadmore(false);
         //仿ios越界
         refreshlayout.setEnableOverScrollBounce(true);
-        emptyUtils = new EmptyUtils(this);
-        utils = new Utils();
         findViewById(R.id.com_back).setOnClickListener(this);
         title = findViewById(R.id.com_title);
         title.setText(intent.getStringExtra("title"));
+        toolbar_title = findViewById(R.id.toolbar_title);
+
         //审核按钮
         examine = findViewById(R.id.examine);
         examine.setVisibility(View.GONE);
@@ -91,7 +94,11 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
         };
         detailsModel.getCallback(new LoedgerDetailsModel.Permissioncallback() {
             @Override
-            public void callback(String str) {
+            public void callback(String str, String msg) {
+                if (!TextUtils.isEmpty(msg)) {
+                    toolbar_title.setText(msg);
+                    toolbar_title.setVisibility(View.VISIBLE);
+                }
                 if (type) {
                     if ("1".equals(str)) {
                         examine.setVisibility(View.VISIBLE);
@@ -116,13 +123,13 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
                 startActivity(intent1);
             }
         });
+        //回调
         LiveDataBus.get().with("details", String.class)
                 .observe(this, new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
                         request();
                         examine.setVisibility(View.GONE);
-
                     }
                 });
         request();

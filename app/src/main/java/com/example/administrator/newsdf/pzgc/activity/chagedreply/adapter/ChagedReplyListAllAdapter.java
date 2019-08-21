@@ -170,14 +170,6 @@ public class ChagedReplyListAllAdapter extends RecyclerView.Adapter<RecyclerView
         }
     }
 
-    class TypeExpty extends RecyclerView.ViewHolder {
-
-
-        public TypeExpty(View itemView) {
-            super(itemView);
-
-        }
-    }
 
     public void setNewData(ArrayList<ChagedreplyList> data) {
         this.list = data;

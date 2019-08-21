@@ -395,14 +395,14 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             intent.putExtra("id", bean.getModelId());
             intent.putExtra("taskId", bean.getId());
             intent.putExtra("type", true);
-            intent.putExtra("title", bean.getSendOrgName());
+            intent.putExtra("title",bean.getModelCode());
             startActivity(intent);
         } else if (modelType == 6) {
             //方案报批
             Intent intent = new Intent(mContext, ProgrammeDetailsActivity.class);
             intent.putExtra("id", bean.getModelId());
             intent.putExtra("taskid", bean.getId());
-            intent.putExtra("orgid", bean.getSendOrgId());
+            intent.putExtra("orgid", bean.getModelName());
             startActivity(intent);
         }
     }
@@ -440,14 +440,14 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             intent.putExtra("id", bean.getModelId());
             intent.putExtra("taskId", "");
             intent.putExtra("type", true);
-            intent.putExtra("title", bean.getSendOrgName());
+            intent.putExtra("title", bean.getModelCode());
             startActivity(intent);
         } else if (modelType == 6) {
             //方案报批
             Intent intent = new Intent(mContext, ProgrammeDetailsActivity.class);
             intent.putExtra("id", bean.getModelId());
             intent.putExtra("taskid", "");
-            intent.putExtra("orgid", bean.getSendOrgId());
+            intent.putExtra("orgid", bean.getModelCode());
             startActivity(intent);
         }
     }

@@ -8,6 +8,7 @@
     <include layout="@layout/toolbar_icon" />
 
     <TextView
+        android:id="@+id/toolbar_title"
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:layout_marginTop="50dp"
@@ -15,10 +16,11 @@
         android:gravity="center_vertical"
         android:paddingLeft="15dp"
         android:visibility="gone"
-        android:text="*121521515"
+        android:drawableLeft="@mipmap/warning_red"
         android:textColor="@color/red" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:layout_below="@+id/toolbar_title"
         android:id="@+id/refreshlayout"
         android:layout_width="match_parent"
         android:layout_marginTop="50dp"

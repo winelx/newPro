@@ -49,7 +49,6 @@ public class ProgrammeActivity extends BaseActivity implements View.OnClickListe
         checkDownViewpager.setAdapter(adapter);
         checkDownViewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             private int currentPosition = 1;
-
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (position > currentPosition) {

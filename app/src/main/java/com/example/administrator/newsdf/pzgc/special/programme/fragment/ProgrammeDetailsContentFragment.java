@@ -104,6 +104,7 @@ public class ProgrammeDetailsContentFragment extends LazyloadFragment implements
                             tips.setVisibility(View.GONE);
                         } else {
                             tips.setVisibility(View.VISIBLE);
+                            tips.setText(proDetails.getMsg());
                         }
                         List<ProDetails.FileResultListBean> list = proDetails.getFileResultList();
                         ArrayList<FileTypeBean> filelist = new ArrayList<>();

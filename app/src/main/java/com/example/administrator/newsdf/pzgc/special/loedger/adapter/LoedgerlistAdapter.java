@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.pzgc.special.loedger.adapter;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -37,40 +38,51 @@ public class LoedgerlistAdapter extends BaseQuickAdapter<Object, BaseViewHolder>
         LoedgerlistActivity activity = (LoedgerlistActivity) mContext;
         boolean lean = activity.getType();
         if (lean) {
-            LoedgerMineListbean bean = (LoedgerMineListbean) item;
             //我的
-            int isDeal = bean.getIsDeal();
+            LoedgerMineListbean bean = (LoedgerMineListbean) item;
+
             helper.setText(R.id.item_title, bean.getName());
             helper.setText(R.id.submitpersonname, "报批人：" + bean.getSubmitPersonName());
             helper.setText(R.id.specialitembasename, "所属类型：" + bean.getSpecialItemBaseName());
             helper.setText(R.id.orgname, "所属标段：" + bean.getOrgName());
-            if (bean.getSubmitDate() != null) {
+            if (!TextUtils.isEmpty(bean.getReceivePerson())) {
+                solvepeople.setText("待处理人：" + bean.getReceivePerson());
+            } else {
+                solvepeople.setText("待处理人：");
+            }
+            if (!TextUtils.isEmpty(bean.getSubmitDate())) {
                 helper.setText(R.id.dealdate, "报批日期：" + Dates.stampToDate(bean.getSubmitDate()).substring(0, 10));
             } else {
                 helper.setText(R.id.dealdate, "报批日期：");
             }
+            //任务处理状态
+            int isDeal = bean.getIsDeal();
             //我的显示样式
             if (isDeal == 1) {
                 slante.setTextString("未处理");
                 slante.setSlantedBackgroundColor(R.color.Orange);
-                solvepeople.setText("待处理人：" + bean.getReceivePerson());
             } else {
                 slante.setTextString("已处理");
                 slante.setSlantedBackgroundColor(R.color.finish_green);
-                solvepeople.setVisibility(View.GONE);
             }
         } else {
+            //全部
             LoedgerAllListbean bean = (LoedgerAllListbean) item;
             helper.setText(R.id.item_title, bean.getName());
             helper.setText(R.id.submitpersonname, "报批人：" + bean.getSubmitPersonName());
             helper.setText(R.id.specialitembasename, "所属类型：" + bean.getSpecialItemBaseName());
             helper.setText(R.id.orgname, "所属标段：" + bean.getOrgName());
+            if (!TextUtils.isEmpty(bean.getSubmitDate())) {
+                helper.setText(R.id.dealdate, "报批日期：" + Dates.stampToDate(bean.getSubmitDate()).substring(0, 10));
+            } else {
+                helper.setText(R.id.dealdate, "报批日期：");
+            }
             //当前
             int isDeal = bean.getStatus();
             solvepeople.setText("待处理人：" + bean.getReceivePerson());
             //全部的显示样式
             if (isDeal == 4) {
-                slante.setTextString(" 通过");
+                slante.setTextString(" 审核通过");
                 slante.setSlantedBackgroundColor(R.color.finish_green);
             } else if (isDeal == 2) {
                 slante.setTextString("审核中");
@@ -84,8 +96,5 @@ public class LoedgerlistAdapter extends BaseQuickAdapter<Object, BaseViewHolder>
 
             }
         }
-        //根据状态处理现实样式
-
-
     }
 }

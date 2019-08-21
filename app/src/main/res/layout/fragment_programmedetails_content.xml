@@ -19,8 +19,9 @@
             android:layout_height="wrap_content"
             android:background="@color/back"
             android:paddingBottom="10dp"
-            android:text="*当前数据尚未提交，请至pc端提交数据。"
+            android:text="当前数据尚未提交，请至pc端提交数据。"
             android:textColor="@color/red"
+            android:drawableLeft="@mipmap/warning_red"
             android:visibility="gone"
             tools:ignore="HardcodedText" />
 

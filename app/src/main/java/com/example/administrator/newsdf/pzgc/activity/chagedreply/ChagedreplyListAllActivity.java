@@ -70,6 +70,7 @@ public class ChagedreplyListAllActivity extends BaseActivity implements View.OnC
         emptyUtils = new EmptyUtils(mContext);
         list = new ArrayList<>();
         recyclerList = (EmptyRecyclerView) findViewById(R.id.recycler_list);
+        recyclerList.setEmptyView(emptyUtils.init());
         title = (TextView) findViewById(R.id.com_title);
         title.setText(intent.getStringExtra("orgName"));
         findViewById(R.id.toolbar_menu).setOnClickListener(this);
