@@ -178,7 +178,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 Intent intents= new Intent(mContext, CheckReportActivity.class);
                 intents.putExtra("type","month");
                 startActivity(intents);
-
                 break;
             case R.id.tasktotal:
                 //累计完成任务

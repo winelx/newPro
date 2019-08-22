@@ -211,7 +211,7 @@ public class ProgrammeAuditorActivity extends BaseActivity implements View.OnCli
         for (int i = 0; i < searchlist.size(); i++) {
             if (searchlist.get(i).isLean()) {
                 String name = searchlist.get(i).getPartContent();
-                String id = searchlist.get(i).getId();
+                String id = searchlist.get(i).getUserid();
                 mData.add(new Audio(name, id));
             }
         }

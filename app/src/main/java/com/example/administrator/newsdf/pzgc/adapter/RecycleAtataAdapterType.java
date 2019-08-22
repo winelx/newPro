@@ -256,9 +256,11 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                                         int ret = jsonObject.getInt("ret");
                                         ToastUtils.showShortToast(jsonObject.getString("msg"));
                                         if (ret == 0) {
-                                            HideCallbackUtils.removeCallBackMethod();
                                             TaskdetailsActivity activity = (TaskdetailsActivity) mContext;
                                             activity.deleteTop();
+                                            try {
+                                                HideCallbackUtils.removeCallBackMethod();
+                                            }catch (Exception e){}
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();

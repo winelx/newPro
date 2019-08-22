@@ -90,7 +90,6 @@ public class NoticeDetailsFragment extends LazyloadFragment implements View.OnCl
         comTitle.setText("公告详情");
         com_img = (ImageView) findViewById(R.id.com_img);
         com_img.setOnClickListener(this);
-        com_img.setBackgroundResource(R.mipmap.task_log);
         text = (TextView) findViewById(R.id.text);
         titlel = (LinearLayout) findViewById(R.id.toolbar_title);
         titlel.setVisibility(View.VISIBLE);

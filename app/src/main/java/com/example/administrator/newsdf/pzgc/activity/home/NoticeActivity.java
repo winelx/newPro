@@ -361,6 +361,12 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
                 intent.putExtra("type", iwork + "");
                 startActivity(intent);
             }
+        } else if (modelname == 4) {
+            //台账
+            Intent intent = new Intent(mContext, LoedgerRecordDetailActivity.class);
+            intent.putExtra("id", bean.getModelId());
+            startActivity(intent);
+
         }
     }
 
@@ -395,7 +401,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             intent.putExtra("id", bean.getModelId());
             intent.putExtra("taskId", bean.getId());
             intent.putExtra("type", true);
-            intent.putExtra("title",bean.getModelCode());
+            intent.putExtra("title", bean.getModelCode());
             startActivity(intent);
         } else if (modelType == 6) {
             //方案报批

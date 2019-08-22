@@ -73,6 +73,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="start"
+                    android:textSize="13sp"
                     android:text="报批日期：" />
 
             </LinearLayout>

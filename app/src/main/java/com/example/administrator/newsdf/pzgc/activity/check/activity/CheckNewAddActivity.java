@@ -282,7 +282,6 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                 startActivityForResult(intent, 1);
                 break;
             case R.id.checklistmeun:
-
                 //获取当前按钮名称，根据名称处理点击事件
                 String string = checklistmeuntext.getText().toString();
                 String content = checkNewTemporarysite.getText().toString();
@@ -335,7 +334,6 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
 
                         @Override
                         public void cancel(String string) {
-
                         }
                     });
 
@@ -611,11 +609,13 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
 
     //提交
     public void senddata() {
+        Dates.getDialogs(this, "提交数据中..");
         OkGo.get(Requests.SEND_DATA)
                 .params("id", taskId)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        Dates.disDialog();
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             if (jsonObject.getInt("ret") == 0) {
@@ -651,6 +651,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        Dates.disDialog();
                     }
                 });
     }

@@ -61,6 +61,7 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
         utils = new Utils();
         intent = getIntent();
         type = intent.getBooleanExtra("type", false);
+        findViewById(R.id.com_back).setOnClickListener(this);
         refreshlayout = findViewById(R.id.refreshlayout);
         //禁止下拉
         refreshlayout.setEnableRefresh(false);
@@ -68,11 +69,9 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
         refreshlayout.setEnableLoadmore(false);
         //仿ios越界
         refreshlayout.setEnableOverScrollBounce(true);
-        findViewById(R.id.com_back).setOnClickListener(this);
         title = findViewById(R.id.com_title);
         title.setText(intent.getStringExtra("title"));
         toolbar_title = findViewById(R.id.toolbar_title);
-
         //审核按钮
         examine = findViewById(R.id.examine);
         examine.setVisibility(View.GONE);
@@ -102,18 +101,13 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
                 if (type) {
                     if ("1".equals(str)) {
                         examine.setVisibility(View.VISIBLE);
-                        utils.setMargins(refreshlayout, 0, Utils.dp2px(mContext, 50), 0, Utils.dp2px(mContext, 45));
+                        utils.setMargins(refreshlayout, 0, 0, 0, Utils.dp2px(mContext, 45));
                     } else {
                         examine.setVisibility(View.GONE);
-                        utils.setMargins(refreshlayout, 0, Utils.dp2px(mContext, 50), 0, Utils.dp2px(mContext, 0));
                     }
                 }
             }
         });
-        //根据入口控制提交按钮显示隐藏
-        if (!type) {
-            examine.setVisibility(View.GONE);
-        }
         mDetailAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -132,6 +126,10 @@ public class LoedgerDetailsActivity extends BaseActivity implements View.OnClick
                         examine.setVisibility(View.GONE);
                     }
                 });
+        //根据入口控制提交按钮显示隐藏
+        if (!type) {
+            examine.setVisibility(View.GONE);
+        }
         request();
     }
 

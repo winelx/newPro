@@ -162,7 +162,7 @@ public class ProgrammeApprovalActivity extends BaseActivity implements View.OnCl
         map.put("id", id);
         map.put("isby", status);
         map.put("verificationOpinion", replyDescription.getText().toString());
-        if ("0".equals(isAssign)) {
+        if ("1".equals(isAssign)) {
             map.put("assignPersonId", Dates.listToStrings(idlsit));
         }
         NetWork.postHttp(Api.SPECIALITEMPROJECTVERIFICATION, map, new NetWork.networkCallBack() {

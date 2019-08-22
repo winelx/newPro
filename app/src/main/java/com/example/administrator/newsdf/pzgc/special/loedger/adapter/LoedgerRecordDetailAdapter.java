@@ -54,6 +54,7 @@ public class LoedgerRecordDetailAdapter extends BaseQuickAdapter<LoedgerRecordDe
         helper.setText(R.id.parturl, item.getPartUrl());
         helper.setText(R.id.constructionname,item.getConstructionName());
         helper.setText(R.id.argumentname,item.getArgumentName());
+        helper.setText(R.id.demonstration_text,item.getExpertDate());
     }
 
 }

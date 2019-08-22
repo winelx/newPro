@@ -35,7 +35,7 @@
             android:lineSpacingExtra="3dp"
             android:paddingRight="10dp"
             android:text="专项施工方案名称实例专项施工方案名称实例专项施工方案名称实例专项施工方案名称实例专项施工方案名称实例"
-            android:textSize="15sp" />
+            android:textSize="13sp" />
     </LinearLayout>
 
     <ImageView

@@ -5,49 +5,51 @@
     android:background="@color/back"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_icon" />
-
-    <TextView
-        android:id="@+id/toolbar_title"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:layout_marginTop="50dp"
-        android:background="#d7d5d5"
-        android:gravity="center_vertical"
-        android:paddingLeft="15dp"
-        android:visibility="gone"
-        android:drawableLeft="@mipmap/warning_red"
-        android:textColor="@color/red" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:layout_below="@+id/toolbar_title"
-        android:id="@+id/refreshlayout"
-        android:layout_width="match_parent"
-        android:layout_marginTop="50dp"
-        android:layout_height="match_parent">
+        <include layout="@layout/toolbar_icon" />
 
-        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+        <TextView
+            android:id="@+id/toolbar_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="25dp"
+            android:background="#d7d5d5"
+            android:visibility="gone"
+            android:drawableLeft="@mipmap/warning_red"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:textColor="@color/red" />
 
-
-        <com.example.baselibrary.view.EmptyRecyclerView
-            android:id="@+id/recycler_list"
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/refreshlayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="5dp"
-            android:divider="@color/back"
-            android:dividerHeight="10dp"
-            android:padding="0dp"
-            android:scrollbars="none" />
+            android:layout_below="@+id/toolbar_title">
 
-        <com.scwang.smartrefresh.layout.footer.ClassicsFooter
-            android:layout_width="match_parent"
-            android:layout_height="45dp" />
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+            <com.scwang.smartrefresh.layout.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
+            <com.example.baselibrary.view.EmptyRecyclerView
+                android:id="@+id/recycler_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="5dp"
+                android:divider="@color/back"
+                android:dividerHeight="10dp"
+                android:padding="0dp"
+                android:scrollbars="none" />
+
+            <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+                android:layout_width="match_parent"
+                android:layout_height="45dp" />
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </LinearLayout>
 
     <Button
         android:id="@+id/examine"
@@ -58,7 +60,6 @@
         android:layout_alignParentBottom="true"
         android:background="@color/orange"
         android:text="审核"
-        android:textColor="@color/white"
-      />
+        android:textColor="@color/white" />
 
 </RelativeLayout>
