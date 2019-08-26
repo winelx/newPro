@@ -41,8 +41,8 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
     private SmartRefreshLayout refreshLayout;
     private ExpandableListView expandable;
     private View.OnClickListener ivGoToChildClickListener;
-    private int groupPosition = 0;
     private LinearLayout nullposion, probar;
+    private int groupPosition = 0;
 
     @Nullable
     @Override
@@ -123,7 +123,6 @@ public class AllMessageFragment extends Fragment implements CallBack, OgranCallb
 
     /**
      * 将数据放到适配器中
-     *
      * @param list
      * @param map
      */

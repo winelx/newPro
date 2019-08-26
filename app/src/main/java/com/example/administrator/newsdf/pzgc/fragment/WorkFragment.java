@@ -167,7 +167,7 @@ public class WorkFragment extends Fragment {
                     case "台账管理":
                         startActivity(new Intent(mContext, LoedgerActivity.class));
                         break;
-                        case "方案管理":
+                    case "方案管理":
                         startActivity(new Intent(mContext, ProgrammeActivity.class));
                         break;
                     default:
@@ -192,6 +192,7 @@ public class WorkFragment extends Fragment {
                                 reportlist.clear();
                                 tasklist.clear();
                                 checklist.clear();
+                                special.clear();
                                 for (int i = 0; i < data.length(); i++) {
                                     JSONObject json = data.getJSONObject(i);
                                     if ("true".equals(json.getString("审核报表"))) {
@@ -233,6 +234,12 @@ public class WorkFragment extends Fragment {
                                     if ("true".equals(json.getString("特种设备"))) {
                                         checklist.add(new bean("特种设备", R.mipmap.specialdevices));
                                     }
+                                    if ("true".equals(json.getString("台账管理"))) {
+                                        special.add(new bean("台账管理", R.mipmap.loedger));
+                                    }
+                                    if ("true".equals(json.getString("方案管理"))) {
+                                        special.add(new bean("方案管理", R.mipmap.programme));
+                                    }
                                 }
                                 if (tasklist.size() > 0) {
                                     list.add(new ItemBean(tasklist, "任务管理"));
@@ -243,10 +250,9 @@ public class WorkFragment extends Fragment {
                                 if (reportlist.size() > 0) {
                                     list.add(new ItemBean(reportlist, "统计报表"));
                                 }
-                                special.clear();
-                                special.add(new bean("台账管理", R.mipmap.loedger));
-                                special.add(new bean("方案管理", R.mipmap.programme));
-                                list.add(new ItemBean(special, "专项施工方案"));
+                                if (special.size() > 0) {
+                                    list.add(new ItemBean(special, "专项施工方案"));
+                                }
                                 adapter.setNewData(list);
                             } else {
                                 ToastUtils.showShortToast(jsonObject.getString("msg"));
@@ -255,7 +261,6 @@ public class WorkFragment extends Fragment {
                             e.printStackTrace();
                         }
                     }
-
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

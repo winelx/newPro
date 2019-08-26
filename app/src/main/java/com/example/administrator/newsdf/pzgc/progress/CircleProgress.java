@@ -21,6 +21,7 @@ public class CircleProgress extends View {
 
     /**
      * 小圆的个数
+     *
      */
     private int numOfCircles;
     /**
@@ -51,16 +52,13 @@ public class CircleProgress extends View {
         super(context, attrs, defStyleAttr);
         // TODO Auto-generated constructor stub
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CircleProgress);
-
         numOfCircles = array.getInt(R.styleable.CircleProgress_numOfCircles, 10);
         maxRadius = array.getDimensionPixelSize(R.styleable.CircleProgress_maxRadius, dp2px(5));
         minRadius = array.getDimensionPixelSize(R.styleable.CircleProgress_minRadius, dp2px(1));
         rotateSpeedInMillis = array.getInt(R.styleable.CircleProgress_rotateSpeedInMillis, 120);
         isClockwise = array.getBoolean(R.styleable.CircleProgress_isClockwise, true);
         circleColor = array.getColor(R.styleable.CircleProgress_circleColor, Color.WHITE);
-
         array.recycle();
-
         paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);

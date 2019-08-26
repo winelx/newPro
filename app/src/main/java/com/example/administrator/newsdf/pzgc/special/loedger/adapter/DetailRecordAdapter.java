@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.special.loedger.adapter;
 
 import android.graphics.Color;
+import android.text.TextUtils;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.newsdf.R;
@@ -28,7 +29,9 @@ public class DetailRecordAdapter extends BaseItemProvider<DetailRecord, BaseView
 
     @Override
     public void convert(BaseViewHolder helper, DetailRecord data, int position) {
-        helper.setText(R.id.record_data, data.getDealDate().substring(0, 10));
+        if (!TextUtils.isEmpty(data.getDealDate())) {
+            helper.setText(R.id.record_data, data.getDealDate());
+        }
         helper.setText(R.id.record_user, data.getDealPerson());
         helper.setText(R.id.record_status, data.getDealContent());
         if ("打回".equals(data.getDealContent())) {
