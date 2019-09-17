@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
@@ -101,10 +102,18 @@ public class ProgrammeApprovalActivity extends BaseActivity implements View.OnCl
                                 categoryItem.setTextColor(Color.parseColor("#28c26A"));
                                 if ("0".equals(isAssign)) {
                                     approvaluser.setVisibility(View.GONE);
-                                }else {
+                                } else {
                                     approvaluser.setVisibility(View.VISIBLE);
                                 }
                                 status = "1";
+                            }
+                        }).setNeutralButton("按审批意见修改后通过", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //处理确认按钮的点击事件
+                                categoryItem.setText("按审批意见修改后通过");
+                                categoryItem.setTextColor(Color.parseColor("#f88c37"));
+                                status = "0";
                             }
                         })
                         .create();

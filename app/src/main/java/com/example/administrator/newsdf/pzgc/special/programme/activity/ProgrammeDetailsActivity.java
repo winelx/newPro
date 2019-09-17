@@ -182,7 +182,6 @@ public class ProgrammeDetailsActivity extends BaseActivity implements View.OnCli
                 //表示所有权限都授权了
                 callback.success();
             }
-
             @Override
             public void onDenied(List<String> deniedPermission) {
                 for (String permission : deniedPermission) {

@@ -1,6 +1,5 @@
 package com.example.baselibrary.utils;
 
-import android.app.DownloadManager;
 
 public class Api {
     public static final String SIGNATURE = Requests.networks + "iface/mobile/systemnotice/getPersonalSignature";

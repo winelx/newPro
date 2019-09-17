@@ -40,7 +40,7 @@ public class ScircuititemAdaptyer extends BaseQuickAdapter<ProDetails.RecordList
                 color = R.color.finish_green;
             } else if ("打回".equals(item.getDealResult())) {
                 color = R.color.red;
-            }else {
+            } else {
                 color = R.color.black;
             }
             helper.setText(R.id.describe, Dates.setText(mContext, msp, 5, 7, color));

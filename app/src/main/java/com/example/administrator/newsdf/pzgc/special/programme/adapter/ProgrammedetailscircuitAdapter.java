@@ -179,18 +179,24 @@ public class ProgrammedetailscircuitAdapter extends RecyclerView.Adapter<Recycle
         }
         //animationsLocked是布尔类型变量，一开始为false
         //确保仅屏幕一开始能够容纳显示的item项才开启动画
-        if (position > lastAnimatedPosition) {//lastAnimatedPosition是int类型变量，默认-1，
+        //lastAnimatedPosition是int类型变量，默认-1，
+        if (position > lastAnimatedPosition) {
             //这两行代码确保了recyclerview滚动式回收利用视图时不会出现不连续效果
             lastAnimatedPosition = position;
-            view.setTranslationY(500);     //Item项一开始相对于原始位置下方500距离
-            view.setAlpha(0.f);           //item项一开始完全透明
+            //Item项一开始相对于原始位置下方500距离
+            view.setTranslationY(500);
+            //item项一开始完全透明
+            view.setAlpha(0.f);
             //每个item项两个动画，从透明到不透明，从下方移动到原始位置
             view.animate()
-                    .translationY(0).alpha(1.f)                                //设置最终效果为完全不透明
+                    //设置最终效果为完全不透明
+                    .translationY(0).alpha(1.f)
                     //并且在原来的位置
-                    .setStartDelay(delayEnterAnimation ? 20 * (position) : 0)//根据item的位置设置延迟时间
+                    //根据item的位置设置延迟时间
+                    .setStartDelay(delayEnterAnimation ? 20 * (position) : 0)
                     //达到依次动画一个接一个进行的效果
-                    .setInterpolator(new DecelerateInterpolator(0.5f))     //设置动画位移先快后慢的效果
+                    //设置动画位移先快后慢的效果
+                    .setInterpolator(new DecelerateInterpolator(0.5f))
                     .setDuration(700)
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
