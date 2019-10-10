@@ -1,7 +1,6 @@
 package com.example.baselibrary.base;
 
 
-
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -14,8 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
 
-
-
 import com.example.baselibrary.utils.manager.AppManager;
 import com.example.baselibrary.view.PermissionListener;
 
@@ -23,6 +20,7 @@ import com.example.baselibrary.view.PermissionListener;
 import java.util.ArrayList;
 
 import java.util.List;
+
 
 /**
  * @author lx
@@ -47,12 +45,12 @@ public class BaseActivity extends AppCompatActivity {
      **/
     private boolean isAllowScreenRoate = false;
     private Context mContext;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         appManager.addActivity(this);
-        mContext=this;
+
+        mContext = this;
         //是否允许屏幕旋转
         if (!isAllowScreenRoate) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -60,7 +58,6 @@ public class BaseActivity extends AppCompatActivity {
         if (mAllowFullScreen) {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
         }
-
     }
 
     /**

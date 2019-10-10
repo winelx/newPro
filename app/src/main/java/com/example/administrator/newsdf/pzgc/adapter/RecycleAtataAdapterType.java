@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,12 +92,13 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
     //内容主题
     private void bindContent(final Viewholder holder, final int posotion) {
         //判断是否有图片
+
         if (mDatas.get(posotion).getAttachments().size() > 0) {
             //有图片展示布局
             holder.audioRec.setVisibility(View.VISIBLE);
-            //隐藏没有图片的提示图
             holder.audioNotimage.setVisibility(View.GONE);
         } else {
+            ToastUtils.showShortToast("");
             holder.audioRec.setVisibility(View.INVISIBLE);
             holder.audioNotimage.setVisibility(View.VISIBLE);
         }
@@ -260,7 +262,8 @@ public class RecycleAtataAdapterType extends RecyclerView.Adapter<RecyclerView.V
                                             activity.deleteTop();
                                             try {
                                                 HideCallbackUtils.removeCallBackMethod();
-                                            }catch (Exception e){}
+                                            } catch (Exception e) {
+                                            }
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();

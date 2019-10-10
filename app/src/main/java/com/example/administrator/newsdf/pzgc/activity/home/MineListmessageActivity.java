@@ -683,12 +683,13 @@ public class MineListmessageActivity extends BaseActivity implements View.OnClic
                         String groupName = json.getString("groupName");
                         //创建时间;
                         String createTime = json.getString("createTime");
+                        String updateDate = json.getString("updateDate");
                         //检查点名称
                         String pointName = json.getString("pointName");
                         // Wbs路径;
                         String wbsPath = json.getString("wbsPath");
                         String wbsId = json.getString("wbsId");
-                        mDatas.add(new List_interface(id, taskId, cascadeId, isFinish, content, groupName, createTime, pointName, wbsPath, wbsId));
+                        mDatas.add(new List_interface(id, taskId, cascadeId, isFinish, content, groupName, createTime, pointName, wbsPath, wbsId,updateDate));
                     }
                     if (mDatas.size() > 0) {
                         nullposion.setVisibility(View.GONE);

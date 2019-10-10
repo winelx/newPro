@@ -245,7 +245,7 @@ public class FragmentHomeListAdapter extends BaseExpandableListAdapter implement
         childHold.layoutContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (classes.get(groupPosition).equals("待回复")) {
+                if ("待回复".equals(classes.get(groupPosition))) {
                     Intent intent = new Intent(context, MineListmessageActivity.class);
                     intent.putExtra("name", content.get(classes.get(groupPosition)).get(childPosition).getOrgname());
                     intent.putExtra("orgId", content.get(classes.get(groupPosition)).get(childPosition).getOrgid());

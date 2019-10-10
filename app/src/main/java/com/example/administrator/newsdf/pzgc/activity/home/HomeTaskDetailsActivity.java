@@ -107,8 +107,8 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
         emptyUtils = new EmptyUtils(mContext);
         list = new ArrayList<>();
         findViewById(R.id.com_back).setOnClickListener(this);
-        title = findViewById(R.id.com_title);
-        refreshLayout = findViewById(R.id.smartrefresh);
+        title = (TextView) findViewById(R.id.com_title);
+        refreshLayout = (SmartRefreshLayout) findViewById(R.id.smartrefresh);
         //是否启用下拉刷新功能
         refreshLayout.setEnableRefresh(false);
         //是否启用上拉加载功能
@@ -117,7 +117,7 @@ public class HomeTaskDetailsActivity extends BaseActivity implements View.OnClic
         refreshLayout.setEnableOverScrollDrag(false);
         //是否在列表不满一页时候开启上拉加载功能
         refreshLayout.setEnableLoadmoreWhenContentNotFull(false);
-        recyclerView = findViewById(R.id.recycler);
+        recyclerView = (EmptyRecyclerView) findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //分割线
         recyclerView.addItemDecoration(new DividerItemDecoration(mContext, VERTICAL));

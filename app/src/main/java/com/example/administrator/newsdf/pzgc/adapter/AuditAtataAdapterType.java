@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.audit.AuditdetailsActivity;
 import com.example.administrator.newsdf.pzgc.bean.AduioData;
@@ -35,9 +37,9 @@ import okhttp3.Response;
  * description:任务详情回复内容适配器
  *
  * @author lx
- *         date:2017/12/13 0013.
- *         update: 2018/2/6 0006
- *         version:
+ * date:2017/12/13 0013.
+ * update: 2018/2/6 0006
+ * version:
  */
 
 public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -76,10 +78,12 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
         int size = mDatas.size() - 1;
         holder.related.setVisibility(View.GONE);
         //判断是否有图片
-        if (mDatas.get(posotion).getAttachments().size() != 0) {
+        if (mDatas.get(posotion).getAttachments().size() > 0) {
             //有图片展示布局
+            holder.audio_notimage.setVisibility(View.GONE);
             holder.audioRec.setVisibility(View.VISIBLE);
         } else {
+            holder.audio_notimage.setVisibility(View.VISIBLE);
             holder.audioRec.setVisibility(View.INVISIBLE);
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
@@ -109,16 +113,20 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
         holder.detailsAudit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Dates.getDialogs((Activity) mContext, "提交审核中");
                 String taskId = auditdetailsActivity.getId();
+                String auditid = auditdetailsActivity.getauditid();
                 //取消点击事件
                 holder.detailsAudit.setClickable(false);
                 OkGo.get(Requests.AUDITTask)
                         .params("taskId", taskId)
+                        .params("superiorAuditId", auditid)
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(String s, Call call, Response response) {
                                 //重启点击事件
                                 holder.detailsAudit.setClickable(true);
+                                Dates.disDialog();
                                 try {
                                     JSONObject jsonObject = new JSONObject(s);
                                     int ret = jsonObject.getInt("ret");
@@ -134,11 +142,13 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
                                     e.printStackTrace();
                                 }
                             }
+
                             @Override
                             public void onError(Call call, Response response, Exception e) {
                                 super.onError(call, response, e);
                                 //重启点击事件
                                 holder.detailsAudit.setClickable(true);
+                                Dates.disDialog();
                             }
                         });
             }
@@ -146,7 +156,7 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
         holder.detailsRejected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cameDialog.setDialog(auditdetailsActivity.getId(), auditdetailsActivity, holder.related);
+                cameDialog.setDialog(auditdetailsActivity.getId(), auditdetailsActivity.getauditid(), auditdetailsActivity, holder.related);
             }
         });
     }
@@ -157,7 +167,7 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     private class Viewholder extends RecyclerView.ViewHolder {
-        ImageView audioAcathor;
+        ImageView audioAcathor, audio_notimage;
         TextView audioName, audioData, audioContent, audioAddress;
         TextView detailsRejected, detailsAudit;
         LinearLayout related;
@@ -166,6 +176,7 @@ public class AuditAtataAdapterType extends RecyclerView.Adapter<RecyclerView.Vie
         Viewholder(View itemView) {
             super(itemView);
             audioAcathor = itemView.findViewById(R.id.audit_acathor);
+            audio_notimage = itemView.findViewById(R.id.audio_notimage);
             audioName = itemView.findViewById(R.id.audio_name);
             audioData = itemView.findViewById(R.id.audio_data);
             audioContent = itemView.findViewById(R.id.audio_content);

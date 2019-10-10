@@ -32,12 +32,14 @@ import com.example.administrator.newsdf.R;
 
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ImageUtil;
+import com.example.administrator.newsdf.pzgc.activity.MainActivity;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.adapter.DirectlyreplyAdapter;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.CameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.baselibrary.utils.ClickProxys;
 import com.example.baselibrary.view.PermissionListener;
 import com.example.baselibrary.utils.Requests;
 import com.lzy.imagepicker.ImagePicker;
@@ -113,7 +115,6 @@ public class DirectlyreplysActivity extends BaseActivity {
     //定位
     private void loaction() {
         //定位初始化
-
         //获取locationservice实例，建议应用中只初始化1个location实例，然后使用，可以参考其他示例的activity，都是通过此种方式获取locationservice实例的
         ((App) getApplication()).locationService.registerListener(mListener);
         //注册监听
@@ -154,7 +155,7 @@ public class DirectlyreplysActivity extends BaseActivity {
                 finish();
             }
         });
-        com_button.setOnClickListener(new View.OnClickListener() {
+        com_button.setOnClickListener(new ClickProxys(1000, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 files = new ArrayList<File>();
@@ -174,7 +175,13 @@ public class DirectlyreplysActivity extends BaseActivity {
                     }
                 }
             }
-        });
+        }, new ClickProxys.IAgain() {
+            @Override
+            public void onAgain() {
+                ToastUtils.showShortToast("请勿重复点击");
+            }
+        }));
+
         com_button.setVisibility(View.VISIBLE);
 
     }
@@ -209,7 +216,6 @@ public class DirectlyreplysActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        com_button.setVisibility(View.VISIBLE);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");

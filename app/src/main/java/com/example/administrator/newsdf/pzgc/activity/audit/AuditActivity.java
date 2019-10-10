@@ -211,7 +211,6 @@ public class AuditActivity extends BaseActivity {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         Dates.disDialog();
-                        LogUtil.i("ss", s);
                         if (integer == 1) {
                             title.clear();
                         }
@@ -221,7 +220,7 @@ public class AuditActivity extends BaseActivity {
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject json = jsonArray.getJSONObject(i);
                                 String cnDay = json.getString("cnDay");
-                                String day = json.getString("date");
+                                String day = json.getString("data");
                                 String ratio = json.getString("ratio");
                                 String tip;
                                 try {

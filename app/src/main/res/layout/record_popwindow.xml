@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="100dp"
-    android:layout_height="110dp">
+    android:layout_height="80dp">
 
     <LinearLayout
-        android:layout_width="100dp"
-        android:layout_height="110dp"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
@@ -14,26 +14,7 @@
         android:padding="5dp"
         android:weightSum="1">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/back" />
 
-        <TextView
-            android:id="@+id/audit_audit"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="未审核"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/back" />
 
         <TextView
             android:id="@+id/audit_noaudit"
@@ -41,7 +22,7 @@
             android:layout_height="35dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="已审核"
+            android:text="未处理"
             android:textColor="@color/black"
             android:textSize="14sp" />
 
@@ -57,7 +38,7 @@
             android:layout_height="35dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="已打回"
+            android:text="已处理"
             android:textColor="@color/black"
             android:textSize="14sp" />
 

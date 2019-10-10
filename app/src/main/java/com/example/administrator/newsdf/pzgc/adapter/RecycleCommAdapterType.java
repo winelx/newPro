@@ -44,7 +44,6 @@ public class RecycleCommAdapterType extends RecyclerView.Adapter<RecyclerView.Vi
 
     //内容主题
     private void bindContent(Viewholder holder, final int posotion) {
-
         //回复人名字
         String username = mDatas.get(posotion).getReplyUserName();
         //回复内容

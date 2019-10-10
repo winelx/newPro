@@ -106,11 +106,11 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         //相机相册选择弹窗
         popcamerautils = new PopCameraUtils();
         //整改部位
-        chagedPositionLin = findViewById(R.id.chaged_position_lin);
+        chagedPositionLin = (LinearLayout) findViewById(R.id.chaged_position_lin);
         /*整改扣总分分值*/
-        standarddelscore = findViewById(R.id.standarddelscore);
+        standarddelscore = (LinearLayout) findViewById(R.id.standarddelscore);
         //扣分
-        delscore = findViewById(R.id.violation_standard_scode);
+        delscore = (EditText) findViewById(R.id.violation_standard_scode);
         //整改部位是否必填提示
         importWarning = (TextView) findViewById(R.id.import_warning);
         /*整改部位*/

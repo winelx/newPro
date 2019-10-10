@@ -57,9 +57,9 @@ public class HometaskActivity extends BaseActivity implements View.OnClickListen
         list = new ArrayList<>();
         Intent intent = getIntent();
         emptyUtils = new EmptyUtils(mContext);
-        title = findViewById(R.id.com_title);
+        title = (TextView) findViewById(R.id.com_title);
         title.setText(intent.getStringExtra("title"));
-        recyclerView = findViewById(R.id.recycler);
+        recyclerView = (EmptyRecyclerView) findViewById(R.id.recycler);
         //设置展示style
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         //设置分割线

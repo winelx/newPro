@@ -313,9 +313,9 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
      */
     private void findId() {
         //无此项
-        switchLin = findViewById(R.id.switch_lin);
+        switchLin = (LinearLayout) findViewById(R.id.switch_lin);
         //得分布局
-        scoreLin = findViewById(R.id.check_item_content_score_lin);
+        scoreLin = (LinearLayout) findViewById(R.id.check_item_content_score_lin);
         describeImage = (TextView) findViewById(R.id.describe_image);
         //检查标准
         checkStandardRec = (RecyclerView) findViewById(R.id.check_standard_rec);

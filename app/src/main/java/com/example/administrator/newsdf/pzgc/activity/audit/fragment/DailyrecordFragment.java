@@ -89,6 +89,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
             @Override
             public void onsuccess(String str) {
                 datatime.setText(str);
+                okgo(str, true);
             }
         });
     }
@@ -177,7 +178,7 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
                                     } catch (JSONException e) {
                                         auditCount = "";
                                     }
-                                    //待审核
+//待审核
                                     String waitTask;
                                     try {
                                         waitTask = json.getString("waitTask");
@@ -213,13 +214,13 @@ public class DailyrecordFragment extends Fragment implements View.OnClickListene
                                     ToastUtils.showShortToastCenter("暂无数据");
                                 }
                                 list.clear();
-
                                 mAdapter.getData(list);
                             }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
                     }
 
                     @Override

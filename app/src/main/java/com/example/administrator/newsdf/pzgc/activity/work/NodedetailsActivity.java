@@ -187,7 +187,9 @@ public class NodedetailsActivity extends BaseActivity implements View.OnClickLis
         });
     }
 
-    //请求数据
+    /**
+     * 请求数据
+     */
     void okgo() {
         OkGo.<String>post(Requests.Wbsdetails)
                 .params("id", wbsId)

@@ -48,7 +48,7 @@ public class CameDialogs {
     public static ArrayList<String> path = new ArrayList<>();
     private static final int IMAGE_PICKER = 101;
 
-    public void setDialog(final String wtMainid, final Activity activity, final View view) {
+    public void setDialog(final String wtMainid, final String superiorAuditId, final Activity activity, final View view) {
         mCameraDialog = new Dialog(activity, R.style.BottomDialog);
         LinearLayout root = (LinearLayout) LayoutInflater.from(activity).inflate(
                 R.layout.dialog_custom, null);
@@ -82,6 +82,7 @@ public class CameDialogs {
                     send.setTextColor(Color.parseColor("#F0F0F0"));
                     OkGo.post(Requests.AUDIT_BACK_TASK)
                             .params("taskId", wtMainid)
+                            .params("superiorAuditId", superiorAuditId)
                             .params("remarks", str)
                             .execute(new StringCallback() {
                                 @Override

@@ -30,7 +30,7 @@ public class AuditdetailsActivity extends BaseActivity implements View.OnClickLi
     private static AuditdetailsActivity mContext;
     private RecyclerView mRecyclerView;
     private TextView wbspath;
-    private String taskId, status;
+    private String taskId, status,auditid;
     private AuditdetailsAdapter mAdapter;
     public static AuditdetailsActivity getInstance() {
         return mContext;
@@ -52,6 +52,7 @@ public class AuditdetailsActivity extends BaseActivity implements View.OnClickLi
 
         taskId = intnt.getExtras().getString("TaskId");
         status = intnt.getExtras().getString("status");
+        auditid = intnt.getExtras().getString("auditid");
         mRecyclerView = (RecyclerView) findViewById(R.id.auditdetails_list);
         wbspath = (TextView) findViewById(R.id.auditdetails_path);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
@@ -98,6 +99,9 @@ public class AuditdetailsActivity extends BaseActivity implements View.OnClickLi
      */
     public String getId() {
         return taskId;
+    }
+    public String getauditid() {
+        return auditid;
     }
 
     /**

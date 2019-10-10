@@ -80,7 +80,7 @@ public class ContactPeopleActivity extends BaseActivity {
         mData = new ArrayList<>();
         searchData = new ArrayList<>();
         searchData = new ArrayList<>();
-        refreshlayout = findViewById(R.id.refreshlayout);
+        refreshlayout = (SmartRefreshLayout) findViewById(R.id.refreshlayout);
         //是否启用下拉刷新功能
         refreshlayout.setEnableRefresh(true);
         //是否启用上拉加载功能
@@ -121,8 +121,8 @@ public class ContactPeopleActivity extends BaseActivity {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent newpush = new Intent();
-                newpush.putExtra("name", mData.get(position).getName());
-                newpush.putExtra("userId", mData.get(position).getId());
+                newpush.putExtra("name", searchData.get(position).getName());
+                newpush.putExtra("userId", searchData.get(position).getId());
                 //回传数据到主Activity
                 setResult(2, newpush);
                 finish(); //此方法后才能返回主Activity
@@ -131,7 +131,9 @@ public class ContactPeopleActivity extends BaseActivity {
         okgo();
     }
 
-    //网络请求
+    /**
+     * 网络请求
+     */
     void okgo() {
         OkGo.post(Requests.Members)
                 .execute(new StringCallback() {
@@ -139,6 +141,7 @@ public class ContactPeopleActivity extends BaseActivity {
                     public void onSuccess(String s, Call call, Response response) {
                         try {
                             mData.clear();
+                            searchData.clear();
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
                             for (int i = 0; i < jsonArray.length(); i++) {
@@ -158,8 +161,9 @@ public class ContactPeopleActivity extends BaseActivity {
                             }
                             if (mData.size() != 0) {
                                 mData.add(0, new Icon("", "", "", "无", ""));
+                                searchData.addAll(mData);
                                 backgroud.setVisibility(View.GONE);
-                                mAdapter.setNewData(mData);
+                                mAdapter.setNewData(searchData);
                             }
 
                         } catch (JSONException e) {
@@ -191,7 +195,10 @@ public class ContactPeopleActivity extends BaseActivity {
         mPopupWindow.setOnDismissListener(new poponDismissListener());
     }
 
-    //弹出框的点击事件
+    /**
+     * 弹出框的点击事件
+     * @return View
+     */
     private View getPopupWindowContentView() {
         // 一个自定义的布局，作为显示的内容
         // 布局ID
@@ -220,10 +227,7 @@ public class ContactPeopleActivity extends BaseActivity {
                     } catch (Exception e) {
 
                     }
-
-                    mData.clear();
-                    mData.addAll(searchData);
-                    mAdapter.setNewData(mData);
+                    mAdapter.setNewData(searchData);
                     mPopupWindow.dismiss();
                 }
                 return false;
@@ -251,7 +255,10 @@ public class ContactPeopleActivity extends BaseActivity {
         return contentView;
     }
 
-    //界面阴影
+    /**
+     * 界面阴影
+     * @param bgAlpha
+     */
     public void backgroundAlpha(float bgAlpha) {
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.alpha = bgAlpha;

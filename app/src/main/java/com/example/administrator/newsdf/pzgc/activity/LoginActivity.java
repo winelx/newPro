@@ -88,7 +88,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         });
         findViewById(R.id.login_pass_lean).setOnClickListener(this);
         findViewById(R.id.forget_password).setOnClickListener(this);
-        login = findViewById(R.id.login);
+        login = (Button) findViewById(R.id.login);
         login.setOnClickListener(this);
         password = (ClearEditText) findViewById(R.id.login_password);
         username = (ClearEditText) findViewById(R.id.login_username);

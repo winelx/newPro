@@ -40,7 +40,7 @@ public class SourceDictActivity extends BaseActivity {
         setContentView(R.layout.checkuser_list);
 
         list = new ArrayList<>();
-        TextView title = findViewById(R.id.com_title);
+        TextView title = (TextView) findViewById(R.id.com_title);
         title.setText("设备来源");
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +48,7 @@ public class SourceDictActivity extends BaseActivity {
                 finish();
             }
         });
-        ListView listView = findViewById(R.id.wbs_listview);
+        ListView listView = (ListView) findViewById(R.id.wbs_listview);
         adapter = new SettingAdapter<Audio>(list, R.layout.task_category_item) {
             @Override
             public void bindView(SettingAdapter.ViewHolder holder, final Audio obj) {

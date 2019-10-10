@@ -25,9 +25,9 @@ public class List_interface {
     String wbsPath;
     //wbsID
     String wbsId;
-    public List_interface(String id, String taskId, String cascadeId, String isFinish,
-                          String content, String groupName, String createTime,
-                          String pointName, String wbsPath,String wbsId) {
+    String updateDate;
+
+    public List_interface(String id, String taskId, String cascadeId, String isFinish, String content, String groupName, String createTime, String pointName, String wbsPath, String wbsId, String updateDate) {
         this.id = id;
         this.taskId = taskId;
         this.cascadeId = cascadeId;
@@ -37,7 +37,8 @@ public class List_interface {
         this.createTime = createTime;
         this.pointName = pointName;
         this.wbsPath = wbsPath;
-        this.wbsId =wbsId;
+        this.wbsId = wbsId;
+        this.updateDate = updateDate;
     }
 
     public String getId() {
@@ -118,5 +119,13 @@ public class List_interface {
 
     public void setWbsId(String wbsId) {
         this.wbsId = wbsId;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
     }
 }

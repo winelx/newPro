@@ -68,7 +68,7 @@ public class DailyrecordAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         //姓名
-        holder.dailyName.setText("姓名:" + mData.get(position).getPersonName());
+        holder.dailyName.setText("任务审核参与人:" + mData.get(position).getPersonName());
         //岗位
         holder.dailyJobs.setText("岗位:" + mData.get(position).getPosition());
         //所属标段

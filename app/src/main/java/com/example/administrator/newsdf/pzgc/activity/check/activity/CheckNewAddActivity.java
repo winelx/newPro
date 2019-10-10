@@ -134,7 +134,7 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
         checkNewDialog = (LinearLayout) findViewById(R.id.check_new_dialog);
         checkNewDialog.setVisibility(View.VISIBLE);
         //前置检查标题
-        check_content = findViewById(R.id.check_content);
+        check_content = (LinearLayout) findViewById(R.id.check_content);
         check_content.setVisibility(View.VISIBLE);
         //分数
         //wbs路径

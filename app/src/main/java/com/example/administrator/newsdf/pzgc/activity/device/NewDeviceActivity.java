@@ -154,10 +154,10 @@ public class NewDeviceActivity extends BaseActivity implements View.OnClickListe
 
     private void findId() {
         //设备操作手
-        newInspectUsename = findViewById(R.id.new_inspect_usename);
+        newInspectUsename = (EditText) findViewById(R.id.new_inspect_usename);
         editTextslist.add(newInspectUsename);
         //设备来源名称
-        newInspectText = findViewById(R.id.new_inspect_text);
+        newInspectText = (TextView) findViewById(R.id.new_inspect_text);
         //设备来源
         findViewById(R.id.new_inspect_source_lin).setOnClickListener(this);
         //保存按钮

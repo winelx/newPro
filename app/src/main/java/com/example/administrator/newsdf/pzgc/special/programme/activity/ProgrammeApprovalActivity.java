@@ -1,25 +1,19 @@
 package com.example.administrator.newsdf.pzgc.special.programme.activity;
 
-import android.app.Dialog;
-import android.arch.lifecycle.Observer;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.service.autofill.Dataset;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.widget.Button;
+
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.DialogUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Api;
@@ -29,11 +23,9 @@ import com.example.baselibrary.utils.rx.LiveDataBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -68,7 +60,7 @@ public class ProgrammeApprovalActivity extends BaseActivity implements View.OnCl
         id = intent.getStringExtra("id");
         findViewById(R.id.com_back).setOnClickListener(this);
         title = findViewById(R.id.com_title);
-        title.setText("选择下一节点审核人");
+        title.setText("审批");
         findViewById(R.id.validation_status).setOnClickListener(this);
         categoryItem = findViewById(R.id.category_item);
         findViewById(R.id.submit).setOnClickListener(this);

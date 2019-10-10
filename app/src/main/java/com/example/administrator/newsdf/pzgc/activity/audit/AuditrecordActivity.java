@@ -45,9 +45,9 @@ import okhttp3.Response;
  * description:审核任务列表
  *
  * @author lx
- *         date: 2018/7/5 0005 上午 9:43
- *         update: 2018/7/5 0005
- *         version:
+ * date: 2018/7/5 0005 上午 9:43
+ * update: 2018/7/5 0005
+ * version:
  */
 
 public class AuditrecordActivity extends BaseActivity implements View.OnClickListener, AuditrecordCallback {
@@ -63,7 +63,7 @@ public class AuditrecordActivity extends BaseActivity implements View.OnClickLis
     private int Success = 1;
     private SmartRefreshLayout smartRefreshLayout;
     //上拉加载数据判断
-    private int status = 1;
+    private String type = "";
     //待审核数
     String tip;
     TextView unfinished;
@@ -79,8 +79,7 @@ public class AuditrecordActivity extends BaseActivity implements View.OnClickLis
         mData = new ArrayList<>();
         Intent intent = getIntent();
         orgId = intent.getExtras().getString("orgId");
-
-        date = intent.getExtras().getString("date");
+        date = intent.getExtras().getString("day");
         title = intent.getExtras().getString("title");
         String day = intent.getExtras().getString("day");
         String ratio = intent.getExtras().getString("ratio");
@@ -138,6 +137,7 @@ public class AuditrecordActivity extends BaseActivity implements View.OnClickLis
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(AuditrecordActivity.this, AuditdetailsActivity.class);
                 intent.putExtra("TaskId", mData.get(position).getId());
+                intent.putExtra("auditid", mData.get(position).getSuperiorAuditId());
                 intent.putExtra("status", mData.get(position).getStatus());
                 startActivity(intent);
             }
@@ -148,16 +148,11 @@ public class AuditrecordActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 page++;
-                if (status == 1) {
-                    getData();
-                } else {
-                    http();
-                }
+                getData();
                 refreshlayout.finishLoadmore(800);
             }
         });
     }
-
 
 
     @Override
@@ -199,38 +194,25 @@ public class AuditrecordActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
-                    case R.id.audit_audit:
-                        //未审核
-                        page = 1;
-                        mData.clear();
-                        status = 1;
-                        getData();
-                        break;
                     case R.id.audit_noaudit:
-                        //以审核
+                        //未处理
                         page = 1;
-                        mData.clear();
-                        Success = 1;
-                        status = 2;
-                        http();
+                        type = "";
                         break;
                     case R.id.audit_statistical:
-                        //打回
+                        //已处理
                         page = 1;
-                        Success = 2;
-                        status = 3;
-                        mData.clear();
-                        http();
+                        type = "myDeal";
                         break;
                     default:
                         break;
                 }
+                getData();
                 if (mPopupWindow != null) {
                     mPopupWindow.dismiss();
                 }
             }
         };
-        contentView.findViewById(R.id.audit_audit).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.audit_noaudit).setOnClickListener(menuItemOnClickListener);
         contentView.findViewById(R.id.audit_statistical).setOnClickListener(menuItemOnClickListener);
         return contentView;
@@ -266,15 +248,18 @@ public class AuditrecordActivity extends BaseActivity implements View.OnClickLis
     public void getData() {
         Loading();
         OkGo.post(Requests.GET_TASK_LIST)
-                .params("id", orgId)
-                .params("day", date)
+                .params("nodeId", orgId)
+                .params("checkDate", date)
                 .params("page", page)
-                .params("size", 10)
-                .params("status", 2)
+                .params("size", 15)
+                .params("type", type)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         try {
+                            if (page == 1) {
+                                mData.clear();
+                            }
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray = jsonObject.getJSONArray("results");
                             if (jsonArray.length() > 0) {
@@ -283,6 +268,7 @@ public class AuditrecordActivity extends BaseActivity implements View.OnClickLis
                                     String name = json.getString("name");
                                     String id = json.getString("id");
                                     String str = json.getString("appWbsPath");
+                                    String superiorAuditId = json.getString("superiorAuditId");
                                     String updateDate = json.getString("updateDate");
                                     updateDate = updateDate.substring(10, 16);
                                     String status;
@@ -291,7 +277,7 @@ public class AuditrecordActivity extends BaseActivity implements View.OnClickLis
                                     } catch (JSONException e) {
                                         status = "";
                                     }
-                                    mData.add(new AuditrecordBean(id, name, str, updateDate, status));
+                                    mData.add(new AuditrecordBean(id, name, str, updateDate, superiorAuditId, status));
                                 }
                             }
 
@@ -306,44 +292,45 @@ public class AuditrecordActivity extends BaseActivity implements View.OnClickLis
                 });
     }
 
-
-    /**
-     * 已审核
-     */
-    public void http() {
-        Loading();
-        OkGo.post(Requests.GET_AUDIT_TASK_LIST)
-                .params("id", orgId)
-                .params("day", date)
-                .params("page", page)
-                .params("status", Success)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            JSONArray jsonArray = jsonObject.getJSONArray("results");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject json = jsonArray.getJSONObject(i);
-                                String name = json.getString("name");
-                                String appWbsPath = json.getString("appWbsPath");
-                                String status = json.getString("pass");
-                                String updateDate = json.getString("uploadTime");
-                                updateDate = updateDate.substring(10, 16);
-                                String id = json.getString("id");
-                                mData.add(new AuditrecordBean(id, name, appWbsPath, updateDate, status));
-                            }
-                            mAdapter.getData(mData);
-                            smartRefreshLayout.finishLoadmore();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } finally {
-                            progressDialog.dismiss();
-                        }
-                    }
-                });
-    }
+//
+//    /**
+//     * 已审核
+//     */
+//    public void http() {
+//        Loading();
+//        OkGo.post(Requests.GET_AUDIT_TASK_LIST)
+//                .params("id", orgId)
+//                .params("day", date)
+//                .params("page", page)
+//                .params("status", Success)
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onSuccess(String s, Call call, Response response) {
+//                        try {
+//                            JSONObject jsonObject = new JSONObject(s);
+//                            JSONArray jsonArray = jsonObject.getJSONArray("results");
+//                            for (int i = 0; i < jsonArray.length(); i++) {
+//                                JSONObject json = jsonArray.getJSONObject(i);
+//                                String name = json.getString("name");
+//                                String appWbsPath = json.getString("appWbsPath");
+//                                String status = json.getString("pass");
+//                                String superiorAuditId = json.getString("superiorAuditId");
+//                                String updateDate = json.getString("uploadTime");
+//                                updateDate = updateDate.substring(10, 16);
+//                                String id = json.getString("id");
+//                                mData.add(new AuditrecordBean(id, name, appWbsPath, updateDate, superiorAuditId, status));
+//                            }
+//                            mAdapter.getData(mData);
+//                            smartRefreshLayout.finishLoadmore();
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        } finally {
+//                            progressDialog.dismiss();
+//                        }
+//                    }
+//                });
+//    }
 
     @Override
     protected void onStop() {
