@@ -56,7 +56,7 @@ public class MmissPushActivity extends BaseActivity {
     private PushListviewAdapter<OrganizationEntity> mTreeAdapter;
     private int addPosition;
     private Context mContext;
-    private String org_status, wbsID;
+    private String orgStatus, wbsID;
     private SmartRefreshLayout refreshLayout;
     private ArrayList<String> titlename;
 
@@ -66,7 +66,7 @@ public class MmissPushActivity extends BaseActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_wbs);
         Intent intent = getIntent();
-        org_status = intent.getExtras().getString("Type");
+        orgStatus = intent.getExtras().getString("Type");
         try {
             wbsID = intent.getExtras().getString("wbsID");
         } catch (NullPointerException e) {
@@ -79,10 +79,13 @@ public class MmissPushActivity extends BaseActivity {
         TextView title = (TextView) findViewById(R.id.com_title);
         title.setText("选择WBS节点");
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.SmartRefreshLayout);
-        refreshLayout.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4
-        refreshLayout.setEnableLoadmore(false);//禁止上拉
+        //是否启用越界拖动（仿苹果效果）1.0.4
+        refreshLayout.setEnableOverScrollDrag(true);
+        //禁止上拉
+        refreshLayout.setEnableLoadmore(false);
         refreshLayout.setEnableRefresh(false);
-        refreshLayout.setEnableOverScrollBounce(true);//仿ios越界
+        //仿ios越界
+        refreshLayout.setEnableOverScrollBounce(true);
 
         mContext = MmissPushActivity.this;
         mTreeDatas = new ArrayList<>();
@@ -91,9 +94,7 @@ public class MmissPushActivity extends BaseActivity {
         initView();
         Dates.getDialogs(MmissPushActivity.this, "请求数据中...");
         okgo();
-        back.setOnClickListener(new View.OnClickListener()
-
-        {
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -103,7 +104,7 @@ public class MmissPushActivity extends BaseActivity {
 
     private void okgo() {
         PostRequest PostRequest;
-        if (org_status.equals(PhotoEnue.STANDARD)) {
+        if (orgStatus.equals(PhotoEnue.STANDARD)) {
             //标准
             PostRequest = OkGo.post(Requests.STANDARD_TREE).params("nodeid", "");
         } else {
@@ -254,7 +255,7 @@ public class MmissPushActivity extends BaseActivity {
 
     public void switchAct(Node node) {
         if (node.iswbs()) {
-            switch (org_status) {
+            switch (orgStatus) {
                 case "push":
                     getOko(node.getId(), node.getTitle(), node.getName(), node.getType(), node.isperent(), node.iswbs());
                     break;
@@ -409,7 +410,7 @@ public class MmissPushActivity extends BaseActivity {
     }
 
     public String getstatus() {
-        return org_status;
+        return orgStatus;
     }
 
 

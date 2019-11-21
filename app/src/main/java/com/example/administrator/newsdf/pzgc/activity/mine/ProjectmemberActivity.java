@@ -55,7 +55,6 @@ public class ProjectmemberActivity extends BaseActivity {
     private SettingAdapter<Icon> mAdapter = null;
     private ArrayList<Icon> mData, searchData;
     private Context mContext;
-
     private LinearLayout homeBackgroud;
     private TextView homeBackgroudText, mb_title;
     private String orgid, treepath, treetitle, treeids;
@@ -71,7 +70,6 @@ public class ProjectmemberActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projectmember);
-
         Dates.getDialog(ProjectmemberActivity.this, "请求数据中...");
         mContext = ProjectmemberActivity.this;
         //存储联系人信息

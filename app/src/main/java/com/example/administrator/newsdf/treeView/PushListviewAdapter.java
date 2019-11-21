@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.treeView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -31,7 +32,7 @@ import okhttp3.Response;
 
 public class PushListviewAdapter<T> extends TreeListViewAdapter<T> {
     private Context context;
-    private WbsDialog mWbsDialog;
+
 
     public PushListviewAdapter(ListView tree, Context context,
                                List<T> datas, int defaultExpandLevel)
@@ -41,6 +42,7 @@ public class PushListviewAdapter<T> extends TreeListViewAdapter<T> {
     }
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View getConvertView(final Node node, final int position, View convertView,
                                ViewGroup parent) {
@@ -168,7 +170,11 @@ public class PushListviewAdapter<T> extends TreeListViewAdapter<T> {
         mVisibleNodes = TreeHelper.filterVisibleNodes(mAllNodes);
         notifyDataSetChanged();
     }
-
+    /**
+     *@avoter winelx
+     *创建时间：2019/11/21 0021 13:53
+     *说明：根据ID查人员信息
+     */
     void okgo(String staffId) {
         OkGo.post(Requests.Personal)
                 .params("staffId", staffId)

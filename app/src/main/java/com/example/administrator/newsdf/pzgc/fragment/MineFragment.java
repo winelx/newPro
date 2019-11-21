@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -61,6 +62,7 @@ public class  MineFragment extends Fragment implements View.OnClickListener {
     String version;
     private TextView mineUploading;
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //避免重复绘制界面
