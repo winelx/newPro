@@ -146,7 +146,7 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
         dialog.getadio(mContext, new Onclicklitener() {
             @Override
             public void confirm(String string) {
-                if (string.equals("是")) {
+                if ("是".equals(string)) {
                     checkstatus = 2;
                 } else {
                     checkstatus = 1;

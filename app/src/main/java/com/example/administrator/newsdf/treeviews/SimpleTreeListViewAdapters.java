@@ -65,8 +65,10 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
             public void onClick(View view) {
                 if (node.getChildren().size() == 0) {
                     mian.getAdd(position, node);
+                }else {
+                    expandOrCollapse(position);
                 }
-                expandOrCollapse(position);
+
             }
         });
         holder.mText.setText(node.getName());
@@ -100,7 +102,6 @@ public class SimpleTreeListViewAdapters<T> extends TreeListViewAdapters<T> {
         mAllNodes.add(indexOf + 1, extraNode);
         mVisibleNodes = TreeHelpers.filterVisibleNodes(mAllNodes);
         notifyDataSetChanged();
-        expandOrCollapse(position);
     }
 
 }

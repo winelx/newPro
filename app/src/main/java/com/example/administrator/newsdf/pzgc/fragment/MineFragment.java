@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.newsdf.R;
@@ -189,6 +190,7 @@ public class  MineFragment extends Fragment implements View.OnClickListener {
                         Dates.clearFiles(paths);
                         //glide缓存
                         Glide.get(mContext).clearDiskCache();
+                        ToastUtils.showShortToast("缓存清理成功成功");
                     }
                 }.start();
                 break;
