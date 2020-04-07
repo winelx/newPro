@@ -102,8 +102,9 @@ public class ChagedReplyListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         holder.noticefinishcount.setText("关联整改通知单编号：" + chagedList.getNoticeCode());
 
         int status = Integer.parseInt(chagedList.getStatus());
-//       0：保存；1：验证中；2:已完成；3：打回；20：未处理；30：已处理
         holder.swipmenulayout.setIos(true).setLeftSwipe(true).setSwipeEnable(false);
+//       0：保存；1：验证中；2:已完成；3：打回；20：未处理；30：已处理
+
         switch (status) {
             case 0:
                 holder.infaceItemMessage.setTextString("未提交");

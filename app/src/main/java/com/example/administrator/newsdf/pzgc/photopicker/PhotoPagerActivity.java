@@ -251,7 +251,6 @@ public class PhotoPagerActivity extends BaseActivity {
     }
 
     private void asyncGet(String imageUrl, String imagename) {
-
         OkGo.<File>get(imageUrl)
                 .tag("image")
                 .execute(new FileCallback(App.getInstance().imagepath, imagename + ".jpg") {
