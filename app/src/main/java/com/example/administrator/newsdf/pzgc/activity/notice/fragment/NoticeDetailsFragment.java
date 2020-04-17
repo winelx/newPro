@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.navigation.Navigation;
+
 import okhttp3.Call;
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
@@ -120,7 +121,7 @@ public class NoticeDetailsFragment extends LazyloadFragment implements View.OnCl
                 super.onProgressChanged(view, newProgress);
                 text.setText(newProgress + "%");
                 if (newProgress == 100) {
-                     linProbar.setVisibility(View.GONE);
+                    linProbar.setVisibility(View.GONE);
                 }
             }
         });
@@ -198,6 +199,12 @@ public class NoticeDetailsFragment extends LazyloadFragment implements View.OnCl
     /**
      * 同步cook
      */
+    public String getCookie(String tr) {
+        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
+        HttpUrl httpUrl = HttpUrl.parse(tr);
+        return cookieStore.getCookie(httpUrl).toString();
+    }
+
     public void sycCook() {
         CookieManager cookieManager = CookieManager.getInstance();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -208,14 +215,17 @@ public class NoticeDetailsFragment extends LazyloadFragment implements View.OnCl
             CookieSyncManager.getInstance().sync();
         }
         cookieManager.setAcceptCookie(true);
-        cookieManager.removeSessionCookie();//移除
-        cookieManager.setCookie(Requests.networks, cookies.toString());
+        //移除
+        cookieManager.removeSessionCookie();
+        //同步cookie
+        cookieManager.setCookie(Requests.networks, getCookie(Requests.networks));
         if (Build.VERSION.SDK_INT < 21) {
             CookieSyncManager.getInstance().sync();
         } else {
             CookieManager.getInstance().flush();
         }
     }
+
 
     /**
      * 显示查看记录

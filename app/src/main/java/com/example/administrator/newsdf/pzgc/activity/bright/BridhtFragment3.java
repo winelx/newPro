@@ -42,9 +42,9 @@ import static com.example.administrator.newsdf.pzgc.utils.Dates.stampToDate;
  * description: 亮点展示界面
  *
  * @author lx
- *         date: 2018/4/25 0025 下午 2:32
- *         update: 2018/4/25 0025
- *         version:
+ * date: 2018/4/25 0025 下午 2:32
+ * update: 2018/4/25 0025
+ * version:
  */
 public class BridhtFragment3 extends Fragment implements BrightCallBack {
     View view;
@@ -54,11 +54,8 @@ public class BridhtFragment3 extends Fragment implements BrightCallBack {
     private SmartRefreshLayout refreshlayout;
     private LinearLayout nulllauout, layoutLoading;
 
-
-
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
-                             final Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         if (view == null) {
             view = inflater.inflate(R.layout.bright_list_view, container, false);
             BrightCallBackUtils2.setCallBack(this);
@@ -96,7 +93,6 @@ public class BridhtFragment3 extends Fragment implements BrightCallBack {
         if (parent != null) {
             parent.removeView(view);
         }
-
         return view;
     }
 
@@ -214,7 +210,6 @@ public class BridhtFragment3 extends Fragment implements BrightCallBack {
                     }
                 });
     }
-
 
     @Override
     public void bright() {

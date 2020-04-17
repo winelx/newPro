@@ -48,7 +48,7 @@ public class PushReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         final Bundle bundle = intent.getExtras();
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
-            LogUtil.d(TAG, "[MyReceiver] 接收 Registration Id : ");
+//            LogUtil.d(TAG, "[MyReceiver] 接收 Registration Id : ");
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
             // 自定义消息不会展示在通知栏，完全要开发者写代码去处理
             CHANNEL_ID = bundle.getString(JPushInterface.EXTRA_MSG_ID);
