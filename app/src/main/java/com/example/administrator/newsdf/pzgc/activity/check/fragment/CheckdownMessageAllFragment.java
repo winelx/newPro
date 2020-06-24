@@ -67,9 +67,10 @@ public class CheckdownMessageAllFragment extends Fragment {
         expandable = view.findViewById(R.id.expandable);
         SmartRefreshLayout refreshLayout = view.findViewById(R.id.SmartRefreshLayout);
         refreshLayout.setEnableLoadmore(false);
+        refreshLayout.finishRefresh(true);
         mAdapter = new CheckListAdapter(list, map, mContext);
         expandable.setAdapter(mAdapter);
-        refreshLayout.finishRefresh(true);
+
         /**
          *   下拉刷新
          */

@@ -43,6 +43,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
     final static int MAX = 100;
     private String type;
     private boolean lean = true;
+    private boolean status = true;
 
     public PhotoAdapter(Context mContext, ArrayList<String> photoPaths, String tag) {
         this.photoPaths = photoPaths;
@@ -79,6 +80,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
             } else {
                 holder.vSelected.setVisibility(View.GONE);
             }
+
             //加载图片
             Glide.with(mContext)
                     .load(photoPaths.get(position))
@@ -107,6 +109,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
             });
 
         } else {
+            if (status) {
+                holder.img_add.setVisibility(View.VISIBLE);
+            } else {
+                holder.img_add.setVisibility(View.GONE);
+            }
             //添加照片
             holder.img_add.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -205,4 +212,10 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
         this.lean = lean;
         notifyDataSetChanged();
     }
+
+    public void addimage(boolean lean) {
+        this.status = lean;
+        notifyDataSetChanged();
+    }
+
 }

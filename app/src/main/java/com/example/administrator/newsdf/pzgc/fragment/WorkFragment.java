@@ -19,6 +19,8 @@ import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTaskWe
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckdownMessageActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckmanagementActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckstandardListActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.activity.ExternalCheckActiviy;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.activity.ExternalCheckListActiviy;
 import com.example.administrator.newsdf.pzgc.activity.device.DeviceActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.OrgrankingActivity;
 import com.example.administrator.newsdf.pzgc.activity.pchoose.activity.PchooseActivity;
@@ -170,6 +172,9 @@ public class WorkFragment extends Fragment {
                     case "方案管理":
                         startActivity(new Intent(mContext, ProgrammeActivity.class));
                         break;
+                    case "外业检查":
+                        startActivity(new Intent(mContext, ExternalCheckActiviy.class));
+                        break;
                     default:
                         break;
                 }
@@ -234,6 +239,7 @@ public class WorkFragment extends Fragment {
                                     if ("true".equals(json.getString("特种设备"))) {
                                         checklist.add(new bean("特种设备", R.mipmap.specialdevices));
                                     }
+                                    checklist.add(new bean("外业检查", R.mipmap.reply_verification));
                                     if ("true".equals(json.getString("台账管理"))) {
                                         special.add(new bean("台账管理", R.mipmap.loedger));
                                     }

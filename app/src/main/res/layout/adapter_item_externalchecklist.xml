@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:layout_marginLeft="@dimen/dp10"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="@dimen/dp10"
+    android:layout_marginBottom="5dp">
+
+    <com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout
+        android:id="@+id/swipmenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_white">
+
+
+        <RelativeLayout
+            android:id="@+id/content_re"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp">
+
+            <com.example.administrator.newsdf.pzgc.utils.SlantedTextView
+                android:id="@+id/slanted"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                app:slantedLength="28dp"
+                app:slantedMode="right_triangle"
+                app:slantedTextColor="@color/text_white"
+                app:slantedTextSize="10sp" />
+
+            <LinearLayout
+                android:id="@+id/chagee_list_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:orientation="vertical"
+                android:paddingLeft="5dp">
+
+                <TextView
+                    android:id="@+id/check_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:paddingTop="10dp"
+                    android:text="测试数"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="5dp">
+
+                    <TextView
+                        android:id="@+id/check_user"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="检查人：张三" />
+
+                    <TextView
+                        android:id="@+id/check_tiem"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.3"
+                        android:text="检查日期：2020-11-20" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/check_bid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.3"
+                    android:paddingTop="5dp"
+                    android:text="所属标段" />
+
+                <TextView
+                    android:id="@+id/check_org"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.3"
+                    android:paddingTop="5dp"
+                    android:text="检查组织：" />
+
+                <TextView
+                    android:id="@+id/score"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.3"
+                    android:paddingTop="5dp"
+                    android:text="得分：" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/gray" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/check_status"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="单据状态：" />
+
+                    <TextView
+                        android:id="@+id/handle_user"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.3"
+                        android:text="待处理人：" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/item_delete"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:background="#FF6D00"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <!--侧滑内容-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="删除"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout>
+
+</android.support.v7.widget.CardView>

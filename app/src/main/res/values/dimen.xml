@@ -5,6 +5,7 @@
     <dimen name="footer_padding">10dp</dimen>
     <dimen name="dp_10">10dp</dimen>
     <dimen name="dp10">10dp</dimen>
+    <dimen name="dp15">15dp</dimen>
 
     <dimen name="__picker_item_directory_height">80dp</dimen>
 

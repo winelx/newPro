@@ -75,7 +75,7 @@ public class CheckmanagementActivity extends BaseActivity implements View.OnClic
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 getdata();
-                refreshlayout.finishRefresh(800);
+                refreshlayout.finishRefresh(true);
             }
         });
         getdata();

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/writer"
+    android:paddingBottom="@dimen/dp10"
+    android:orientation="vertical">
+
+    <View
+        android:background="@color/back"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp10" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_bottom"
+        android:orientation="horizontal"
+        android:paddingRight="@dimen/dp10">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:background="@color/writer"
+            android:drawableLeft="@mipmap/drawable_division"
+            android:gravity="center_vertical"
+            android:text="集团公司质安部（A）"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textColor="@color/colorAccent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/item_bottom"
+        android:orientation="horizontal"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:drawableLeft="@mipmap/warning_red"
+            android:drawablePadding="5dp"
+            android:text="管理行为扣分"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:background="@null"
+            android:gravity="center_vertical|end"
+            android:hint="请输入"
+            android:text="1212"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/item_bottom"
+        android:orientation="horizontal"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:drawablePadding="5dp"
+            android:paddingLeft="10dp"
+            android:text="标准分"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:background="@null"
+            android:gravity="center_vertical|end"
+            android:hint="请输入"
+            android:text="1212"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/item_bottom"
+        android:orientation="horizontal"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:drawablePadding="5dp"
+            android:paddingLeft="10dp"
+            android:text="考核扣分标准"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:background="@null"
+            android:gravity="center_vertical|end"
+            android:hint="请输入"
+            android:text="1212"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/item_bottom"
+        android:orientation="horizontal"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:drawablePadding="5dp"
+            android:paddingLeft="10dp"
+            android:text="评分"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:background="@null"
+            android:gravity="center_vertical|end"
+            android:hint="请输入"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:drawablePadding="10dp"
+            android:paddingLeft="15dp"
+            android:text="位置"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:drawableLeft="@mipmap/check_import"
+            android:text="导入"
+            android:textColor="@color/colorAccent" />
+
+
+    </LinearLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_bottom"
+        android:gravity="start"
+        android:minHeight="35dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="10dp"
+        android:hint="请输入"
+        android:text="文字示例文字示例文字示例示例例文字示例文字示例"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:text="具体描述"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_bottom"
+        android:gravity="start"
+        android:minHeight="35dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="15dp"
+        android:hint="请输入"
+        android:paddingBottom="10dp"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/item_bottom"
+        android:orientation="horizontal"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:drawablePadding="10dp"
+            android:paddingLeft="10dp"
+            android:text="是否整改"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+
+        <Switch
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_margin="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:padding="0dp"
+            android:textColor="@color/black"
+            android:thumb="@drawable/switch_selector"
+            android:track="@drawable/switch_track" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:drawablePadding="10dp"
+        android:paddingTop="@dimen/dp10"
+        android:paddingLeft="15dp"
+        android:text="附件"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rec_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp" />
+
+
+</LinearLayout>

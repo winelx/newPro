@@ -480,6 +480,15 @@
         <activity android:name=".pzgc.special.programme.activity.ProgrammeDetailsActivity" />
         <activity android:name=".pzgc.special.programme.activity.ProgrammeApprovalActivity" />
         <activity android:name=".pzgc.special.programme.activity.ProgrammeAuditorActivity" />
+        <!-- 外业检查-->
+        <activity android:name=".pzgc.activity.check.activity.newcheck.activity.ExternalCheckActiviy" />
+        <activity android:name=".pzgc.activity.check.activity.newcheck.activity.ExternalCheckListActiviy" />
+        <activity
+            android:name=".pzgc.activity.check.activity.newcheck.activity.ExternalCheckDetailActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".pzgc.activity.check.activity.newcheck.activity.NewExternalCheckActiviy"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
     </application>
 
 </manifest>

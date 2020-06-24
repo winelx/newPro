@@ -8,9 +8,6 @@
 
     <include layout="@layout/toolbar_wbs"></include>
 
-
-
-
     <com.zhy.view.flowlayout.TagFlowLayout
         android:id="@+id/id_flowlayout"
         android:layout_width="match_parent"

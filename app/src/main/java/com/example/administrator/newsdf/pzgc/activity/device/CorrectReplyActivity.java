@@ -291,7 +291,6 @@ public class CorrectReplyActivity extends BaseActivity {
                     mdataFile.add(new File(filelist.get(j).getName()));
                 }
             }
-            LogUtil.i("list", mdataFile.size());
             file.put("file-" + detailsId, mdataFile);
         }
         JSONArray replys = new JSONArray(mDatareply);

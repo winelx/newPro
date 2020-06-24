@@ -2,15 +2,16 @@ package com.example.baselibrary.utils;
 
 /**
  * @author ：winelx
- * 时间：2017/11/22 0022:下午 14:33
+ * 时间：2017/11/22 0022:下午 14:33釦
  * 说明：网络请求端口'/.</>
  */
 public class Requests {
- //  public static final String networks = "http://192.168.20.38:8088/pzgc/";
-    //public static final String networks = "http://192.168.20.120:8017/pzgc/";
+     public static final String networks = "http://139.9.234.213:8085/pzgc/";
+    //   public static final String networks = "http://139.9.234.213:8085/pzgc/";
     //public static final String networks = "http://192.168.20.81:8080/pzgc/";
-   public static final String networks = "http://120.79.142.15/pzgc/";
+    // public static final String networks = "http://120.79.142.15/pzgc/";
     /**
+     * VirtualBox
      * 登录
      */
     public static final String Login = networks + "admin/login";

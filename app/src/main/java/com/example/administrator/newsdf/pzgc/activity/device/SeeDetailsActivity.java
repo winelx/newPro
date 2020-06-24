@@ -36,7 +36,6 @@ public class SeeDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
-
         Dates.getDialogs(this, "请求数据中...");
         Intent intent = getIntent();
         id = intent.getStringExtra("id");

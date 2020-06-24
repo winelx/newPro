@@ -35,7 +35,6 @@ public class TabulationActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabulation);
         mContext = TabulationActivity.this;
-
         mData = new ArrayList<>();
         //    得到跳转到该Activity的Intent对象
         Intent intent = getIntent();
