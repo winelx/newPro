@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recycler_att"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/writer">
+
+    <LinearLayout
+        android:id="@+id/image_ll"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:background="@mipmap/checkbox_gray" />
+
+        <ImageView
+            android:id="@+id/id_item_icon"
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@mipmap/tree_ture" />
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/handover_status_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_toRightOf="@id/image_ll"
+        android:drawingCacheQuality="low"
+        android:scrollbarSize="1px">
+
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="少时诵"
+            android:textColor="#323232"
+            android:textSize="13sp" />
+    </HorizontalScrollView>
+</RelativeLayout>

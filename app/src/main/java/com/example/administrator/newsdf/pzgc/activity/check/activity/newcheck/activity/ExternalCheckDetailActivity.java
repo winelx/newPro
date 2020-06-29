@@ -130,7 +130,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                 //保存
                 break;
             case R.id.tab_next:
-                if (Page != pagelist.size()) {
+                if (Page != pagelist.size()-1) {
                     Page++;
                     setTitle();
                 } else {
@@ -138,7 +138,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                 }
                 break;
             case R.id.tab_previous:
-                if (Page != 1) {
+                if (Page >0) {
                     Page--;
                     setTitle();
                 } else {
@@ -158,17 +158,13 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
         title.setText((Page + 1) + "/" + pagelist.size());
         if (Page == 0) {
             tab_previous.setBackgroundResource(R.drawable.tab_choose_up_gray);
-            tab_previous.setEnabled(false);
         } else {
             tab_previous.setBackgroundResource(R.drawable.tab_choose_up_blue);
-            tab_previous.setEnabled(true);
         }
         if (Page == (pagelist.size() - 1)) {
             tab_next.setBackgroundResource(R.drawable.tab_choose_down_gray);
-            tab_next.setEnabled(false);
         } else {
             tab_next.setBackgroundResource(R.drawable.tab_choose_down_blue);
-            tab_next.setEnabled(true);
         }
     }
 

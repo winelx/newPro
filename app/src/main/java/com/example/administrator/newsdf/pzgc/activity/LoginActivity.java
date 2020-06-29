@@ -3,7 +3,6 @@ package com.example.administrator.newsdf.pzgc.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,9 +28,7 @@ import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;
 
 import com.example.baselibrary.view.ClearEditText;
-import com.example.timepickter.data.Type;
 
-import com.example.timepickter.listener.OnDateSetListener;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.FileCallback;
 import com.lzy.okgo.callback.StringCallback;

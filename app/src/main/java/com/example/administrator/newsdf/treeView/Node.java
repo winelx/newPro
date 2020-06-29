@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Node {
-    public Node() {
-    }
 
     public Node(String id, String pId, String name, String isLeaf, boolean iswbs, boolean isperent,
                 String type, String username, String number, String userId, String title, String phone, boolean isDrawingGroup) {
@@ -24,7 +22,6 @@ public class Node {
         this.isDrawingGroup = isDrawingGroup;
 
     }
-
 
     private String id;
     /**
@@ -130,6 +127,14 @@ public class Node {
 
     public void setIsperent(boolean isperent) {
         this.isperent = isperent;
+    }
+
+    public boolean isIswbs() {
+        return iswbs;
+    }
+
+    public boolean isIsperent() {
+        return isperent;
     }
 
     public String getIsLeaf() {
