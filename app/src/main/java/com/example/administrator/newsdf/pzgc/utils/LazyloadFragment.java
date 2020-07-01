@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.utils;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,12 +18,14 @@ public abstract class LazyloadFragment extends Fragment {
     protected View rootView;
     private boolean isInitView = false;
     private boolean isVisible = false;
+    public Context mContext;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView == null) {
             rootView = inflater.inflate(setContentView(), container, false);
+            mContext = getActivity();
             init();
             isInitView = true;
             isCanLoadData();
@@ -76,7 +79,8 @@ public abstract class LazyloadFragment extends Fragment {
     protected abstract void lazyLoad();
 
     /**
-     *  初始化控件
+     * 初始化控件
+     *
      * @param i 控件地址
      * @return 返回View
      */

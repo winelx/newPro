@@ -180,26 +180,6 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                 photoPaths.remove(position);
                 adapter.getData(photoPaths);
             }
-            @Override
-            public void seePhoto(int position) {
-                ArrayList<String> imagepaths = new ArrayList<>();
-                for (int i = 0; i < photoPaths.size(); i++) {
-                    imagepaths.add(photoPaths.get(i).getPhotopath());
-                }
-                //查看图片
-                PhotoPreview.builder()
-                        //图片路径
-                        .setPhotos(imagepaths)
-                        //图片位置
-                        .setCurrentItem(position)
-                        //删除
-                        .setShowDeleteButton(false)
-                        //下载
-                        .setShowUpLoadeButton(false)
-                        // 图片名称
-                        .setImagePath(new ArrayList<String>())
-                        .start((Activity) mContext);
-            }
         });
         if (lean) {
             delete.setVisibility(View.GONE);

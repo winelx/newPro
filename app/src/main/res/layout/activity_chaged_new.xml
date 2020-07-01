@@ -250,7 +250,6 @@
                             android:textSize="16sp" />
 
                     </LinearLayout>
-
                     <LinearLayout
                         android:id="@+id/chaged_import_problem"
                         android:layout_width="match_parent"
@@ -270,7 +269,31 @@
                             android:layout_height="45dp"
                             android:layout_marginLeft="5dp"
                             android:gravity="center"
-                            android:text="导入问题"
+                            android:text="添加内业专项问题"
+                            android:textColor="@color/blue"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/chaged_import_external"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="1dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@mipmap/check_import" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="45dp"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center"
+                            android:text="添加外业专项问题"
                             android:textColor="@color/blue"
                             android:textSize="16sp" />
 

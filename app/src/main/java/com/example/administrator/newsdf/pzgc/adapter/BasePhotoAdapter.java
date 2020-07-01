@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.pzgc.adapter;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.RoundImageView;
 import com.example.baselibrary.bean.photoBean;
@@ -72,9 +74,12 @@ public class BasePhotoAdapter extends RecyclerView.Adapter<BasePhotoAdapter.Phot
             }
             //加载图片
             RequestOptions options = new RequestOptions()
-                    .placeholder(R.mipmap.image_loading)//图片加载出来前，显示的图片
-                    .fallback(R.mipmap.image_error) //url为空的时候,显示的图片
-                    .error(R.mipmap.image_error);//图片加载失败后，显示的图片
+                    //图片加载出来前，显示的图片
+                    .placeholder(R.mipmap.image_loading)
+                    //url为空的时候,显示的图片
+                    .fallback(R.mipmap.image_error)
+                    //图片加载失败后，显示的图片
+                    .error(R.mipmap.image_error);
             Glide.with(mContext)
                     .load(photoPaths.get(position).getPhotopath())
                     .apply(options)
@@ -90,7 +95,24 @@ public class BasePhotoAdapter extends RecyclerView.Adapter<BasePhotoAdapter.Phot
             holder.ivPhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickListener.seePhoto(position);
+                    ArrayList<String> imagepaths = new ArrayList<>();
+                    //获取图片地址集合
+                    for (int i = 0; i < photoPaths.size(); i++) {
+                        imagepaths.add(photoPaths.get(i).getPhotopath());
+                    }
+                    //查看图片
+                    PhotoPreview.builder()
+                            //图片路径
+                            .setPhotos(imagepaths)
+                            //图片位置
+                            .setCurrentItem(position)
+                            //删除按钮
+                            .setShowDeleteButton(false)
+                            //下载按钮
+                            .setShowUpLoadeButton(false)
+                            // 图片名称
+                            .setImagePath(new ArrayList<String>())
+                            .start((Activity) mContext);
                 }
             });
         } else {
@@ -155,7 +177,7 @@ public class BasePhotoAdapter extends RecyclerView.Adapter<BasePhotoAdapter.Phot
 
         void delete(int position);
 
-        void seePhoto(int position);
+
 
     }
 

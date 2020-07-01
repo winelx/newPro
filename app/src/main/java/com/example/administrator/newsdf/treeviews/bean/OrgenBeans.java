@@ -16,7 +16,14 @@ public class OrgenBeans {
         this.name = name;
         this.type = type;
     }
+    private boolean status=false;
+    public boolean isStatus() {
+        return status;
+    }
 
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
     public String getId() {
         return id;
     }

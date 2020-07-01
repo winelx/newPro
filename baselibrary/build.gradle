@@ -64,7 +64,7 @@ dependencies {
     api 'com.cysion:ImagePicker:1.0.5'
     //图片压缩
     api 'com.zxy.android:tiny:0.0.6'
-    //极光推送（jpush不可升级）
+    //极光推送
     api 'cn.jiguang.sdk:jpush:3.1.1'
     api 'cn.jiguang.sdk:jcore:1.1.9'
     //rxjava

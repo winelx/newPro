@@ -64,7 +64,6 @@ public class OrganizationaActivity extends BaseActivity {
         nullposion = (LinearLayout) findViewById(R.id.nullposion);
         TextView comtitle = (TextView) findViewById(R.id.com_title);
         mTree = (ListView) findViewById(R.id.organ_list_item);
-
         comtitle.setText(title);
         initDatas();
         findViewById(R.id.retry).setOnClickListener(new View.OnClickListener() {
@@ -82,7 +81,7 @@ public class OrganizationaActivity extends BaseActivity {
     }
 
     private void initDatas() {
-        Dates.getDialog(OrganizationaActivity.this, "请求数据中...");
+        Dates.getDialog(this, "请求数据中...");
         OkGo.<String>post(Requests.Swatchmakeup)
                 .execute(new StringCallback() {
                     @Override

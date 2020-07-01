@@ -51,7 +51,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
     private RecyclerView recycler;
     private List<ChagedNoticeDetailslsit> list;
     private Context mContext;
-    private LinearLayout problemItemLin, problemMenuLin;
+    private LinearLayout problemItemLin, problemMenuLin, chagedImportExternal;
     private ChangedNewAdapter adapter;
     private TextView comButton;
     //界面状态，用来显示是否展示导入添加问题
@@ -67,7 +67,6 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_new);
-
         mContext = this;
         Intent intent = getIntent();
         status = intent.getBooleanExtra("status", false);
@@ -77,6 +76,9 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
         problemItemLin = (LinearLayout) findViewById(R.id.problem_item_lin);
         problemItemLin.setVisibility(View.GONE);
         problemMenuLin = (LinearLayout) findViewById(R.id.problem_menu_lin);
+        //外业检查
+        chagedImportExternal = findViewById(R.id.chaged_import_external);
+        chagedImportExternal.setOnClickListener(this);
         //整改通知单编号
         chagednumber = (TextView) findViewById(R.id.chagednumber);
         //整改组织
@@ -188,7 +190,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 startActivityForResult(intent, 1);
                 break;
             case R.id.chaged_add_problem:
-                //添加整改问题项
+                //添加内业检查问题项
                 Intent intent2 = new Intent(mContext, ChagedProblemitemActivity.class);
                 intent2.putExtra("orgname", chagedOrganizeText.getText().toString());
                 intent2.putExtra("orgid", orgId);
@@ -196,6 +198,10 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 intent2.putExtra("status", true);
                 intent2.putExtra("iwork", 1);
                 startActivity(intent2);
+                break;
+            case R.id.chaged_import_external:
+                //添加外业检查问题项
+
                 break;
             case R.id.chaged_head_lin:
                 //选择联系人

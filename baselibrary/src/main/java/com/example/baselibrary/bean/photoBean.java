@@ -16,7 +16,10 @@ public class photoBean {
         this.photoname = photoname;
         this.phototype = phototype;
     }
-
+    public photoBean(String photopath,  String phototype) {
+        this.photopath = photopath;
+        this.phototype = phototype;
+    }
     public String getPhotopath() {
         return photopath;
     }

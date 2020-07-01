@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/writer"
-    android:paddingBottom="@dimen/dp10"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/dp10">
 
     <View
-        android:background="@color/back"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp10" />
+        android:layout_height="@dimen/dp10"
+        android:background="@color/back" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -156,6 +156,7 @@
 
 
         <EditText
+            android:id="@+id/score"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -187,6 +188,7 @@
 
 
         <TextView
+            android:id="@+id/import_org"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -197,17 +199,27 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/org_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="0dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:visibility="gone"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
     <EditText
+        android:id="@+id/org_editext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/item_bottom"
-        android:gravity="start"
+        android:gravity="start|center_vertical"
+        android:hint="请输入临时部位"
         android:minHeight="35dp"
         android:paddingLeft="20dp"
         android:paddingRight="15dp"
-        android:paddingBottom="10dp"
-        android:hint="请输入"
-        android:text="文字示例文字示例文字示例示例例文字示例文字示例"
         android:textColor="@color/black"
         android:textSize="15sp" />
 
@@ -223,15 +235,16 @@
         android:textSize="15sp" />
 
     <EditText
+        android:id="@+id/describe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/item_bottom"
         android:gravity="start"
+        android:hint="请输入"
         android:minHeight="35dp"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingRight="15dp"
-        android:hint="请输入"
         android:paddingBottom="10dp"
         android:textColor="@color/black"
         android:textSize="15sp" />
@@ -256,6 +269,7 @@
 
 
         <Switch
+            android:id="@+id/footer_switch"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_margin="0dp"
@@ -274,8 +288,8 @@
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:drawablePadding="10dp"
-        android:paddingTop="@dimen/dp10"
         android:paddingLeft="15dp"
+        android:paddingTop="@dimen/dp10"
         android:text="附件"
         android:textColor="@color/black"
         android:textSize="15sp" />
@@ -284,7 +298,8 @@
         android:id="@+id/rec_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="15dp" />
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp" />
 
 
 </LinearLayout>

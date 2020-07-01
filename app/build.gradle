@@ -80,6 +80,12 @@ android {
             //      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//默认不优化
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             //optimize 默认优化就是这两个文件的区别
+            lintOptions {
+                checkReleaseBuilds false
+                // Or, if you prefer, you can continue to check for errors in release builds,
+                // but continue the build even when errors are found:
+                abortOnError false
+            }
         }
     }
     sourceSets {

@@ -13,14 +13,18 @@
         android:adjustViewBounds="true"
         android:scaleType="centerCrop" />
 
+
     <ImageView
         android:id="@+id/v_selected"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/iv_photo"
-        android:layout_alignRight="@+id/iv_photo"
-        android:layout_alignTop="@+id/iv_photo"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignStart="@+id/iv_photo"
+        android:layout_alignLeft="@+id/iv_photo"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="67dp"
+        android:layout_marginLeft="67dp"
         android:clickable="true"
-        android:src="@mipmap/rec_error" />
+        android:src="@mipmap/rec_error"
+        android:transitionName="shareNames" />
 
 </com.example.administrator.newsdf.pzgc.utils.SquareItemLayout>

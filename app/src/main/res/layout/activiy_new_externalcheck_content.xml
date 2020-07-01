@@ -39,6 +39,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/check_time"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/item_bottom"
@@ -58,6 +59,7 @@
 
 
         <TextView
+            android:id="@+id/check_time_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -71,6 +73,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/check_type"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/item_bottom"
@@ -90,6 +93,7 @@
 
 
         <TextView
+            android:id="@+id/check_type_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -103,6 +107,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/project_type"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/item_bottom"
@@ -122,6 +127,7 @@
 
 
         <TextView
+            android:id="@+id/project_type_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

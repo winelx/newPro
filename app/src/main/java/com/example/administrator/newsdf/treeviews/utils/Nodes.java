@@ -23,9 +23,12 @@ public class Nodes {
      */
     private int pId = 0;
     private String name;
+
     private String ids;
     private String pids;
     private String type;
+
+
     /**
      * 树的层级
      */
@@ -87,7 +90,7 @@ public class Nodes {
         this.children = children;
     }
 
-    public String getPidd() {
+    public String getPid() {
         return pids;
     }
 

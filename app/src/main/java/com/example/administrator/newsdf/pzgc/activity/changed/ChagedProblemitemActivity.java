@@ -214,28 +214,6 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 adapter.getData(photolist);
 
             }
-
-            @Override
-            public void seePhoto(int position) {
-                ArrayList<String> imagepaths = new ArrayList<>();
-                //获取图片地址集合
-                for (int i = 0; i < photolist.size(); i++) {
-                    imagepaths.add(photolist.get(i).getPhotopath());
-                }
-                //查看图片
-                PhotoPreview.builder()
-                        //图片路径
-                        .setPhotos(imagepaths)
-                        //图片位置
-                        .setCurrentItem(position)
-                        //删除按钮
-                        .setShowDeleteButton(false)
-                        //下载按钮
-                        .setShowUpLoadeButton(false)
-                        // 图片名称
-                        .setImagePath(new ArrayList<String>())
-                        .start((Activity) mContext);
-            }
         });
         if (status) {
             //添加数据

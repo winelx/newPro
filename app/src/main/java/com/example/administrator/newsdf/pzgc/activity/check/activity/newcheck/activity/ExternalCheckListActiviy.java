@@ -8,16 +8,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.adapter.ExternalCheckListAdapter;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.utils.ExternalModel;
 import com.example.administrator.newsdf.pzgc.utils.PullDownMenu;
 import com.example.baselibrary.base.BaseActivity;
+import com.example.baselibrary.utils.network.NetworkAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 说明：外业检查：标段检查单列表
@@ -27,6 +32,7 @@ import java.util.List;
  */
 public class ExternalCheckListActiviy extends BaseActivity implements View.OnClickListener {
     private ImageView comImg, list_add;
+    private TextView com_title;
     private LinearLayout checklistmeun;
     private String[] strings = {"保存", "待分公司核查", "待集团核查", "待分公司确认", "待标段确", "已确认"};
     private PullDownMenu pullDownMenu = new PullDownMenu();
@@ -34,13 +40,19 @@ public class ExternalCheckListActiviy extends BaseActivity implements View.OnCli
     private RecyclerView recycler;
     private Context mContext;
     private ExternalCheckListAdapter checkListAdapter;
-
+    private ExternalModel externalModel;
+    private String orgid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activiy_check_external_list);
         mContext = this;
+        externalModel=new ExternalModel();
+        Intent intent = getIntent();
+        orgid=intent.getStringExtra("orgid");
         comImg = findViewById(R.id.com_img);
+        com_title = findViewById(R.id.com_title);
+        com_title.setText(intent.getStringExtra("orgName"));
         list_add = findViewById(R.id.list_add);
         list_add.setOnClickListener(this);
         comImg.setBackgroundResource(R.mipmap.meun);
@@ -65,6 +77,13 @@ public class ExternalCheckListActiviy extends BaseActivity implements View.OnCli
                 }
             }
         });
+        findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 
     @Override
@@ -84,5 +103,24 @@ public class ExternalCheckListActiviy extends BaseActivity implements View.OnCli
             intent.putExtra("status", true);
             startActivity(intent);
         }
+    }
+
+    public void getsafetychecklistbyapp(){
+        Map<String,String>map=new HashMap<>();
+        map.put("orgId",orgid);
+        map.put("page","");
+        map.put("rows","");
+        map.put("status","");
+        externalModel.getsafetychecklistbyapp(map,new NetworkAdapter(){
+            @Override
+            public void onsuccess(Object object) {
+                super.onsuccess(object);
+            }
+
+            @Override
+            public void onerror(String string) {
+                super.onerror(string);
+            }
+        });
     }
 }

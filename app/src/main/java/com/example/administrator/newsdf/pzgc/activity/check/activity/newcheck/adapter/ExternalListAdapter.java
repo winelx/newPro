@@ -1,7 +1,6 @@
-package com.example.administrator.newsdf.pzgc.adapter;
+package com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,23 +10,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.changed.ChagedListAllActivity;
-import com.example.administrator.newsdf.pzgc.bean.Home_item;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.CheckOrgBean;
 import com.example.administrator.newsdf.pzgc.utils.LeftSlideView;
-import com.example.baselibrary.utils.rx.LiveDataBus;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CheckListAdapter extends BaseExpandableListAdapter implements LeftSlideView.IonSlidingButtonListener {
+public class ExternalListAdapter extends BaseExpandableListAdapter implements LeftSlideView.IonSlidingButtonListener {
     private List<String> classes;
-    private Map<String, List<Home_item>> content;
+    private Map<String, List<CheckOrgBean>> content;
     private Context context;
     private LeftSlideView mMenu = null;
 
 
-    public CheckListAdapter(List<String> classes, Map<String, List<Home_item>> content, Context context) {
+    public ExternalListAdapter(List<String> classes, Map<String, List<CheckOrgBean>> content, Context context) {
         this.classes = classes;
         this.content = content;
         this.context = context;
@@ -112,9 +109,9 @@ public class CheckListAdapter extends BaseExpandableListAdapter implements LeftS
             childHold = (ChildHold) convertView.getTag();
         }
         childHold.homeItemImg.setBackgroundResource(R.drawable.home_item_blue);
-        childHold.homeItemImg.setText(content.get(classes.get(groupPosition)).get(childPosition).getParentname());
-        childHold.checkMeTitle.setText(content.get(classes.get(groupPosition)).get(childPosition).getOrgname());
-        int number = Integer.parseInt(content.get(classes.get(groupPosition)).get(childPosition).getUnfinish());
+        childHold.homeItemImg.setText(content.get(classes.get(groupPosition)).get(childPosition).getParentName());
+        childHold.checkMeTitle.setText(content.get(classes.get(groupPosition)).get(childPosition).getName());
+        int number = Integer.parseInt(content.get(classes.get(groupPosition)).get(childPosition).getCount());
         if (number > 0) {
             childHold.homeItemMessage.setText(number + "");
             childHold.homeItemMessage.setVisibility(View.VISIBLE);
@@ -184,11 +181,10 @@ public class CheckListAdapter extends BaseExpandableListAdapter implements LeftS
         LinearLayout layoutContent;
     }
 
-    public void setNewData(List<String> classes, Map<String, List<Home_item>> content) {
+    public void setNewData(List<String> classes, Map<String, List<CheckOrgBean>> content) {
         this.content = content;
         this.classes = classes;
         notifyDataSetChanged();
     }
 
 }
-

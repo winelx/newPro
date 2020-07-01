@@ -13,41 +13,30 @@
         android:paddingLeft="5dp">
 
         <ImageView
+            android:id="@+id/status_img"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:background="@mipmap/checkbox_gray" />
 
         <ImageView
-            android:id="@+id/id_item_icon"
+            android:id="@+id/item_icon"
             android:layout_width="35dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:background="@mipmap/tree_ture" />
+            android:layout_marginRight="5dp" />
     </LinearLayout>
 
-    <HorizontalScrollView
-        android:id="@+id/handover_status_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="15dp"
-        android:layout_toRightOf="@id/image_ll"
-        android:drawingCacheQuality="low"
-        android:scrollbarSize="1px">
 
-        <TextView
-            android:id="@+id/item_name"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="少时诵"
-            android:textColor="#323232"
-            android:textSize="13sp" />
-    </HorizontalScrollView>
+    <TextView
+        android:id="@+id/item_name"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="80dp"
+        android:gravity="start|center_vertical"
+        android:text="少时少时诵少时诵少时诵时诵诵"
+        android:textColor="#323232"
+        android:textSize="13sp" />
+
 </RelativeLayout>

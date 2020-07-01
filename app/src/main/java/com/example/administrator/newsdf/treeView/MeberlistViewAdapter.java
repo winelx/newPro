@@ -39,11 +39,11 @@ public class MeberlistViewAdapter<T> extends TreeListViewAdapter<T> {
                     .findViewById(R.id.id_item_icon);
             holder.mText =  convertView
                     .findViewById(R.id.id_item_text);
-            holder.dialog_mine = convertView.findViewById(R.id.dialog_mine);
-            holder.tree_name = convertView.findViewById(R.id.tree_name);
-            holder.tree_progress = convertView.findViewById(R.id.tree_progress);
+            holder.dialogMine = convertView.findViewById(R.id.dialog_mine);
+            holder.treeName = convertView.findViewById(R.id.tree_name);
+            holder.treeProgress = convertView.findViewById(R.id.tree_progress);
             holder.image_ll = convertView.findViewById(R.id.image_ll);
-            holder.Lin_WBS = convertView.findViewById(R.id.Lin_WBS);
+            holder.linWBS = convertView.findViewById(R.id.Lin_WBS);
             holder.taskNum = convertView.findViewById(R.id.taskNum);
             convertView.setTag(holder);
         } else {
@@ -56,11 +56,11 @@ public class MeberlistViewAdapter<T> extends TreeListViewAdapter<T> {
             holder.mIcon.setImageResource(node.getIcon());
         }
         if (node.getUsername().length() == 0) {
-            holder.Lin_WBS.setVisibility(View.GONE);
+            holder.linWBS.setVisibility(View.GONE);
         }
         holder.taskNum.setVisibility(View.GONE);
-        holder.tree_name.setText(node.getUsername());
-        holder.tree_progress.setText(node.getNumber() + "%");
+        holder.treeName.setText(node.getUsername());
+        holder.treeProgress.setText(node.getNumber() + "%");
         holder.mText.setText(node.getName());
         holder.mText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,9 +89,9 @@ public class MeberlistViewAdapter<T> extends TreeListViewAdapter<T> {
     }
     private class ViewHolder {
         ImageView mIcon;
-        public TextView mText, tree_name, tree_progress,taskNum;
-        LinearLayout Lin_WBS;
-        LinearLayout dialog_mine, image_ll;
+        public TextView mText, treeName, treeProgress,taskNum;
+        LinearLayout linWBS;
+        LinearLayout dialogMine, image_ll;
     }
 
     /**

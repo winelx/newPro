@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Node {
 
-    public Node(String id, String pId, String name, String isLeaf, boolean iswbs, boolean isperent,
+     public Node(String id, String pId, String name, String isLeaf, boolean iswbs, boolean isperent,
                 String type, String username, String number, String userId, String title, String phone, boolean isDrawingGroup) {
         this.id = id;
         this.pId = pId;
@@ -20,6 +20,20 @@ public class Node {
         this.title = title;
         this.phone = phone;
         this.isDrawingGroup = isDrawingGroup;
+
+    }
+    public Node(String id, String pId, String name,String type, String isLeaf, boolean isperent, boolean isDrawingGroup) {
+        this.id = id;
+        this.pId = pId;
+        this.name = name;
+        this.isLeaf = isLeaf;
+        this.isperent = isperent;
+        this.type = type;
+        this.isDrawingGroup = isDrawingGroup;
+
+    }
+
+    public Node( ) {
 
     }
 
@@ -217,6 +231,9 @@ public class Node {
      */
     public boolean isLeaf() {
         return !"0".equals(isLeaf);
+    }
+    public String getisLeaf() {
+        return isLeaf;
     }
 
     public void setIsLeaf(String isLeaf) {
