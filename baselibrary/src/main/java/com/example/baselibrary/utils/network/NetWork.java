@@ -29,7 +29,7 @@ public class NetWork {
         GetRequest get = OkGo.get(url);
         if (map != null) {
             for (Map.Entry<String, String> entry : map.entrySet()) {
-                get.params(entry.getKey(), (String) entry.getValue());
+                get.params(entry.getKey(), entry.getValue());
             }
         }
         get.execute(new StringCallback() {
@@ -53,7 +53,7 @@ public class NetWork {
         GetRequest get = OkGo.get(url);
         if (map != null) {
             for (Map.Entry<String, String> entry : map.entrySet()) {
-                get.params(entry.getKey(), (String) entry.getValue());
+                get.params(entry.getKey(),  entry.getValue());
             }
         }
         get.execute(new StringCallback() {

@@ -17,6 +17,7 @@ public class Enum {
     public static final int IMAGE_CREAMA =101 ;
     public static final int CHECK_TYPE =103 ;
     public static final int PRROJECT_TYPE =104 ;
+    public static final String  All ="全部" ;
     /**
      * 权限
      */

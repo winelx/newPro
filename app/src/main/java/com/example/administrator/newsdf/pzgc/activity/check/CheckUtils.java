@@ -136,7 +136,7 @@ public class CheckUtils {
 
     /*检查项列表*/
     public void getcheckitemlist(String id, final NetworkCallback callback) {
-        OkGo.<String>post(Requests.SIMPLE_DETAILS_LIST_BY_APP)
+        OkGo.post(Requests.SIMPLE_DETAILS_LIST_BY_APP)
                 .params("id", id)
                 .tag(this)
                 .execute(new StringCallback() {

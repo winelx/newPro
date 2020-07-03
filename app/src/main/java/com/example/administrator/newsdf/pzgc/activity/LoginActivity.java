@@ -340,25 +340,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
         }
     }
-
-    public void get() {
-        String paths = getExternalCacheDir().getPath().replace("cache", "jpg/");
-        OkGo.<File>get("http://120.79.142.15/pzgc/upload/2018/01/19/1516354975194.jpg")
-                .tag("image")
-                .execute(new FileCallback(paths, "1516354975194") {
-                    @Override
-                    public void onSuccess(final File file, Call call, Response response) {
-
-                    }
-
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-
-                    }
-                });
-    }
-
     /**
      * 展示dailog
      */

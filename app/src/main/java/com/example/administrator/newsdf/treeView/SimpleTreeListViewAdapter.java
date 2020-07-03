@@ -57,7 +57,7 @@ public class SimpleTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        if (node.isperent() == false) {
+        if (!node.isperent()) {
             holder.mIcon.setVisibility(View.INVISIBLE);
         } else {
             holder.mIcon.setVisibility(View.VISIBLE);

@@ -25,6 +25,7 @@
 
 
         <EditText
+            android:id="@+id/check_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -32,7 +33,6 @@
             android:background="@null"
             android:gravity="center_vertical|end"
             android:hint="请输入"
-            android:text="1212"
             android:textColor="@color/black"
             android:textSize="15sp" />
 
@@ -109,7 +109,8 @@
     <LinearLayout
         android:id="@+id/project_type"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        android:minHeight="50dp"
         android:background="@drawable/item_bottom"
         android:orientation="horizontal"
         android:paddingRight="15dp">
@@ -135,8 +136,10 @@
             android:drawableRight="@mipmap/arrow_right"
             android:gravity="center_vertical|end"
             android:hint="请选择"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -160,6 +163,7 @@
 
 
         <TextView
+            android:id="@+id/fTotalSocre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -192,7 +196,7 @@
 
 
         <TextView
-            android:id="@+id/route_text"
+            android:id="@+id/totalSocre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -224,6 +228,7 @@
 
 
         <TextView
+            android:id="@+id/ascription_bid"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -254,6 +259,7 @@
 
 
         <TextView
+            android:id="@+id/ascription_org"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -272,6 +278,7 @@
         android:paddingRight="15dp">
 
         <TextView
+
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -284,6 +291,7 @@
 
 
         <TextView
+            android:id="@+id/ascription_user"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

@@ -19,6 +19,7 @@
             <include layout="@layout/toolbar_icon" />
 
             <android.support.v4.widget.NestedScrollView
+                android:id="@+id/scrollview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="50dp"
@@ -91,6 +92,5 @@
         </LinearLayout>
 
     </android.support.v4.widget.DrawerLayout>
-
 
 </RelativeLayout>

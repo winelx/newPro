@@ -38,11 +38,14 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- * 切换组织界面
+ * 说明：切换组织界面
+ * 创建时间： 2020/7/2 0002 13:26
+ *
+ * @author winelx
  */
 public class OrganizationaActivity extends BaseActivity {
     private ListView mTree;
-    private SimpleTreeListViewAdapters<OrgBeans> mAdapter;
+    private SimpleTreeListViewAdapters mAdapter;
     private List<OrgBeans> mDatas2;
     private List<OrgenBeans> mData;
     private Context mContext;
@@ -54,7 +57,6 @@ public class OrganizationaActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_organizationa);
-
         mDatas2 = new ArrayList<OrgBeans>();
         mData = new ArrayList<OrgenBeans>();
         mContext = OrganizationaActivity.this;

@@ -266,6 +266,12 @@ public class Utils {
             v.requestLayout();
         }
     }
-
+    public static String isNull(String string) {
+        if (string != null) {
+            return string;
+        } else {
+            return "";
+        }
+    }
 
 }

@@ -23,8 +23,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.adapter.ExternalCheckDetailAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.adapter.NewExternalCheckGridAdapter;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.CheckNewBean;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.Enum;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.utils.DrawableUtils;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.utils.ExternalModel;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.utils.GridLayoutItemDecoration;
 import com.example.administrator.newsdf.pzgc.adapter.BasePhotoAdapter;
 
@@ -36,6 +38,7 @@ import com.example.administrator.newsdf.pzgc.view.DKDragView;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.bean.photoBean;
 import com.example.baselibrary.utils.dialog.BaseDialogUtils;
+import com.example.baselibrary.utils.network.NetworkAdapter;
 import com.example.baselibrary.utils.rx.LiveDataBus;
 import com.example.baselibrary.view.PermissionListener;
 import com.lzy.imagepicker.ImagePicker;
@@ -47,7 +50,9 @@ import com.zxy.tiny.callback.FileCallback;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 说明：外业检查：单据详情审核页面
@@ -63,12 +68,12 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
     private NewExternalCheckGridAdapter gridAdapter;
     private ExternalCheckDetailAdapter detailAdapter;
     private int page = 0;
-    private ArrayList<String> pagelist;
+    private ArrayList<CheckNewBean.scorePane> pagelist;
     private SmartRefreshLayout refreshlayout;
     private BasePhotoAdapter adapter;
     private Context mContext;
     private TextView orgText;
-    private EditText describe, orgEditext,score;
+    private EditText describe, orgEditext, score;
     private Switch footerSwitch;
     //相机相册请求弹窗帮助类
     private PopCameraUtils popCameraUtils;
@@ -76,6 +81,8 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
     private ArrayList<photoBean> photoPaths;
     private final int RESULT = 102;
     private ArrayList<String> detelist;
+    private ExternalModel externalModel;
+    private String checkid, scoreid, level, status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,13 +90,11 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
         setContentView(R.layout.activity_externalcheck_detail);
         mContext = this;
         popCameraUtils = new PopCameraUtils();
+        externalModel = new ExternalModel();
         takePictureManager = new TakePictureManager(this);
         pagelist = new ArrayList<>();
         photoPaths = new ArrayList<>();
         detelist = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            pagelist.add("");
-        }
         findViewById(R.id.toolbar_menu).setOnClickListener(this);
         findViewById(R.id.com_back).setOnClickListener(this);
         toolbartext = findViewById(R.id.com_button);
@@ -113,13 +118,9 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
         });
         drawableRecycler = findViewById(R.id.drawable_recycler);
         drawableRecycler.setLayoutManager(new GridLayoutManager(this, 5));
-        gridAdapter = new NewExternalCheckGridAdapter(R.layout.check_new_grid_item, pagelist);
+        gridAdapter = new NewExternalCheckGridAdapter(R.layout.check_new_grid_item, new ArrayList<>());
         drawableRecycler.addItemDecoration(new GridLayoutItemDecoration(this, R.drawable.item_divider));
         drawableRecycler.setAdapter(gridAdapter);
-        Intent intent = getIntent();
-        page = intent.getIntExtra("page", 1);
-        toolbartext.setText("保存");
-        setTitle();
         gridAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -152,7 +153,13 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                         recycler.smoothScrollToPosition(Integer.parseInt(str));
                     }
                 });
-
+        Intent intent = getIntent();
+        page = intent.getIntExtra("page", 1);
+        checkid = intent.getStringExtra("checkid");
+        scoreid = intent.getStringExtra("scoreid");
+        toolbartext.setText("保存");
+        getScorePane();
+        getSafetyCheckDelByApp(scoreid);
     }
 
     @Override
@@ -201,7 +208,6 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
             tabNext.setBackgroundResource(R.drawable.tab_choose_down_blue);
         }
     }
-
 
     /**
      * 说明：添加头部布局
@@ -377,6 +383,47 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     }
                 }
             }
+        }
+    }
+
+    public void getSafetyCheckDelByApp(String id) {
+        externalModel.getSafetyCheckDelByApp(id, new NetworkAdapter() {
+            @Override
+            public void onsuccess(Object object) {
+                super.onsuccess(object);
+                Map<String, Object> map = (Map<String, Object>) object;
+                setPermission(map);
+            }
+        });
+    }
+
+    /**
+     * 说明：获取面板分数
+     * 创建时间： 2020/7/3 0003 15:57
+     *
+     * @author winelx
+     */
+    public void getScorePane() {
+        externalModel.getScorePane(checkid, new NetworkAdapter() {
+            @Override
+            public void onsuccess(Object object) {
+                super.onsuccess(object);
+                pagelist.addAll((List<CheckNewBean.scorePane>) object);
+                gridAdapter.setNewData(pagelist);
+                setTitle();
+            }
+        });
+    }
+
+    private void setPermission(Map<String, Object> map) {
+        //level 控制显示内容
+        // jIsedit:控制输入编辑
+        if ("1".equals(level)) {
+
+        } else if ("2".equals(level)) {
+
+        } else if ("3".equals(level)) {
+
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.baselibrary.base;
 
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 
 import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -51,7 +53,7 @@ public class BaseActivity extends AppCompatActivity {
     /**
      * activity堆栈管理
      */
-    protected AppManager appManager = AppManager.getAppManager();
+   protected AppManager appManager = AppManager.getAppManager();
     /**
      * 是否允许全屏
      **/
@@ -73,7 +75,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        appManager.addActivity(this);
+     appManager.addActivity(this);
 
         mContext = this;
         //是否允许屏幕旋转
@@ -141,7 +143,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         // 从栈中移除activity
-        appManager.finishActivity(this);
+     appManager.finishActivity(this);
     }
 
     /**
@@ -219,7 +221,6 @@ public class BaseActivity extends AppCompatActivity {
 
         mContext.startActivity(intent);
     }
-
 
 
 }

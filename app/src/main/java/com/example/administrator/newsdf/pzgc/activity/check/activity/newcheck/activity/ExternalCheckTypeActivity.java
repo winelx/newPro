@@ -50,8 +50,8 @@ public class ExternalCheckTypeActivity extends BaseActivity {
         refreshlayout.setEnableOverScrollDrag(true);
         recyclerView = findViewById(R.id.recycler);
         ArrayList<CheckType> lsit = new ArrayList<>();
-        lsit.add(new CheckType("安全管理", ""));
-        lsit.add(new CheckType("质量管理", ""));
+        lsit.add(new CheckType("安全管理", "8"));
+        lsit.add(new CheckType("质量管理", "9"));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         typeAdapter = new TypeAdapter(R.layout.taskphoto_item, lsit);
         recyclerView.setAdapter(typeAdapter);

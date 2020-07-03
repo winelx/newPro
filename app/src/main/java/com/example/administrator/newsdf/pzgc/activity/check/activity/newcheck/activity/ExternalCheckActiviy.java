@@ -10,6 +10,7 @@ import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.adapter.ExternalListAdapter;
@@ -50,6 +51,7 @@ public class ExternalCheckActiviy extends BaseActivity implements View.OnClickLi
     private ExpandableListView expandable;
     private SmartRefreshLayout refreshLayout;
     private ExternalListAdapter mAdapter;
+    private TextView title;
     private ArrayList<String> list;
     private Map<String, List<CheckOrgBean>> map;
     private Context mContext;
@@ -62,6 +64,8 @@ public class ExternalCheckActiviy extends BaseActivity implements View.OnClickLi
         list = new ArrayList<>();
         map = new HashMap<>();
         comBack = findViewById(R.id.com_back);
+        title = findViewById(R.id.com_title);
+        title.setText("外业检查");
         comBack.setOnClickListener(this);
         expandable = findViewById(R.id.expandable);
         refreshLayout = findViewById(R.id.refreshlayout);
