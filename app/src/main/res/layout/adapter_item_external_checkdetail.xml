@@ -19,12 +19,12 @@
             android:paddingRight="@dimen/dp10">
 
             <TextView
+                android:id="@+id/item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 android:layout_weight="1"
                 android:drawableLeft="@mipmap/drawable_division"
                 android:gravity="center_vertical"
-                android:text="集团公司质安部（A）"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
@@ -56,6 +56,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/standardscore_lin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/writer"
@@ -65,18 +66,20 @@
             android:paddingBottom="5dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/standardscore_text"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="标准分"
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/standardscore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:gravity="end"
-                android:text="0"
+                android:textSize="14sp"
                 android:textColor="@color/black" />
 
 
@@ -99,11 +102,12 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/checkstandard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="5"
                 android:gravity="end"
-                android:text="0"
+                android:textSize="14sp"
                 android:textColor="@color/black" />
 
 
@@ -119,18 +123,18 @@
             android:paddingBottom="5dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="自评分"
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:gravity="end"
-                android:text="0"
                 android:textColor="@color/black" />
 
 
@@ -146,18 +150,18 @@
             android:paddingBottom="5dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="位置"
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/position"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:gravity="end"
-                android:text="0"
                 android:textColor="@color/black" />
 
 
@@ -173,18 +177,18 @@
             android:paddingBottom="5dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="具体描述"
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:gravity="end"
-                android:text="0"
                 android:textColor="@color/black" />
 
 
@@ -200,18 +204,18 @@
             android:paddingBottom="5dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="是否整改"
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/generate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:gravity="end"
-                android:text="0"
                 android:textColor="@color/black" />
 
 

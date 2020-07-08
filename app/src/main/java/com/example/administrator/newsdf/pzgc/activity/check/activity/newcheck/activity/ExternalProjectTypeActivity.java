@@ -67,7 +67,7 @@ public class ExternalProjectTypeActivity extends BaseActivity {
             }
         });
         Intent intent = getIntent();
-        if ("安全管理".equals(intent.getStringExtra("name"))) {
+        if ("8".equals(intent.getStringExtra("name"))) {
             type = "8";
         } else {
             type = "9";

@@ -34,16 +34,17 @@
                     <include layout="@layout/activiy_new_externalcheck_content" />
 
                     <TextView
+                        android:id="@+id/water"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingLeft="15dp"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:text="流程记录"
-                        android:textSize="13sp" />
+                        android:textSize="13sp"
+                        android:visibility="gone" />
 
                     <android.support.v7.widget.RecyclerView
-
                         android:id="@+id/recyclerview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
@@ -63,15 +64,36 @@
                 android:layout_marginBottom="70dp"
                 android:background="@mipmap/float_suspension" />
 
-            <TextView
-                android:id="@+id/commit"
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="@color/colorAccent"
-                android:gravity="center"
-                android:text="开始检查"
-                android:textColor="@color/white" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/repulse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_weight="1"
+                    android:background="@color/Orange"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:text="打回"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/commit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorAccent"
+                    android:gravity="center"
+                    android:text="开始检查"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
 
         </RelativeLayout>
 
@@ -85,10 +107,10 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/drawable_recycler"
-                android:paddingLeft="@dimen/dp10"
-                android:paddingTop="@dimen/dp10"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingTop="@dimen/dp10" />
         </LinearLayout>
 
     </android.support.v4.widget.DrawerLayout>

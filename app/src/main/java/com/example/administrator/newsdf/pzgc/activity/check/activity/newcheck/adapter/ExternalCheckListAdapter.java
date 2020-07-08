@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.adapter;
 
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -9,17 +10,19 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.activity.ExternalCheckListActiviy;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.ExternalCheckListBean;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.SlantedTextView;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout;
 import com.example.baselibrary.view.BaseDialog;
 
 import java.util.List;
+
 /**
+ * 说明：
+ * 创建时间： 2020/7/2 0002 10:47
  *
- *说明：
- *创建时间： 2020/7/2 0002 10:47
- *@author winelx
+ * @author winelx
  * @see ExternalCheckListActiviy
  */
 public class ExternalCheckListAdapter extends BaseQuickAdapter<ExternalCheckListBean, BaseViewHolder> {
@@ -35,10 +38,11 @@ public class ExternalCheckListAdapter extends BaseQuickAdapter<ExternalCheckList
         slanted.setVisibility(View.INVISIBLE);
         helper.setText(R.id.check_title, Utils.isNull(item.getName()));
         helper.setText(R.id.check_user, "检查人：" + Utils.isNull(item.getCheckPersonName()));
-        helper.setText(R.id.check_tiem, "检查日期：" + Utils.isNull(item.getCheckDate().substring(0,10)));
-        helper.setText(R.id.check_bid, "所属标段：");
-        helper.setText(R.id.check_org, "所属组织：");
-        helper.setText(R.id.score, "得分：" + Utils.isNull(item.getTotalSocre()));
+        helper.setText(R.id.org_title, Utils.isNull(item.getWbsTaskTypeName()));
+        helper.setText(R.id.check_tiem, "检查日期：" + Utils.isNull(item.getCheckDate().substring(0, 10)));
+        helper.setText(R.id.check_bid, Dates.setText(mContext, 4, "所属标段：" + Utils.isNull(item.getOrgName()), R.color.black));
+        helper.setText(R.id.check_org, Dates.setText(mContext, 4, "所属组织：" + Utils.isNull(item.getCheckOrgName()), R.color.black));
+        helper.setText(R.id.score, Dates.setText(mContext, 3,"得分：" + Utils.isNull(item.getTotalSocre()),  R.color.red));
         //0：保存；2：待分公司核查；3：待集团核查；4：待分公司确认；5：待标段确认；6：已确认
         swipmenu.setIos(true).setLeftSwipe(false).setSwipeEnable(false);
         if (item.getStatus() == 0) {

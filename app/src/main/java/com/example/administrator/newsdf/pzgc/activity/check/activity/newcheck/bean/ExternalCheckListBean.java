@@ -13,9 +13,28 @@ public class ExternalCheckListBean {
     String checkPersonName;
     //检查组织名称
     String checkOrgName;
+    //
+    String wbsTaskTypeName;
     //单据名称
     String name;
+    String orgName;
     String id;
+
+    public String getWbsTaskTypeName() {
+        return wbsTaskTypeName;
+    }
+
+    public void setWbsTaskTypeName(String wbsTaskTypeName) {
+        this.wbsTaskTypeName = wbsTaskTypeName;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
+    }
 
     public String getId() {
         return id;

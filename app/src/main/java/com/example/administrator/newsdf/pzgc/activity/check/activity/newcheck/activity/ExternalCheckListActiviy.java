@@ -111,14 +111,12 @@ public class ExternalCheckListActiviy extends BaseActivity implements View.OnCli
                 }
             }
         });
-
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
         LiveDataBus.get().with("ex_list", String.class).observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {

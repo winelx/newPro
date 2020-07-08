@@ -1,5 +1,8 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CheckDetailBean {
     //项目
     public static class Project {
@@ -27,6 +30,63 @@ public class CheckDetailBean {
         String fNoticeId;
         //集团整改通知单
         String jNoticeId;
+
+        private List<BFileListBean> bFileList;
+
+        public List<BFileListBean> getBFileList() {
+            return bFileList;
+        }
+
+        public void setBFileList(List<BFileListBean> bFileList) {
+            this.bFileList = bFileList;
+        }
+
+        public  class BFileListBean {
+            /**
+             * fileext : jpg
+             * filename : tiny-864-2020-07-07-06-35-15
+             * filepath : upload/2020/07/07/19912533aa81469da256b16ddf695127.jpg
+             * filesize : 2010
+             * id : 3fac97d2dce745c3a53702e89e244594
+             */
+
+            private String fileext;
+            private String filename;
+            private String filepath;
+            private String id;
+
+            public String getFileext() {
+                return fileext;
+            }
+
+            public void setFileext(String fileext) {
+                this.fileext = fileext;
+            }
+
+            public String getFilename() {
+                return filename;
+            }
+
+            public void setFilename(String filename) {
+                this.filename = filename;
+            }
+
+            public String getFilepath() {
+                return filepath;
+            }
+
+            public void setFilepath(String filepath) {
+                this.filepath = filepath;
+            }
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+        }
+
 
         public String getbStandardScore() {
             return bStandardScore;
@@ -123,6 +183,8 @@ public class CheckDetailBean {
         public void setjNoticeId(String jNoticeId) {
             this.jNoticeId = jNoticeId;
         }
+
+
     }
 
     //公司
@@ -139,10 +201,74 @@ public class CheckDetailBean {
         String fDescription;
         //  分公司附件
         String fAttachment;
-        //    分公司是否生成整改通知单
+        // 分公司是否生成整改通知单
         String fGenerate;
         //  对分公司管理行为扣分
         String fCheckScore;
+        String bCheckScore;
+        private List<FFileListBean> FFileList;
+
+        public List<FFileListBean> getFFileList() {
+            return FFileList;
+        }
+
+        public void setFFileList(List<FFileListBean> FFileList) {
+            this.FFileList = FFileList;
+        }
+
+        public  class FFileListBean {
+            /**
+             * fileext : jpg
+             * filename : tiny-864-2020-07-07-06-35-15
+             * filepath : upload/2020/07/07/19912533aa81469da256b16ddf695127.jpg
+             * filesize : 2010
+             * id : 3fac97d2dce745c3a53702e89e244594
+             */
+
+            private String fileext;
+            private String filename;
+            private String filepath;
+            private String id;
+
+            public String getFileext() {
+                return fileext;
+            }
+
+            public void setFileext(String fileext) {
+                this.fileext = fileext;
+            }
+
+            public String getFilename() {
+                return filename;
+            }
+
+            public void setFilename(String filename) {
+                this.filename = filename;
+            }
+
+            public String getFilepath() {
+                return filepath;
+            }
+
+            public void setFilepath(String filepath) {
+                this.filepath = filepath;
+            }
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+        }
+
+        public String getbCheckScore() {
+            return bCheckScore;
+        }
+
+        public void setbCheckScore(String bCheckScore) {
+            this.bCheckScore = bCheckScore;
+        }
 
         public String getfStandardScore() {
             return fStandardScore;
@@ -207,6 +333,8 @@ public class CheckDetailBean {
         public void setfCheckScore(String fCheckScore) {
             this.fCheckScore = fCheckScore;
         }
+
+
     }
 
     //集团
@@ -229,6 +357,71 @@ public class CheckDetailBean {
         String jAttachment;
         //   集团是否生成通知单
         String jGenerate;
+        //对分公司扣分
+        String fCheckScore;
+        private List<JFileListBean> JFileList;
+
+        public List<JFileListBean> getJFileList() {
+            return JFileList;
+        }
+
+        public void setJFileList(List<JFileListBean> JFileList) {
+            this.JFileList = JFileList;
+        }
+
+        public  class JFileListBean {
+            /**
+             * fileext : jpg
+             * filename : tiny-864-2020-07-07-06-35-15
+             * filepath : upload/2020/07/07/19912533aa81469da256b16ddf695127.jpg
+             * filesize : 2010
+             * id : 3fac97d2dce745c3a53702e89e244594
+             */
+
+            private String fileext;
+            private String filename;
+            private String filepath;
+            private String id;
+
+            public String getFileext() {
+                return fileext;
+            }
+
+            public void setFileext(String fileext) {
+                this.fileext = fileext;
+            }
+
+            public String getFilename() {
+                return filename;
+            }
+
+            public void setFilename(String filename) {
+                this.filename = filename;
+            }
+
+            public String getFilepath() {
+                return filepath;
+            }
+
+            public void setFilepath(String filepath) {
+                this.filepath = filepath;
+            }
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+        }
+
+        public String getfCheckScore() {
+            return fCheckScore;
+        }
+
+        public void setfCheckScore(String fCheckScore) {
+            this.fCheckScore = fCheckScore;
+        }
 
         public String getSafetyScoreStandardId() {
             return safetyScoreStandardId;
@@ -301,5 +494,9 @@ public class CheckDetailBean {
         public void setjGenerate(String jGenerate) {
             this.jGenerate = jGenerate;
         }
+
+
     }
+
+
 }

@@ -56,4 +56,30 @@ public class ExternalApi {
      */
     public static final String GETSCOREPANE = Requests.networks + "iface/mobile/safetycheck/getScorePane";
 
+    /**
+     *
+     *说明：细项保存接口
+     *创建时间： 2020/7/6 0006 14:32
+     *@author winelx
+     */
+    public static final String SAVESAFETYCHECKDELBYAPP = Requests.networks + "iface/mobile/safetycheck/saveSafetyCheckDelByApp";
+
+    /**
+     *
+     *说明：外业检查 提交、确认方法
+     *创建时间： 2020/7/6 0006 17:32
+     *@author winelx
+     *
+     */
+    public static final String SUBMITDATABYAPP = Requests.networks + "iface/mobile/safetycheck/submitDataByApp";
+
+    /**
+     *
+     *说明：外业检查流程记录
+     *创建时间： 2020/7/7 0007 13:41
+     *@author winelx
+     */
+    public static final String GETPROCESSHISCORD = Requests.networks + "iface/mobile/safetycheck/getProcessHisCord";
+
+
 }

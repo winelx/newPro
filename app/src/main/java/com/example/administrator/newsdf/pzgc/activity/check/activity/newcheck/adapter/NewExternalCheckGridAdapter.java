@@ -29,26 +29,25 @@ public class NewExternalCheckGridAdapter extends BaseQuickAdapter<CheckNewBean.s
             content.setBackgroundResource(R.color.persomal_text);
         } else {
             /* 绿色 橙色*/
-            if (item.getCheckScore() != null) {
-                Integer checkScore = item.getCheckScore();
-                if (checkScore < 0) {
-                    //被扣分
-                    content.setBackgroundResource(R.color.Orange);
-                } else {
-                    content.setBackgroundResource(R.color.green);
-                }
-            }
-        }
-        if (item.getGenerate() != null) {
-            Integer generate = item.getGenerate().intValue();
-            if (generate == 1) {
-                angleofthe.setVisibility(View.GONE);
+            int compare = item.getScore().compareTo(item.getStandardScore());
+            Integer checkScore = item.getCheckScore() == null ? 0 : item.getCheckScore();
+            if (checkScore < 0 || compare < 0) {
+                //被扣分
+                content.setBackgroundResource(R.color.Orange);
             } else {
-                angleofthe.setVisibility(View.VISIBLE);
-                angleofthe.setBackgroundResource(R.mipmap.triangle_red);
+                content.setBackgroundResource(R.color.green);
             }
-        } else {
-            angleofthe.setVisibility(View.GONE);
+            if (item.getGenerate() != null) {
+                Integer generate = item.getGenerate().intValue();
+                if (generate == 1) {
+                    angleofthe.setVisibility(View.GONE);
+                } else if (generate==2){
+                    angleofthe.setVisibility(View.VISIBLE);
+                    angleofthe.setBackgroundResource(R.mipmap.triangle_red);
+                }
+            } else {
+                angleofthe.setVisibility(View.GONE);
+            }
         }
     }
 }

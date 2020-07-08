@@ -1,8 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.model;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v4.widget.NestedScrollView;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.CheckNewBean;
 
 
@@ -22,8 +18,6 @@ public class NewExternalCheckModel {
     private TextView meunButton;
     private NestedScrollView nestedScrollView;
     private String status;
-    private Context mContext;
-    private Activity activity;
     private EditText check_name;
     private LinearLayout checkType, check_time, project_type;
 
@@ -42,33 +36,35 @@ public class NewExternalCheckModel {
 
     }
 
-    public void setContext(Activity activity) {
-        this.activity = activity;
-    }
-
-
     /**
      * 说明：编辑权限控制
      * 创建时间： 2020/7/2 0002 16:41
      *
      * @author winelx
      */
-    public void setEditButton(boolean editButton) {
+    public boolean setEditButton(boolean editButton, String level, String checkLevel) {
         //是否有编辑权限
         if (editButton) {
             //判断检查单是否已经确认完毕
             if ("6".equals(status)) {
                 //如果确认完毕不能进行编辑
-                meunButton.setVisibility(View.INVISIBLE);
+                meunButton.setVisibility(View.GONE);
+                return false;
             } else {
                 //如果没有确认完毕可以进行编辑
-                meunButton.setText("编辑");
-                meunButton.setVisibility(View.VISIBLE);
+                if (level.equals(checkLevel)) {
+                    meunButton.setText("编辑");
+                    meunButton.setVisibility(View.VISIBLE);
+                } else {
+                    meunButton.setVisibility(View.GONE);
+                }
+                return true;
             }
         } else {
             //不能进行编辑
             meunButton.setVisibility(View.INVISIBLE);
             setEnabled(false);
+            return false;
         }
     }
 

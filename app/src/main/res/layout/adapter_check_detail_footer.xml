@@ -19,6 +19,7 @@
         android:paddingRight="@dimen/dp10">
 
         <TextView
+            android:id="@+id/footer_title"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_weight="1"
@@ -38,6 +39,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/footer_manger"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/item_bottom"
@@ -56,7 +58,8 @@
             android:textSize="15sp" />
 
 
-        <TextView
+        <EditText
+            android:id="@+id/manger_score"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -64,7 +67,7 @@
             android:background="@null"
             android:gravity="center_vertical|end"
             android:hint="请输入"
-            android:text="1212"
+            android:text="0"
             android:textColor="@color/black"
             android:textSize="15sp" />
 
@@ -90,14 +93,13 @@
 
 
         <TextView
+            android:id="@+id/standardscore"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="2"
             android:background="@null"
             android:gravity="center_vertical|end"
-            android:hint="请输入"
-            android:text="1212"
             android:textColor="@color/black"
             android:textSize="15sp" />
 
@@ -111,7 +113,7 @@
         android:paddingRight="15dp">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
@@ -123,16 +125,15 @@
 
 
         <TextView
-            android:layout_width="0dp"
+            android:id="@+id/checkstandard"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:background="@null"
             android:gravity="center_vertical|end"
-            android:hint="请输入"
-            android:text="1212"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -149,8 +150,8 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:drawablePadding="5dp"
-            android:paddingLeft="10dp"
             android:text="评分"
+            android:drawableLeft="@mipmap/warning_red"
             android:textColor="@color/black"
             android:textSize="15sp" />
 
@@ -198,17 +199,6 @@
 
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/org_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="0dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:visibility="gone"
-        android:textColor="@color/black"
-        android:textSize="14sp" />
 
     <EditText
         android:id="@+id/org_editext"
