@@ -49,37 +49,49 @@ public class ExternalApi {
     public static final String GETSAFETYCHECKDELBYAPP = Requests.networks + "iface/mobile/safetycheck/getSafetyCheckDelByApp";
 
     /**
+     * 说明：获取面板分数
+     * 创建时间： 2020/7/3 0003 15:47
      *
-     *说明：获取面板分数
-     *创建时间： 2020/7/3 0003 15:47
-     *@author winelx
+     * @author winelx
      */
     public static final String GETSCOREPANE = Requests.networks + "iface/mobile/safetycheck/getScorePane";
 
     /**
+     * 说明：细项保存接口
+     * 创建时间： 2020/7/6 0006 14:32
      *
-     *说明：细项保存接口
-     *创建时间： 2020/7/6 0006 14:32
-     *@author winelx
+     * @author winelx
      */
     public static final String SAVESAFETYCHECKDELBYAPP = Requests.networks + "iface/mobile/safetycheck/saveSafetyCheckDelByApp";
 
     /**
+     * 说明：外业检查 提交、确认方法
+     * 创建时间： 2020/7/6 0006 17:32
      *
-     *说明：外业检查 提交、确认方法
-     *创建时间： 2020/7/6 0006 17:32
-     *@author winelx
-     *
+     * @author winelx
      */
     public static final String SUBMITDATABYAPP = Requests.networks + "iface/mobile/safetycheck/submitDataByApp";
 
     /**
+     * 说明：外业检查流程记录
+     * 创建时间： 2020/7/7 0007 13:41
      *
-     *说明：外业检查流程记录
-     *创建时间： 2020/7/7 0007 13:41
-     *@author winelx
+     * @author winelx
      */
     public static final String GETPROCESSHISCORD = Requests.networks + "iface/mobile/safetycheck/getProcessHisCord";
 
-
+    /**
+     * 说明：
+     * 创建时间： 2020/7/10 0010 13:33
+     *
+     * @author winelx
+     */
+    public static final String DELETESAFETYCHECKBYAPP = Requests.networks + "iface/mobile/safetycheck/deleteSafetyCheckByApp";
+    /**
+     *
+     *说明：（异步树）获取外业检查细项位置（树）接口
+     *创建时间： 2020/7/10 0010 16:56
+     *@author winelx
+     */
+    public static final String GETWBSTREEBYAPP = Requests.networks + "iface/mobile/safetycheck/getWbstreeByAPP";
 }

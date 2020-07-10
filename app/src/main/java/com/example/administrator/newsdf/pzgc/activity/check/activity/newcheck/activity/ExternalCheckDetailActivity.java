@@ -5,11 +5,13 @@ import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,6 +21,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -70,6 +73,7 @@ import java.util.Map;
  */
 public class ExternalCheckDetailActivity extends BaseActivity implements View.OnClickListener {
     private TextView toolbartext, title, tabPrevious, tabNext;
+
     private DKDragView dkDragView;
     private RecyclerView drawableRecycler, recycler, recPhoto;
     private DrawerLayout drawerLayout;
@@ -88,6 +92,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
     private Context mContext;
     private TextView standardscore, checkstandard, import_org;
     private EditText describe, orgEditext, score, manger_score;
+    private ImageView score_warning;
     private Switch footerSwitch;
     LinearLayout footer_manger;
     /**
@@ -98,8 +103,9 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
     private ArrayList<photoBean> photoPaths;
     private ArrayList<String> detelist;
     private ExternalModel externalModel;
-    private String checkid, scoreid, level, status, checkLevel;
+    private String checkid, scoreid, level, status, checkLevel, orgid;
     private boolean edStatus;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +116,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
         page = intent.getIntExtra("page", 0);
         checkid = intent.getStringExtra("checkid");
         scoreid = intent.getStringExtra("scoreid");
+        orgid = intent.getStringExtra("orgid");
         checkLevel = intent.getStringExtra("checkLevel");
         level = intent.getStringExtra("level");
         status = intent.getStringExtra("status");
@@ -194,52 +201,24 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                 if ("编辑".equals(toolbartext.getText().toString())) {
                     setEnabled(true);
                 } else {
-                    if (toolbartext.getVisibility() == View.VISIBLE) {
-                        if (footer_manger.getVisibility() == View.VISIBLE) {
-                            if (!TextUtils.isEmpty(manger_score.getText().toString())) {
-                                if (!TextUtils.isEmpty(score.getText().toString())) {
-                                    BaseDialog.confirmdialog(mContext, "是否保存数据", "", new Onclicklitener() {
-                                        @Override
-                                        public void confirm(String string) {
-                                            saveSafetyCheckDelByApp();
-                                        }
-
-                                        @Override
-                                        public void cancel(String string) {
-
-                                        }
-                                    });
-                                } else {
-                                    ToastUtils.showShortToast("评分不能为空");
-                                }
-                            } else {
-                                ToastUtils.showShortToast("管理扣分不能为空");
-                            }
-                        }else {
-                            if (!TextUtils.isEmpty(score.getText().toString())) {
-                                BaseDialog.confirmdialog(mContext, "是否保存数据", "", new Onclicklitener() {
-                                    @Override
-                                    public void confirm(String string) {
-                                        saveSafetyCheckDelByApp();
-                                    }
-
-                                    @Override
-                                    public void cancel(String string) {
-
-                                    }
-                                });
-                            } else {
-                                ToastUtils.showShortToast("评分不能为空");
-                            }
+                    BaseDialog.confirmdialog(mContext, "是否保存数据", "", new Onclicklitener() {
+                        @Override
+                        public void confirm(String string) {
+                            saveSafetyCheckDelByApp();
                         }
-                    }
+
+                        @Override
+                        public void cancel(String string) {
+
+                        }
+                    });
                 }
                 break;
             case R.id.tab_next:
                 if (page != pagelist.size() - 1) {
                     if ("保存".equals(toolbartext.getText().toString())) {
                         if (!TextUtils.isEmpty(score.getText().toString())) {
-                            BaseDialog.confirmmessagedialog(mContext, "已经打分，是否保存", "选择下一项内容会清除所填内容", "保存", " 下一项", new Onclicklitener() {
+                            BaseDialog.confirmmessagedialog(mContext, "已经打分，是否保存", "选择下一项内容会清除所填内容\n且不会保存数据", "保存", " 下一项", new Onclicklitener() {
                                 @Override
                                 public void confirm(String string) {
                                     page++;
@@ -268,7 +247,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                 if (page > 0) {
                     if ("保存".equals(toolbartext.getText().toString())) {
                         if (!TextUtils.isEmpty(score.getText().toString())) {
-                            BaseDialog.confirmmessagedialog(mContext, "已经打分，是否保存", "显示上一项内容会清除所填内容", "上一项", "保存", new Onclicklitener() {
+                            BaseDialog.confirmmessagedialog(mContext, "已经打分，是否保存", "显示上一项内容会清除所填内容\n且不会保存数据", "上一项", "保存", new Onclicklitener() {
                                 @Override
                                 public void confirm(String string) {
 
@@ -339,6 +318,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
             default:
                 break;
         }
+        score_warning = footerView.findViewById(R.id.score_warning);
         recPhoto = footerView.findViewById(R.id.rec_photo);
         footerSwitch = footerView.findViewById(R.id.footer_switch);
         describe = footerView.findViewById(R.id.describe);
@@ -354,7 +334,9 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
         import_org.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(mContext, ExternalTreeActivity.class), Enum.RESULT);
+                Intent intent = new Intent(mContext, ExternalTreeActivity.class);
+                intent.putExtra("orgid", orgid);
+                startActivityForResult(intent, Enum.RESULT);
             }
         });
         adapter.setOnItemClickListener(new BasePhotoAdapter.OnItemClickListener() {
@@ -365,6 +347,10 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
 
             @Override
             public void delete(int position) {
+                photoBean bean = photoPaths.get(position);
+                if (!TextUtils.isEmpty(bean.getPhotoname())) {
+                    detelist.add(bean.getPhototype());
+                }
                 //删除
                 photoPaths.remove(position);
                 adapter.getData(photoPaths);
@@ -518,7 +504,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                 pagelist = (List<CheckNewBean.scorePane>) object;
                 gridAdapter.setNewData(pagelist);
                 setTitle();
-
+                LiveDataBus.get().with("ex_grid").setValue(pagelist);
             }
         });
     }
@@ -554,15 +540,16 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     }
                     if (edStatus) {
                         if (TextUtils.isEmpty(project.getbScore())) {
-                            setEnabled(true);
+                            controlFooter(project.getCheckGrade(), true);
                         } else {
-                            setEnabled(false);
+                            controlFooter(project.getCheckGrade(), false);
                         }
+
                     } else {
                         setEnabled(false);
-                        toolbartext.setVisibility(View.GONE);
                     }
-                    adapter.getData(getPhoto(project.getBFileList(), null, null));
+                    photoPaths = getPhoto(project.getBFileList(), null, null);
+                    adapter.getData(photoPaths);
                     break;
                 case "2":
                     //分公司
@@ -589,15 +576,15 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     }
                     if (edStatus) {
                         if (TextUtils.isEmpty(company.getfScore())) {
-                            setEnabled(true);
+                            controlFooter(company.getCheckGrade(), true);
                         } else {
-                            setEnabled(false);
+                            controlFooter(company.getCheckGrade(), false);
                         }
                     } else {
                         setEnabled(false);
-                        toolbartext.setVisibility(View.GONE);
                     }
-                    adapter.getData(getPhoto(null, company.getFFileList(), null));
+                    photoPaths = getPhoto(null, company.getFFileList(), null);
+                    adapter.getData(photoPaths);
                     break;
                 case "3":
                     //集团
@@ -628,15 +615,15 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     }
                     if (edStatus) {
                         if (TextUtils.isEmpty(group.getjScore())) {
-                            setEnabled(true);
+                            controlFooter(group.getCheckGrade(), true);
                         } else {
-                            setEnabled(false);
+                            controlFooter(group.getCheckGrade(), false);
                         }
                     } else {
                         setEnabled(false);
-                        toolbartext.setVisibility(View.GONE);
                     }
-                    adapter.getData(getPhoto(null, null, group.getJFileList()));
+                    photoPaths = getPhoto(null, null, group.getJFileList());
+                    adapter.getData(photoPaths);
                     break;
                 default:
                     break;
@@ -654,23 +641,22 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
         Map<String, String> map = new HashMap<>();
         if (Integer.parseInt(checkLevel) > 1) {
             //管理扣分
-            if (!TextUtils.isEmpty(manger_score.getText().toString())) {
-                if ("3".equals(checkLevel)) {
-                    map.put("fCheckScore", manger_score.getText().toString());
-                } else if ("2".equals(checkLevel)) {
-                    map.put("bCheckScore", manger_score.getText().toString());
-                }
-            } else {
-                ToastUtils.showShortToast("管理扣分不能为空");
+            if ("3".equals(checkLevel)) {
+                map.put("fCheckScore", manger_score.getText().toString());
+            } else if ("2".equals(checkLevel)) {
+                map.put("bCheckScore", manger_score.getText().toString());
             }
         }
         map.put("safetyCheckId", checkid);
         map.put("id", scoreid);
         //评分
-        if (!TextUtils.isEmpty(score.getText().toString())) {
-            map.put(replace("jScore"), score.getText().toString());
-        } else {
-            ToastUtils.showShortToast("评分不能为空");
+        if (score_warning.getVisibility() == View.VISIBLE) {
+            if (!TextUtils.isEmpty(score.getText().toString())) {
+                map.put(replace("jScore"), score.getText().toString());
+            } else {
+                ToastUtils.showShortToast("评分不能为空");
+                return;
+            }
         }
         //位置
         map.put(replace("jPosition"), orgEditext.getText().toString());
@@ -678,6 +664,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
         map.put(replace("jDescription"), describe.getText().toString());
         //z是否整改
         map.put(replace("jGenerate"), footerSwitch.isChecked() ? "2" : "1");
+        map.put(replace("bdeleteFileId"), Dates.listToStrings(detelist));
         map.put("checkLevel", checkLevel);
         ArrayList<File> files = new ArrayList<>();
         if (photoPaths.size() > 0) {
@@ -695,9 +682,10 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                 super.onsuccess(string);
                 Dates.disDialog();
                 ToastUtils.showShortToast("保存成功");
-                setEnabled(false);
                 //更新记分面板
                 getScorePane();
+                setEnabled(false);
+
             }
 
             @Override
@@ -745,13 +733,18 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
             describe.setEnabled(lean);
             footerSwitch.setClickable(lean);
             manger_score.setEnabled(lean);
-            if (lean) {
-                toolbartext.setText("保存");
-                import_org.setVisibility(View.VISIBLE);
+            if (edStatus) {
+                if (lean) {
+                    toolbartext.setText("保存");
+                    import_org.setVisibility(View.VISIBLE);
+                } else {
+                    toolbartext.setText("编辑");
+                    import_org.setVisibility(View.GONE);
+                }
             } else {
-                toolbartext.setText("编辑");
-                import_org.setVisibility(View.GONE);
+                toolbartext.setVisibility(View.GONE);
             }
+
         }
     }
 
@@ -901,5 +894,195 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
         return list;
     }
 
-
+    public void controlFooter(String checkGrade, boolean lean) {
+        if ("1".equals(checkGrade)) {
+            if ("1".equals(checkLevel)) {
+                //判断是否有编辑权限
+                if (edStatus) {
+                    //自评分（必填）及其他项
+                    //导入
+                    orgEditext.setEnabled(lean);
+                    import_org.setVisibility(lean ? View.VISIBLE : View.GONE);
+                    //图片
+                    adapter.addview(lean);
+                    //自评分
+                    score.setEnabled(lean);
+                    score_warning.setVisibility(View.VISIBLE);
+                    if (lean) {
+                        score.setHint("请输入");
+                    } else {
+                        score.setHint("");
+                    }
+                    //内容
+                    describe.setEnabled(lean);
+                    //是否整改
+                    footerSwitch.setClickable(lean);
+                    footer_manger.setVisibility(View.GONE);
+                    if (lean) {
+                        toolbartext.setText("保存");
+                        import_org.setVisibility(View.VISIBLE);
+                    } else {
+                        toolbartext.setText("编辑");
+                        import_org.setVisibility(View.GONE);
+                    }
+                } else {
+                    setEnabled(false);
+                }
+            } else if ("2".equals(checkLevel) || "3".equals(checkLevel)) {
+                //判断是否有编辑权限
+                if (edStatus) {
+                    //自评分（必填）及其他项
+                    //导入
+                    orgEditext.setEnabled(lean);
+                    import_org.setVisibility(lean ? View.VISIBLE : View.GONE);
+                    //图片
+                    adapter.addview(lean);
+                    //自评分
+                    score.setEnabled(lean);
+                    score_warning.setVisibility(View.VISIBLE);
+                    if (lean) {
+                        score.setHint("请输入");
+                    } else {
+                        score.setHint("");
+                    }
+                    //内容
+                    describe.setEnabled(lean);
+                    //是否整改
+                    footerSwitch.setClickable(lean);
+                    footer_manger.setVisibility(View.VISIBLE);
+                    manger_score.setEnabled(lean);
+                    if (lean) {
+                        toolbartext.setText("保存");
+                        import_org.setVisibility(View.VISIBLE);
+                    } else {
+                        toolbartext.setText("编辑");
+                        import_org.setVisibility(View.GONE);
+                    }
+                } else {
+                    setEnabled(false);
+                }
+            }
+        } else if ("2".equals(checkGrade)) {
+            if ("1".equals(checkLevel) || "2".equals(checkLevel)) {
+                //判断是否有编辑权限
+                if (edStatus) {
+                    //自评分（必填）及其他项
+                    //导入
+                    orgEditext.setEnabled(lean);
+                    import_org.setVisibility(lean ? View.VISIBLE : View.GONE);
+                    //图片
+                    adapter.addview(lean);
+                    //自评分
+                    score.setEnabled(lean);
+                    score_warning.setVisibility(View.VISIBLE);
+                    if (lean) {
+                        score.setHint("请输入");
+                    } else {
+                        score.setHint("");
+                    }
+                    //内容
+                    describe.setEnabled(lean);
+                    //是否整改
+                    footerSwitch.setClickable(lean);
+                    if ("1".equals(checkLevel)) {
+                        footer_manger.setVisibility(View.GONE);
+                    } else if ("2".equals(checkLevel)) {
+                        footer_manger.setVisibility(View.VISIBLE);
+                        manger_score.setEnabled(lean);
+                    }
+                    if (lean) {
+                        toolbartext.setText("保存");
+                        import_org.setVisibility(View.VISIBLE);
+                    } else {
+                        toolbartext.setText("编辑");
+                        import_org.setVisibility(View.GONE);
+                    }
+                } else {
+                    setEnabled(false);
+                }
+            } else if ("3".equals(checkLevel)) {
+                //判断是否有编辑权限
+                if (edStatus) {
+                    //自评分（必填）及其他项
+                    //导入
+                    orgEditext.setEnabled(false);
+                    //图片
+                    adapter.addview(false);
+                    //自评分
+                    score.setEnabled(false);
+                    score_warning.setVisibility(View.INVISIBLE);
+                    score.setHint("");
+                    //内容
+                    describe.setEnabled(false);
+                    //是否整改
+                    footerSwitch.setClickable(false);
+                    footer_manger.setVisibility(View.VISIBLE);
+                    manger_score.setEnabled(false);
+                    toolbartext.setText("编辑");
+                    import_org.setVisibility(View.GONE);
+                } else {
+                    setEnabled(false);
+                }
+            }
+        } else if ("3".equals(checkGrade)) {
+            // 只有标段填写自评分（必填）及其他项，分公司进来可填写除了自评分以外的全部项
+            if ("1".equals(checkLevel)) {
+                //判断是否有编辑权限
+                if (edStatus) {
+                    //自评分（必填）及其他项
+                    //导入
+                    orgEditext.setEnabled(lean);
+                    import_org.setVisibility(lean ? View.VISIBLE : View.GONE);
+                    //图片
+                    adapter.addview(lean);
+                    //自评分
+                    score.setEnabled(lean);
+                    score_warning.setVisibility(View.VISIBLE);
+                    if (lean) {
+                        score.setHint("请输入");
+                    } else {
+                        score.setHint("");
+                    }
+                    //内容
+                    describe.setEnabled(lean);
+                    //是否整改
+                    footerSwitch.setClickable(lean);
+                    footer_manger.setVisibility(View.GONE);
+                    if (lean) {
+                        toolbartext.setText("保存");
+                        import_org.setVisibility(View.VISIBLE);
+                    } else {
+                        toolbartext.setText("编辑");
+                        import_org.setVisibility(View.GONE);
+                    }
+                } else {
+                    setEnabled(false);
+                }
+            } else if ("2".equals(checkLevel)) {
+                // 分公司进来可填写除了自评分以外的全部项
+                //判断是否有编辑权限
+                if (edStatus) {
+                    //自评分（必填）及其他项
+                    //导入
+                    orgEditext.setEnabled(false);
+                    //图片
+                    adapter.addview(false);
+                    //自评分
+                    score.setEnabled(false);
+                    score_warning.setVisibility(View.INVISIBLE);
+                    score.setHint("");
+                    //内容
+                    describe.setEnabled(false);
+                    //是否整改
+                    footerSwitch.setClickable(false);
+                    footer_manger.setVisibility(View.VISIBLE);
+                    manger_score.setEnabled(false);
+                    toolbartext.setText("编辑");
+                    import_org.setVisibility(View.GONE);
+                } else {
+                    setEnabled(false);
+                }
+            }
+        }
+    }
 }

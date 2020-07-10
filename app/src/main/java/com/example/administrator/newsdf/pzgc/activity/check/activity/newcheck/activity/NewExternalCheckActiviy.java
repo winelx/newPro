@@ -146,6 +146,7 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
                 intent1.putExtra("scoreid", scorePaneList.get(position).getId());
                 intent1.putExtra("level", level);
                 intent1.putExtra("checkLevel", checkLevel);
+                intent1.putExtra("orgid", orgid);
                 intent1.putExtra("status", status);
                 //是否又编辑权限
                 intent1.putExtra("edStatus", edStatus);
@@ -156,6 +157,12 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
             @Override
             public void onChanged(@Nullable CheckType checkType) {
                 projectTypeContent.setText(checkType.getName());
+            }
+        });
+        LiveDataBus.get().with("ex_grid", Object.class).observe(this, new Observer<Object>() {
+            @Override
+            public void onChanged(@Nullable Object o) {
+                getSafetyCheck();
             }
         });
         timeselector();
@@ -182,6 +189,7 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
                     intent1.putExtra("scoreid", scorePaneList.get(0).getId());
                     intent1.putExtra("level", level);
                     intent1.putExtra("checkLevel", checkLevel);
+                    intent1.putExtra("orgid", orgid);
                     intent1.putExtra("status", status);
                     //是否又编辑权限
                     intent1.putExtra("edStatus", edStatus);
@@ -192,6 +200,7 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
                         public void confirm(String string) {
                             submitdatabyapp();
                         }
+
                         @Override
                         public void cancel(String string) {
 
@@ -245,22 +254,6 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
         }
     }
 
-    /**
-     * 说明：重新进入界面
-     * 创建时间： 2020/7/8 0008 10:58
-     *
-     * @author winelx
-     */
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        if (comButton.getVisibility()==View.VISIBLE){
-            if ("编辑".equals(comButton.getText().toString())){
-                getScorePane();
-                getSafetyCheck();
-            }
-        }
-    }
 
     /**
      * 说明：回调数据
@@ -352,8 +345,8 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
         //如果已经有数据，界面默认不可编辑
         newExternalCheckModel.setEnabled(false);
         //判断检查项是否完成
-        boolean lean = newExternalCheckModel.getCheckStatus(scorePaneList);
-            //判断是有打回权限
+        boolean lean = newExternalCheckModel.getCheckStatus(scorePaneList, checkLevel);
+        //判断是有打回权限
         if (!level.equals(checkLevel)) {
             if (bean.isReturnButton()) {
                 repulse.setVisibility(View.VISIBLE);
@@ -508,14 +501,19 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
     public void setContent(SafetyCheck beans) {
         checkid = beans.getId();
         orgid = beans.getOrgId();
+        //检查类型
         checktype = beans.getCheckType();
+        //工程类型
         protype = beans.getWbsTaskTypeId();
-
+        //创建层级
         level = beans.getLevel();
+        //当前检查层级
         checkLevel = beans.getCheckLevel();
+        //状态
         status = beans.getStatus();
-
+        //工程名称
         projectTypeContent.setText(beans.getWbsTaskTypeName());
+        //检查事件
         checkTimeContent.setText(beans.getCheckDate().substring(0, 10));
 
         fTotalSocre.setText(beans.getfTotalSocre());
@@ -565,30 +563,6 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
         });
     }
 
-    /**
-     * 说明：获取面板分数
-     * 创建时间： 2020/7/3 0003 15:57
-     *
-     * @author winelx
-     */
-    public void getScorePane() {
-        //判断按钮是否可见
-        if (comButton.getVisibility() == View.VISIBLE) {
-            //判断是编辑状态
-            if ("编辑".equals(comButton.getText().toString())) {
-                //不是编辑状态
-                externalModel.getScorePane(checkid, new NetworkAdapter() {
-                    @Override
-                    public void onsuccess(Object object) {
-                        super.onsuccess(object);
-                        scorePaneList.clear();
-                        scorePaneList = (List<CheckNewBean.scorePane>) object;
-                        gridAdapter.setNewData(scorePaneList);
-                    }
-                });
-            }
-        }
-    }
 
     /**
      * 说明：外业检查 提交、确认方法

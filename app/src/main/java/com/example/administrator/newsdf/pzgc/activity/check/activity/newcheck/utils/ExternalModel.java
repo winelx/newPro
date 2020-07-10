@@ -321,4 +321,59 @@ public class ExternalModel {
             }
         });
     }
+
+    /**
+     * 说明：删除外业数据接口
+     * 创建时间： 2020/7/10 0010 13:32
+     *
+     * @author winelx
+     */
+    public void deletesafetycheckbyapp(String id, NetworkAdapter adapter) {
+        Map<String, String> map = new HashMap<>();
+        map.put("id", id);
+        NetWork.postHttp(ExternalApi.DELETESAFETYCHECKBYAPP, map, new NetWork.networkCallBack() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int ret = jsonObject.getInt("ret");
+                    if (ret == 0) {
+                        adapter.onsuccess();
+                    } else {
+                        ToastUtils.showShortToast(jsonObject.getString("msg"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                ToastUtils.showShortToast("请求失败");
+            }
+        });
+    }
+
+    /**
+     * 说明：
+     * 创建时间： 2020/7/10 0010 16:56
+     *
+     * @author winelx
+     */
+    public void getwbstreebyapp(String orgid, String nodeid, NetworkAdapter adapter) {
+        Map<String, String> map = new HashMap<>();
+        map.put("orgId",orgid);
+        map.put("nodeId",nodeid);
+        NetWork.postHttp(ExternalApi.GETWBSTREEBYAPP, map, new NetWork.networkCallBack() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+
+            }
+        });
+    }
 }

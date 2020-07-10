@@ -41,7 +41,7 @@ public class CheckDetailBean {
             this.bFileList = bFileList;
         }
 
-        public  class BFileListBean {
+        public class BFileListBean {
             /**
              * fileext : jpg
              * filename : tiny-864-2020-07-07-06-35-15
@@ -78,6 +78,7 @@ public class CheckDetailBean {
             public void setFilepath(String filepath) {
                 this.filepath = filepath;
             }
+
             public String getId() {
                 return id;
             }
@@ -204,6 +205,8 @@ public class CheckDetailBean {
         // 分公司是否生成整改通知单
         String fGenerate;
         //  对分公司管理行为扣分
+        // 检查覆盖级别{集团：覆盖1；分公司：覆盖1、2；标段：覆盖1、2、3}
+        String checkGrade;
         String fCheckScore;
         String bCheckScore;
         private List<FFileListBean> FFileList;
@@ -216,7 +219,7 @@ public class CheckDetailBean {
             this.FFileList = FFileList;
         }
 
-        public  class FFileListBean {
+        public class FFileListBean {
             /**
              * fileext : jpg
              * filename : tiny-864-2020-07-07-06-35-15
@@ -253,6 +256,7 @@ public class CheckDetailBean {
             public void setFilepath(String filepath) {
                 this.filepath = filepath;
             }
+
             public String getId() {
                 return id;
             }
@@ -335,6 +339,13 @@ public class CheckDetailBean {
         }
 
 
+        public String getCheckGrade() {
+            return checkGrade;
+        }
+
+        public void setCheckGrade(String checkGrade) {
+            this.checkGrade = checkGrade;
+        }
     }
 
     //集团
@@ -359,6 +370,17 @@ public class CheckDetailBean {
         String jGenerate;
         //对分公司扣分
         String fCheckScore;
+
+        String checkGrade;
+
+        public String getCheckGrade() {
+            return checkGrade;
+        }
+
+        public void setCheckGrade(String checkGrade) {
+            this.checkGrade = checkGrade;
+        }
+
         private List<JFileListBean> JFileList;
 
         public List<JFileListBean> getJFileList() {
@@ -369,7 +391,7 @@ public class CheckDetailBean {
             this.JFileList = JFileList;
         }
 
-        public  class JFileListBean {
+        public class JFileListBean {
             /**
              * fileext : jpg
              * filename : tiny-864-2020-07-07-06-35-15
@@ -406,6 +428,7 @@ public class CheckDetailBean {
             public void setFilepath(String filepath) {
                 this.filepath = filepath;
             }
+
             public String getId() {
                 return id;
             }
@@ -497,6 +520,4 @@ public class CheckDetailBean {
 
 
     }
-
-
 }

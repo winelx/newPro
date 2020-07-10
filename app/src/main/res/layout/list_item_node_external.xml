@@ -12,12 +12,11 @@
         android:orientation="horizontal"
         android:paddingLeft="5dp">
 
-        <ImageView
+        <com.example.baselibrary.view.RoundCheckBox
             android:id="@+id/status_img"
             android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:background="@mipmap/checkbox_gray" />
+            android:layout_height="35dp"
+            android:layout_gravity="center" />
 
         <ImageView
             android:id="@+id/item_icon"

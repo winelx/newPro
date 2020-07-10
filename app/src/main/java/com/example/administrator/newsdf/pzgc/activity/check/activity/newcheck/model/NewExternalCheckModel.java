@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.CheckNewBean;
 
 
@@ -121,20 +122,44 @@ public class NewExternalCheckModel {
      *
      * @author winelx
      */
-    public boolean getCheckStatus(List<CheckNewBean.scorePane> list) {
+    public boolean getCheckStatus(List<CheckNewBean.scorePane> list, String checkLevel) {
         int count = 0;
+        int nocount = 0;
         for (int i = 0; i < list.size(); i++) {
             CheckNewBean.scorePane bean = list.get(i);
             if (TextUtils.isEmpty(bean.getScore())) {
-                count++;
+                //统计有分数和不用填分数的
+                String checkgrade = bean.getCheckGrade();
+                if ("2".equals(checkgrade)) {
+                    if ("3".equals(checkLevel)) {
+                        nocount++;
+                    } else {
+                        //统计有分数的
+                        count++;
+                    }
+                } else if ("3".equals(checkgrade)) {
+                    if (!"1".equals(checkLevel)) {
+                        nocount++;
+                    } else {
+                        //统计有分数的
+                        count++;
+                    }
+                }else if ("1".equals(checkgrade)){
+                    count++;
+                }
             }
         }
-        if (count > 0) {
-            //没有检测完成
+        //需要填分数的项
+        int number = list.size() - nocount;
+        //统计为空的和检查项是否相同
+        if (count == number) {
             return false;
         } else {
-            //检测完成
-            return true;
+            if (count == 0) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 

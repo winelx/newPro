@@ -27,13 +27,12 @@ import okhttp3.Response;
 import static com.example.administrator.newsdf.R.id.tree_name;
 
 public class SimpleTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
-    private Context context;
+
 
     public SimpleTreeListViewAdapter(ListView tree, Context context,
                                      List<T> datas, int defaultExpandLevel)
             throws IllegalArgumentException, IllegalAccessException {
         super(tree, context, datas, defaultExpandLevel);
-        this.context = context;
     }
 
     @Override
@@ -83,7 +82,6 @@ public class SimpleTreeListViewAdapter<T> extends TreeListViewAdapter<T> {
                 activity.switchAct(node, node.getName());
             }
         });
-
         holder.image_ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

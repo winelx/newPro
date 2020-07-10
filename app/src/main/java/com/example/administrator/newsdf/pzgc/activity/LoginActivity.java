@@ -248,7 +248,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 SPUtils.putString(mContext, "orgId", orgId);
                                 //手机号
                                 SPUtils.putString(mContext, "phone", moblie);
-
                                 ToastUtils.showLongToast(jsonObject.getString("msg"));
                                 //是否保存数据
                                 if (status) {

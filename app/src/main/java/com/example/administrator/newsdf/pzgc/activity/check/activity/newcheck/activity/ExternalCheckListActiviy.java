@@ -19,9 +19,12 @@ import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.be
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.ExternalCheckListBean;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.utils.ExternalModel;
 import com.example.administrator.newsdf.pzgc.utils.PullDownMenu;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.base.BaseActivity;
+import com.example.baselibrary.inface.Onclicklitener;
 import com.example.baselibrary.utils.network.NetworkAdapter;
 import com.example.baselibrary.utils.rx.LiveDataBus;
+import com.example.baselibrary.view.BaseDialog;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -108,6 +111,18 @@ public class ExternalCheckListActiviy extends BaseActivity implements View.OnCli
                     intent.putExtra("orgname", com_title.getText().toString());
                     intent.putExtra("orgid", orgid);
                     startActivity(intent);
+                } else if (view.getId() == R.id.item_delete) {
+                    BaseDialog.confirmdialog(mContext, "是否删除检查单", "", new Onclicklitener() {
+                        @Override
+                        public void confirm(String string) {
+                            deletesafetycheckbyapp(bean.getId(), position);
+                        }
+
+                        @Override
+                        public void cancel(String string) {
+
+                        }
+                    });
                 }
             }
         });
@@ -115,6 +130,13 @@ public class ExternalCheckListActiviy extends BaseActivity implements View.OnCli
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        LiveDataBus.get().with("ex_list", String.class).observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                page = 1;
+                getsafetychecklistbyapp();
             }
         });
         LiveDataBus.get().with("ex_list", String.class).observe(this, new Observer<String>() {
@@ -139,6 +161,7 @@ public class ExternalCheckListActiviy extends BaseActivity implements View.OnCli
                     switch (string) {
                         case "全部":
                             status = "全部";
+                            break;
                         case "保存":
                             status = "0";
                             break;
@@ -195,6 +218,18 @@ public class ExternalCheckListActiviy extends BaseActivity implements View.OnCli
             @Override
             public void onerror(String string) {
                 super.onerror(string);
+            }
+        });
+    }
+
+
+    private void deletesafetycheckbyapp(String id, int pos) {
+        externalModel.deletesafetycheckbyapp(id, new NetworkAdapter() {
+            @Override
+            public void onsuccess() {
+                super.onsuccess();
+                list.remove(pos);
+                checkListAdapter.setNewData(list);
             }
         });
     }

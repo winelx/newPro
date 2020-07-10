@@ -33,6 +33,7 @@ public class ExternalCheckListAdapter extends BaseQuickAdapter<ExternalCheckList
     @Override
     protected void convert(BaseViewHolder helper, ExternalCheckListBean item) {
         helper.addOnClickListener(R.id.content_re);
+        helper.addOnClickListener(R.id.item_delete);
         SwipeMenuLayout swipmenu = helper.getView(R.id.swipmenu);
         SlantedTextView slanted = helper.getView(R.id.slanted);
         slanted.setVisibility(View.INVISIBLE);
@@ -44,7 +45,7 @@ public class ExternalCheckListAdapter extends BaseQuickAdapter<ExternalCheckList
         helper.setText(R.id.check_org, Dates.setText(mContext, 4, "所属组织：" + Utils.isNull(item.getCheckOrgName()), R.color.black));
         helper.setText(R.id.score, Dates.setText(mContext, 3,"得分：" + Utils.isNull(item.getTotalSocre()),  R.color.red));
         //0：保存；2：待分公司核查；3：待集团核查；4：待分公司确认；5：待标段确认；6：已确认
-        swipmenu.setIos(true).setLeftSwipe(false).setSwipeEnable(false);
+
         if (item.getStatus() == 0) {
             helper.setText(R.id.check_status, "单据状态：保存");
             slanted.setVisibility(View.VISIBLE);
@@ -52,14 +53,19 @@ public class ExternalCheckListAdapter extends BaseQuickAdapter<ExternalCheckList
             slanted.setSlantedBackgroundColor(R.color.unfinish_gray);
             swipmenu.setIos(true).setLeftSwipe(true).setSwipeEnable(true);
         } else if (item.getStatus() == 2) {
+            swipmenu.setIos(true).setLeftSwipe(true).setSwipeEnable(false);
             helper.setText(R.id.check_status, "单据状态：待分公司核查");
         } else if (item.getStatus() == 3) {
+            swipmenu.setIos(true).setLeftSwipe(true).setSwipeEnable(false);
             helper.setText(R.id.check_status, "单据状态：待集团核查");
         } else if (item.getStatus() == 4) {
+            swipmenu.setIos(true).setLeftSwipe(true).setSwipeEnable(false);
             helper.setText(R.id.check_status, "单据状态：待分公司确认");
         } else if (item.getStatus() == 5) {
+            swipmenu.setIos(true).setLeftSwipe(true).setSwipeEnable(false);
             helper.setText(R.id.check_status, "单据状态：待标段确认");
         } else if (item.getStatus() == 6) {
+            swipmenu.setIos(true).setLeftSwipe(true).setSwipeEnable(false);
             helper.setText(R.id.check_status, "单据状态：已确认");
         }
         helper.setText(R.id.handle_user, "待处理人：" + Utils.isNull(item.getDealPerson()));

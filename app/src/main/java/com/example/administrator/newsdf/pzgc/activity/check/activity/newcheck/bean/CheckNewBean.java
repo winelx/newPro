@@ -55,6 +55,15 @@ public class CheckNewBean {
         String score;
         //管理行为扣分（值为负数，小于0则被扣分）
         Integer checkScore;
+        String checkGrade;
+
+        public String getCheckGrade() {
+            return checkGrade;
+        }
+
+        public void setCheckGrade(String checkGrade) {
+            this.checkGrade = checkGrade;
+        }
 
         public String getId() {
             return id;

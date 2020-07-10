@@ -14,10 +14,16 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.adapter.TreeAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.TreeBean;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.utils.ExternalApi;
 import com.example.administrator.newsdf.pzgc.activity.mine.OrganizationaActivity;
+import com.example.administrator.newsdf.pzgc.activity.work.OrganiwbsActivity;
+import com.example.administrator.newsdf.pzgc.bean.OrganizationEntity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.TreeUtlis;
 import com.example.administrator.newsdf.treeView.Node;
+import com.example.administrator.newsdf.treeView.SimpleTreeListViewAdapter;
 import com.example.administrator.newsdf.treeView.TreeHelper;
 import com.example.administrator.newsdf.treeView.TreeListViewAdapter;
 import com.example.administrator.newsdf.treeviews.SimpleTreeListViewAdapters;
@@ -49,34 +55,37 @@ import okhttp3.Response;
 public class ExternalTreeActivity extends BaseActivity {
     private ListView tree;
     private TextView comTitle, comButton;
-    private List<OrgBeans> mDatas2;
-    private List<OrgenBeans> mData;
-    private boolean status = true;
-    private TreeAdapter adaper;
     private Context mContext;
     private List<String> preservation;
-
+    private String orgId, nodeId = "";
+    private int addPosition;
+    private ArrayList<OrganizationEntity> organizationList;
+    private ArrayList<OrganizationEntity> addOrganizationList;
+    private List<OrganizationEntity> mTreeDatas;
+    private TreeAdapter<OrganizationEntity> mTreeAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_external_tree);
         mContext = this;
         preservation = new ArrayList<>();
+        organizationList=new ArrayList<>();
+        addOrganizationList=new ArrayList<>();
+        mTreeDatas=new ArrayList<>();
+        Intent intent=getIntent();
+        orgId = intent.getStringExtra("orgid");
         tree = findViewById(R.id.tree);
         comTitle = findViewById(R.id.com_title);
         comTitle.setText("选择部位");
         comButton = findViewById(R.id.com_button);
         comButton.setText("确定");
-        mDatas2 = new ArrayList<>();
-        mData = new ArrayList<>();
-        initDatas();
         findViewById(R.id.com_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (preservation.size() != 0) {
-                    Intent intent=new Intent();
-                    intent.putExtra("content",Dates.listToString(preservation));
-                    setResult(102,intent);
+                    Intent intent = new Intent();
+                    intent.putExtra("content", Dates.listToString(preservation));
+                    setResult(102, intent);
                     finish();
                 } else {
                     ToastUtils.showShortToast("请选择组织");
@@ -106,108 +115,135 @@ public class ExternalTreeActivity extends BaseActivity {
                         }
                     }
                 });
+        LiveDataBus.get().with("ex_node",String.class)
+                .observe(this, new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable String s) {
+
+                    }
+                });
+        okgo();
     }
 
-    private void initDatas() {
-        OkGo.post(Requests.Swatchmakeup)
+    private void okgo() {
+        OkGo.post(ExternalApi.GETWBSTREEBYAPP)
+                .params("orgId",orgId)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        mDatas2.clear();
-                        mData.clear();
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            JSONArray jsonArray1 = jsonObject.getJSONArray("data");
-                            if (jsonArray1.length() > 0) {
-                                for (int i = 0; i < jsonArray1.length(); i++) {
-                                    JSONObject jsonObject1 = jsonArray1.getJSONObject(i);
-                                    JSONObject json = jsonObject1.getJSONObject("organization");
-                                    String Id;
-                                    try {
-                                        Id = json.getString("id");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        Id = "";
-                                    }
-                                    String type;
-                                    try {
-                                        type = json.getString("orgType");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        type = "";
-                                    }
-                                    String parentId;
-                                    try {
-                                        parentId = json.getString("parentId");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        //如果父ID为null
-                                        parentId = "";
-                                        //当做第一级处理
-                                        status = false;
-                                        mDatas2.add(new OrgBeans(1, 0, json.getString("name"), Id, parentId, type));
-                                    }
-                                    String name;
-                                    try {
-                                        name = json.getString("name");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        name = "";
-                                    }
-                                    try {
-                                        adaper = new TreeAdapter(tree, mContext,
-                                                mDatas2, 0, mData);
-                                        tree.setAdapter(adaper);
-                                    } catch (IllegalAccessException e) {
-                                        e.printStackTrace();
-                                    }
-                                    mData.add(new OrgenBeans(Id, parentId, name, type));
-                                }
-                                if (status) {
-                                    //拿到所有的ID
-                                    final ArrayList<String> IDs = new ArrayList<String>();
-                                    for (int i = 0; i < mData.size(); i++) {
-                                        IDs.add(mData.get(i).getId());
-                                    }
-                                    //循环集合
-                                    for (int i = 0; i < mData.size(); i++) {
-                                        //取出父ID，
-                                        String pernID = mData.get(i).getParentId();
-                                        //用ID判断是否有父级相同的
-                                        if (IDs.contains(pernID)) {
-                                            //存在相同的的不处理
-                                        } else {
-                                            //不存在相同的当做第一级
-                                            mDatas2.add(new OrgBeans(1, 0, mData.get(i).getName(), mData.get(i).getId(), mData.get(i).getParentId(), mData.get(i).getType()));
-                                            try {
-                                                adaper = new TreeAdapter(tree, mContext,
-                                                        mDatas2, 0, mData);
-                                                tree.setAdapter(adaper);
-                                            } catch (IllegalAccessException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    }
-                                }
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        mTreeDatas.clear();;
+                        if (s.contains("data")) {
+                            getWorkOrganizationList(s);
+                        } else {
+                            ToastUtils.showLongToast("数据加载失败");
                         }
+                        Dates.disDialog();
+
+                    }
+                });
+    }
+    /**
+     * 解析组织机构对象
+     *
+     * @param result
+     * @return
+     */
+    private void getWorkOrganizationList(String result) {
+        organizationList = TreeUtlis.parseOrganizationList(result);
+        getOrganization(organizationList);
+    }
+
+    private void getOrganization(ArrayList<OrganizationEntity> organizationList) {
+        if (organizationList != null) {
+            for (OrganizationEntity entity : organizationList) {
+                String departmentName = entity.getDepartname();
+                OrganizationEntity bean = new OrganizationEntity(entity.getId(), entity.getParentId(),
+                        departmentName, entity.getIsleaf(), entity.iswbs(),
+                        entity.isparent(), entity.getTypes(), entity.getUsername(),
+                        entity.getNumber(), entity.getUserId(), entity.getTitle(), entity.getPhone(), entity.isDrawingGroup());
+                mTreeDatas.add(bean);
+            }
+            try {
+                mTreeAdapter = new TreeAdapter<>(tree, this,
+                        mTreeDatas, 0);
+                tree.setAdapter(mTreeAdapter);
+                initEvent();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    private void initEvent() {
+        mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
+            @Override
+            public void onClick(com.example.administrator.newsdf.treeView.Node node, int position) {
+                if (node.isLeaf()) {
+                } else {
+                    if (node.getChildren().size() == 0) {
+                        addOrganizationList.clear();
+                        addPosition = position;
+                        if (node.isperent()) {
+                            addOrganiztion(node.getId(), node.iswbs(), node.isperent(), node.getType());
+                        }
+                    }
+                }
+            }
+        });
+    }
+    private void addOrganiztion(final String id, final boolean iswbs, final boolean isparent, String type) {
+        Dates.getDialogs(this, "请求数据中");
+        OkGo.post(Requests.WBSTress)
+                .params("nodeid", id)
+                .params("iswbs", iswbs)
+                .params("isparent", isparent)
+                .params("type", type)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String result, Call call, Response response) {
+                        addOrganizationList(result);
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        ToastUtils.showShortToastCenter("请确认网络是否通畅...");
                         Dates.disDialog();
                     }
                 });
 
-
     }
-
-
+    /**
+     * 解析SoapObject对象
+     *
+     * @return
+     */
+    private void addOrganizationList(String result) {
+        if (result.contains("data")) {
+            addOrganizationList = TreeUtlis.parseOrganizationList(result);
+            if (addOrganizationList.size() != 0) {
+                for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
+                    mTreeAdapter.addExtraNode(addPosition,
+                            addOrganizationList.get(i).getId(),
+                            addOrganizationList.get(i).getParentId(),
+                            addOrganizationList.get(i).getDepartname(),
+                            addOrganizationList.get(i).getIsleaf(),
+                            addOrganizationList.get(i).iswbs(),
+                            addOrganizationList.get(i).isparent(),
+                            addOrganizationList.get(i).getTypes(),
+                            addOrganizationList.get(i).getUsername(),
+                            addOrganizationList.get(i).getNumber(),
+                            addOrganizationList.get(i).getUserId(),
+                            addOrganizationList.get(i).getTitle(),
+                            addOrganizationList.get(i).getPhone(),
+                            addOrganizationList.get(i).isDrawingGroup()
+                    );
+                }
+                Dates.disDialog();
+            }
+            Dates.disDialog();
+        } else {
+            Dates.disDialog();
+        }
+    }
 }
 
 

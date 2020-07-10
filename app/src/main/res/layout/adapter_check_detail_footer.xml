@@ -46,12 +46,20 @@
         android:orientation="horizontal"
         android:paddingRight="15dp">
 
+        <ImageView
+            android:id="@+id/manger_warning"
+            android:background="@mipmap/warning_red"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:visibility="invisible"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"/>
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:drawableLeft="@mipmap/warning_red"
             android:drawablePadding="5dp"
             android:text="管理行为扣分"
             android:textColor="@color/black"
@@ -144,6 +152,15 @@
         android:orientation="horizontal"
         android:paddingRight="15dp">
 
+        <ImageView
+            android:id="@+id/score_warning"
+            android:background="@mipmap/warning_red"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:visibility="invisible"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"/>
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -151,7 +168,6 @@
             android:layout_weight="1"
             android:drawablePadding="5dp"
             android:text="评分"
-            android:drawableLeft="@mipmap/warning_red"
             android:textColor="@color/black"
             android:textSize="15sp" />
 

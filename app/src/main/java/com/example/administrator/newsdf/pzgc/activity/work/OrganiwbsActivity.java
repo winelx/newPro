@@ -38,9 +38,9 @@ import okhttp3.Response;
  * description: 任务维护的wbs树
  *
  * @author lx
- *         date: 2018/3/22 0022 下午 2:39
- *         update: 2018/3/22 0022
- *         version:
+ * date: 2018/3/22 0022 下午 2:39
+ * update: 2018/3/22 0022
+ * version:
  */
 public class OrganiwbsActivity extends BaseActivity {
     private ArrayList<OrganizationEntity> organizationList;
@@ -71,7 +71,6 @@ public class OrganiwbsActivity extends BaseActivity {
         LinearLayout back = (LinearLayout) findViewById(R.id.com_back);
         com_title = (TextView) findViewById(R.id.com_title);
         com_title.setText("选择WBS节点");
-
         mTree = (ListView) findViewById(R.id.wbs_listview);
         mContext = OrganiwbsActivity.this;
         mTreeDatas = new ArrayList<>();
@@ -104,8 +103,7 @@ public class OrganiwbsActivity extends BaseActivity {
                 });
     }
 
-    void addOrganiztion(final String id, final boolean iswbs,
-                        final boolean isparent, String type) {
+    private void addOrganiztion(final String id, final boolean iswbs, final boolean isparent, String type) {
         Dates.getDialogs(OrganiwbsActivity.this, "请求数据中");
         OkGo.post(Requests.WBSTress)
                 .params("nodeid", id)
@@ -186,16 +184,16 @@ public class OrganiwbsActivity extends BaseActivity {
                 mTreeAdapter = new SimpleTreeListViewAdapter<OrganizationEntity>(mTree, this,
                         mTreeDatas, 0);
                 mTree.setAdapter(mTreeAdapter);
-                initEvent(organizationList);
+                initEvent();
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void initEvent(ArrayList<OrganizationEntity> organizationList) {
+    private void initEvent() {
         mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
-                @Override
+            @Override
             public void onClick(com.example.administrator.newsdf.treeView.Node node, int position) {
                 if (node.isLeaf()) {
                 } else {
