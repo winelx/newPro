@@ -94,4 +94,35 @@ public class ExternalApi {
      *@author winelx
      */
     public static final String GETWBSTREEBYAPP = Requests.networks + "iface/mobile/safetycheck/getWbstreeByAPP";
+    /**
+     *
+     *说明：数据打回功能
+     *创建时间： 2020/7/13 0013 9:54
+     *@author winelx
+     */
+    public static final String RETURNSAFETYCHECKBYAPP = Requests.networks + "iface/mobile/safetycheck/returnSafetyCheckByApp";
+    /**
+     *
+     *说明：导入外业检查数据接口（获取外业检查数据）
+     *创建时间： 2020/7/13 0013 18:10
+     *@author winelx
+     */
+    public static final String GETCHOOSESAFEDATABYAPP = Requests.networks + "iface/mobile/safetycheck/getChooseSafeDataByApp";
+
+    /**
+     *
+     *说明：通知单外业数据导入（通过外业检查id获取检查细项）
+     *创建时间： 2020/7/13 0013 18:36
+     *@author winelx
+     *
+     */
+    public static final String GETCHOOSESAFEDELDATABYAPP=Requests.networks+"iface/mobile/safetycheck/getChooseSafeDelDataByApp";
+    /**
+     *
+     *说明：保存导入的外业检查细项接口
+     *创建时间： 2020/7/13 0013 18:30
+     *@author winelx
+     */
+    public static final String SAVENOTECEDELBYSAFEBYAPP = Requests.networks + "iface/mobile/safetycheck/saveNoteceDelBySafeByApp";
+
 }

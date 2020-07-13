@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.adapter;
 
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -25,29 +26,34 @@ public class NewExternalCheckGridAdapter extends BaseQuickAdapter<CheckNewBean.s
         RelativeLayout content = helper.getView(R.id.chek_item_re);
         ImageView angleofthe = helper.getView(R.id.angleofthe);
         helper.setText(R.id.text_item, (helper.getLayoutPosition() + 1) + "");
-        if (TextUtils.isEmpty(item.getScore())) {
-            content.setBackgroundResource(R.color.persomal_text);
-        } else {
-            /* 绿色 橙色*/
-            int compare = item.getScore().compareTo(item.getStandardScore());
-            Integer checkScore = item.getCheckScore() == null ? 0 : item.getCheckScore();
-            if (checkScore < 0 || compare < 0) {
-                //被扣分
-                content.setBackgroundResource(R.color.Orange);
+        if (item.isLeveOption()) {
+            if (TextUtils.isEmpty(item.getScore())) {
+                content.setBackgroundResource(R.color.persomal_text);
             } else {
-                content.setBackgroundResource(R.color.green);
-            }
-            if (item.getGenerate() != null) {
-                Integer generate = item.getGenerate().intValue();
-                if (generate == 1) {
-                    angleofthe.setVisibility(View.GONE);
-                } else if (generate==2){
-                    angleofthe.setVisibility(View.VISIBLE);
-                    angleofthe.setBackgroundResource(R.mipmap.triangle_red);
+                /* 绿色 橙色*/
+                int compare = item.getScore().compareTo(item.getStandardScore());
+                Integer checkScore = item.getCheckScore() == null ? 0 : item.getCheckScore();
+                if (checkScore < 0 || compare < 0) {
+                    //被扣分
+                    content.setBackgroundResource(R.color.Orange);
+                } else {
+                    content.setBackgroundResource(R.color.green);
                 }
-            } else {
-                angleofthe.setVisibility(View.GONE);
             }
+        }else {
+            helper.setTextColor(R.id.text_item, Color.parseColor("#e0e0e0"));
+            content.setBackgroundResource(R.color.gray);
+        }
+        if (item.getGenerate() != null) {
+            Integer generate = item.getGenerate().intValue();
+            if (generate == 1) {
+                angleofthe.setVisibility(View.GONE);
+            } else if (generate == 2) {
+                angleofthe.setVisibility(View.VISIBLE);
+                angleofthe.setBackgroundResource(R.mipmap.triangle_red);
+            }
+        } else {
+            angleofthe.setVisibility(View.GONE);
         }
     }
 }

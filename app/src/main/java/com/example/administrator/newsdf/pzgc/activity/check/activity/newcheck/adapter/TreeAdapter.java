@@ -23,11 +23,12 @@ import com.example.baselibrary.utils.rx.LiveDataBus;
 import com.example.baselibrary.view.RoundCheckBox;
 
 import java.util.List;
+
 /**
+ * 说明：
+ * 创建时间： 2020/7/10 0010 18:02
  *
- *说明：
- *创建时间： 2020/7/10 0010 18:02
- *@author winelx
+ * @author winelx
  */
 public class TreeAdapter<T> extends TreeListViewAdapter<T> {
 
@@ -58,37 +59,35 @@ public class TreeAdapter<T> extends TreeListViewAdapter<T> {
             holder.mIcon.setVisibility(View.VISIBLE);
             holder.mIcon.setImageResource(node.getIcon());
         }
+        if (node.iswbs()) {
+            holder.statusImg.setBackgroundResource(R.mipmap.circular_blue);
+        } else {
+            holder.statusImg.setBackgroundResource(R.mipmap.checkbox_gray);
+        }
         holder.statusImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showShortToast(node.getName());
-            }
-        });
-        holder.statusImg.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                                         boolean isChecked) {
-                // TODO Auto-generated method stub
-                LiveDataBus.get().with("ex_tree").setValue(node.getName());
-                if(isChecked){
-
-                }else{
-//                    editText1.setText(buttonView.getText()+"取消选中");
+                if (!node.isIsperent()) {
+                    if (!node.iswbs()) {
+                        node.setIswbs(true);
+                        holder.statusImg.setBackgroundResource(R.mipmap.circular_blue);
+                        LiveDataBus.get().with("ex_node").setValue(node.getName());
+                    } else {
+                        holder.statusImg.setBackgroundResource(R.mipmap.checkbox_gray);
+                        node.setIswbs(false);
+                    }
+                } else {
+                    ToastUtils.showShortToast("必须选择末节点");
                 }
             }
         });
-        holder.statusImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
         holder.mIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 expandOrCollapse(position);
                 if (node.getChildren().size() == 0) {
-
+                    mListener.onClick(node, position);
                 } else {
                     expandOrCollapse(position);
                 }
@@ -100,7 +99,7 @@ public class TreeAdapter<T> extends TreeListViewAdapter<T> {
 
     private class ViewHolder {
         ImageView mIcon;
-        RoundCheckBox statusImg;
+        ImageView statusImg;
         TextView mText;
     }
 

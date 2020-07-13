@@ -84,7 +84,7 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
 
         @Override
         public void convert(BaseViewHolder helper, CheckDetailBean.Project data, int position) {
-            helper.setText(R.id.item_title, "项目质安部（A）");
+            helper.setText(R.id.item_title, "项目质安部(C)");
             helper.setText(R.id.standardscore, Utils.isNull(data.getbStandardScore()));
             helper.setText(R.id.checkstandard, Utils.isNull(data.getbCheckStandard()));
             helper.setText(R.id.score, Utils.isNull(data.getbScore()));
@@ -125,9 +125,9 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
                     photoPaths.add(Requests.networks + "/" + beans.getFilepath());
                 }
             }
-            if (photoPaths.size()>0){
+            if (photoPaths.size() > 0) {
                 photo_rec.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 photo_rec.setVisibility(View.GONE);
             }
             PhotoAdapter adapter = new PhotoAdapter(mContext, photoPaths, "other");
@@ -158,7 +158,7 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
 
         @Override
         public void convert(BaseViewHolder helper, CheckDetailBean.Company data, int position) {
-            helper.setText(R.id.item_title, "分公司质安部（A）");
+            helper.setText(R.id.item_title, "分公司质安部（B）");
             helper.setText(R.id.checkstandard, Utils.isNull(data.getfCheckStandard()));
             helper.setText(R.id.score, Utils.isNull(data.getfScore()));
             helper.setText(R.id.position, Utils.isNull(data.getfPosition()));
@@ -168,7 +168,14 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
             standardscore_text.setText("管理行为扣分");
             TextView standardscore = helper.getView(R.id.standardscore);
             standardscore.setText(Utils.isNull(data.getbCheckScore()));
-            standardscore.setTextColor(Color.parseColor("#FE0000"));
+            if (!TextUtils.isEmpty(data.getbCheckScore())) {
+                int scor = Integer.parseInt(data.getbCheckScore());
+                if (scor < 0) {
+                    standardscore.setTextColor(Color.parseColor("#FE0000"));
+                } else {
+                    standardscore.setTextColor(Color.parseColor("#000000"));
+                }
+            }
             TextView open_lin = helper.getView(R.id.open_lin);
             ImageView open_img = helper.getView(R.id.open_img);
             LinearLayout content_lin = helper.getView(R.id.content_lin);
@@ -192,7 +199,6 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
                 open_img.setBackgroundResource(R.mipmap.bottom_blue_icon);
                 content_lin.setVisibility(View.GONE);
             }
-
             RecyclerView photo_rec = helper.getView(R.id.photo_rec);
             photo_rec.setLayoutManager(new GridLayoutManager(mContext, 4));
             ArrayList<String> photoPaths = new ArrayList<>();
@@ -203,9 +209,9 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
                     photoPaths.add(Requests.networks + "/" + beans.getFilepath());
                 }
             }
-            if (photoPaths.size()>0){
+            if (photoPaths.size() > 0) {
                 photo_rec.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 photo_rec.setVisibility(View.GONE);
             }
             PhotoAdapter adapter = new PhotoAdapter(mContext, photoPaths, "other");
@@ -244,7 +250,14 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
             standardscore_text.setText("管理行为扣分");
             TextView standardscore = helper.getView(R.id.standardscore);
             standardscore.setText(Utils.isNull(data.getfCheckScore()));
-            standardscore.setTextColor(Color.parseColor("#FE0000"));
+            if (!TextUtils.isEmpty(data.getfCheckScore())){
+                int scor = Integer.parseInt(data.getfCheckScore());
+                if (scor < 0) {
+                    standardscore.setTextColor(Color.parseColor("#FE0000"));
+                } else {
+                    standardscore.setTextColor(Color.parseColor("#000000"));
+                }
+            }
             TextView open_lin = helper.getView(R.id.open_lin);
             ImageView open_img = helper.getView(R.id.open_img);
             LinearLayout content_lin = helper.getView(R.id.content_lin);
@@ -273,9 +286,9 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
                     photoPaths.add(Requests.networks + "/" + beans.getFilepath());
                 }
             }
-            if (photoPaths.size()>0){
+            if (photoPaths.size() > 0) {
                 photo_rec.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 photo_rec.setVisibility(View.GONE);
             }
             PhotoAdapter adapter = new PhotoAdapter(mContext, photoPaths, "other");

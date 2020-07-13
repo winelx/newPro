@@ -32,6 +32,7 @@ import com.example.administrator.newsdf.treeviews.bean.OrgenBeans;
 import com.example.administrator.newsdf.treeviews.utils.Nodes;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;
+import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.utils.rx.LiveDataBus;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -63,16 +64,18 @@ public class ExternalTreeActivity extends BaseActivity {
     private ArrayList<OrganizationEntity> addOrganizationList;
     private List<OrganizationEntity> mTreeDatas;
     private TreeAdapter<OrganizationEntity> mTreeAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_external_tree);
         mContext = this;
+        //存储位置的
         preservation = new ArrayList<>();
-        organizationList=new ArrayList<>();
-        addOrganizationList=new ArrayList<>();
-        mTreeDatas=new ArrayList<>();
-        Intent intent=getIntent();
+        organizationList = new ArrayList<>();
+        addOrganizationList = new ArrayList<>();
+        mTreeDatas = new ArrayList<>();
+        Intent intent = getIntent();
         orgId = intent.getStringExtra("orgid");
         tree = findViewById(R.id.tree);
         comTitle = findViewById(R.id.com_title);
@@ -99,27 +102,15 @@ public class ExternalTreeActivity extends BaseActivity {
                 finish();
             }
         });
-        LiveDataBus.get().with("ex_tree", TreeBean.class)
-                .observe(this, new Observer<TreeBean>() {
-                    @Override
-                    public void onChanged(@Nullable TreeBean bean) {
-                        if (bean.isLean()) {
-                            preservation.add(bean.getName());
-                        } else {
-                            for (int i = 0; i < preservation.size(); i++) {
-                                String str = preservation.get(i);
-                                if (str.equals(bean.getName())) {
-                                    preservation.remove(i);
-                                }
-                            }
-                        }
-                    }
-                });
-        LiveDataBus.get().with("ex_node",String.class)
+        LiveDataBus.get().with("ex_node", String.class)
                 .observe(this, new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
-
+                        if (!preservation.contains(s)) {
+                            preservation.add(s);
+                        } else {
+                            preservation.remove(s);
+                        }
                     }
                 });
         okgo();
@@ -127,11 +118,12 @@ public class ExternalTreeActivity extends BaseActivity {
 
     private void okgo() {
         OkGo.post(ExternalApi.GETWBSTREEBYAPP)
-                .params("orgId",orgId)
+                .params("orgId", orgId)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        mTreeDatas.clear();;
+                        mTreeDatas.clear();
+                        ;
                         if (s.contains("data")) {
                             getWorkOrganizationList(s);
                         } else {
@@ -142,6 +134,7 @@ public class ExternalTreeActivity extends BaseActivity {
                     }
                 });
     }
+
     /**
      * 解析组织机构对象
      *
@@ -149,7 +142,7 @@ public class ExternalTreeActivity extends BaseActivity {
      * @return
      */
     private void getWorkOrganizationList(String result) {
-        organizationList = TreeUtlis.parseOrganizationList(result);
+        organizationList = parseOrganizationList(result);
         getOrganization(organizationList);
     }
 
@@ -173,30 +166,30 @@ public class ExternalTreeActivity extends BaseActivity {
             }
         }
     }
+
     private void initEvent() {
         mTreeAdapter.setOnTreeNodeClickListener(new TreeListViewAdapter.OnTreeNodeClickListener() {
             @Override
-            public void onClick(com.example.administrator.newsdf.treeView.Node node, int position) {
+            public void onClick(Node node, int position) {
                 if (node.isLeaf()) {
                 } else {
                     if (node.getChildren().size() == 0) {
                         addOrganizationList.clear();
                         addPosition = position;
                         if (node.isperent()) {
-                            addOrganiztion(node.getId(), node.iswbs(), node.isperent(), node.getType());
+                            addOrganiztion(node.getId());
                         }
                     }
                 }
             }
         });
     }
-    private void addOrganiztion(final String id, final boolean iswbs, final boolean isparent, String type) {
+
+    private void addOrganiztion(final String id) {
         Dates.getDialogs(this, "请求数据中");
-        OkGo.post(Requests.WBSTress)
-                .params("nodeid", id)
-                .params("iswbs", iswbs)
-                .params("isparent", isparent)
-                .params("type", type)
+        OkGo.post(ExternalApi.GETWBSTREEBYAPP)
+                .params("orgId", orgId)
+                .params("nodeId", id)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String result, Call call, Response response) {
@@ -211,6 +204,7 @@ public class ExternalTreeActivity extends BaseActivity {
                 });
 
     }
+
     /**
      * 解析SoapObject对象
      *
@@ -218,7 +212,7 @@ public class ExternalTreeActivity extends BaseActivity {
      */
     private void addOrganizationList(String result) {
         if (result.contains("data")) {
-            addOrganizationList = TreeUtlis.parseOrganizationList(result);
+            addOrganizationList = parseOrganizationList(result);
             if (addOrganizationList.size() != 0) {
                 for (int i = addOrganizationList.size() - 1; i >= 0; i--) {
                     mTreeAdapter.addExtraNode(addPosition,
@@ -242,6 +236,122 @@ public class ExternalTreeActivity extends BaseActivity {
             Dates.disDialog();
         } else {
             Dates.disDialog();
+        }
+    }
+
+    /**
+     * 组织机构
+     *
+     * @param json 字符串
+     * @return 实体
+     */
+    public static ArrayList<OrganizationEntity> parseOrganizationList(String json) {
+        if (json == null) {
+            return null;
+        } else {
+            ArrayList<OrganizationEntity> organizationList = new ArrayList<OrganizationEntity>();
+
+            try {
+                JSONObject jsonObject = new JSONObject(json);
+                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject obj = jsonArray.getJSONObject(i);
+
+                    OrganizationEntity organization = new OrganizationEntity();
+                    try {
+                        //节点id
+                        organization.setId(obj.getString("id"));
+                    } catch (JSONException e) {
+
+                        organization.setId("");
+                    }
+                    try {
+                        //节点名称
+                        organization.setDepartname(obj.getString("name"));
+                    } catch (JSONException e) {
+
+                        organization.setDepartname("");
+                    }
+                    try {
+                        //组织类型
+                        organization.setTypes(obj.getString("type"));
+                    } catch (JSONException e) {
+
+                        organization.setTypes("");
+                    }
+                    organization.setIswbs(false);
+                    try {
+                        //是否是父节点
+                        organization.setIsparent(obj.getBoolean("isParent"));
+                    } catch (JSONException e) {
+
+                        organization.setIsparent(false);
+                    }
+                    try {
+                        boolean isParentFlag = obj.getBoolean("isParent");
+                        if (isParentFlag) {
+                            //不是叶子节点
+                            organization.setIsleaf("0");
+                        } else {
+                            //是叶子节点
+                            organization.setIsleaf("1");
+                        }
+                    } catch (JSONException e) {
+
+                        organization.setIsleaf("");
+                    }
+                    try {
+                        //组织机构父级节点
+                        organization.setParentId(obj.getString("parentId"));
+                    } catch (JSONException e) {
+
+                        organization.setParentId("");
+                    }
+                    try {
+                        //负责人 //进度
+                        organization.setUsername(obj.getJSONObject("extend").getString("leaderName"));
+                    } catch (JSONException e) {
+                        organization.setUsername("");
+                    }
+
+                    try {
+                        //进度
+                        organization.setNumber(obj.getJSONObject("extend").getString("finish"));
+                    } catch (JSONException e) {
+
+                        organization.setNumber("");
+                    }
+                    try {
+                        //负责热ID
+                        organization.setUserId(obj.getJSONObject("extend").getString("leaderId"));
+                    } catch (JSONException e) {
+
+                        organization.setUserId("");
+                    }
+                    try {
+                        //节点层级
+                        organization.setTitle(obj.getString("title"));
+                    } catch (JSONException e) {
+
+                        organization.setTitle("");
+                    }
+                    try {
+                        //节点层级
+                        organization.setPhone(obj.getJSONObject("extend").getInt("taskNum") + "");
+                    } catch (JSONException e) {
+                        organization.setPhone("");
+                    }
+
+                    organizationList.add(organization);
+                }
+                if (organizationList.size() != 0) {
+                }
+                return organizationList;
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+                return null;
+            }
         }
     }
 }

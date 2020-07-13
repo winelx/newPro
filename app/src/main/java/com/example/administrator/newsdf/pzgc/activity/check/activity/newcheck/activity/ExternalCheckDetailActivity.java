@@ -5,13 +5,11 @@ import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -60,6 +58,7 @@ import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -91,6 +90,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
     private BasePhotoAdapter adapter;
     private Context mContext;
     private TextView standardscore, checkstandard, import_org;
+    private TextView header_contet;
     private EditText describe, orgEditext, score, manger_score;
     private ImageView score_warning;
     private Switch footerSwitch;
@@ -104,7 +104,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
     private ArrayList<String> detelist;
     private ExternalModel externalModel;
     private String checkid, scoreid, level, status, checkLevel, orgid;
-    private boolean edStatus;
+    private boolean edStatus, isLeveOption;
 
 
     @Override
@@ -117,6 +117,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
         checkid = intent.getStringExtra("checkid");
         scoreid = intent.getStringExtra("scoreid");
         orgid = intent.getStringExtra("orgid");
+        isLeveOption = intent.getBooleanExtra("isLeveOption", true);
         checkLevel = intent.getStringExtra("checkLevel");
         level = intent.getStringExtra("level");
         status = intent.getStringExtra("status");
@@ -155,6 +156,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 page = position;
+                isLeveOption = pagelist.get(position).isLeveOption();
                 initCheckItem();
                 drawerLayout.closeDrawers();
 
@@ -209,7 +211,6 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
 
                         @Override
                         public void cancel(String string) {
-
                         }
                     });
                 }
@@ -233,10 +234,12 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                             });
                         } else {
                             page++;
+                            isLeveOption = pagelist.get(page).isLeveOption();
                             initCheckItem();
                         }
                     } else {
                         page++;
+                        isLeveOption = pagelist.get(page).isLeveOption();
                         initCheckItem();
                     }
                 } else {
@@ -262,10 +265,12 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                             });
                         } else {
                             page--;
+                            isLeveOption = pagelist.get(page).isLeveOption();
                             initCheckItem();
                         }
                     } else {
                         page--;
+                        isLeveOption = pagelist.get(page).isLeveOption();
                         initCheckItem();
                     }
                 } else {
@@ -290,6 +295,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
     public View getHeaderView() {
         View headerView = getLayoutInflater().inflate(R.layout.adapter_check_detail_header, null);
         headerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        header_contet = headerView.findViewById(R.id.header_contet);
         return headerView;
     }
 
@@ -331,6 +337,10 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
         adapter = new BasePhotoAdapter(mContext, photoPaths);
         recPhoto.setAdapter(adapter);
         import_org = footerView.findViewById(R.id.import_org);
+        //如果创建层级和检查层级相同，那么就不能对管理扣分
+        if (checkLevel.equals(level)) {
+            footer_manger.setVisibility(View.GONE);
+        }
         import_org.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -530,6 +540,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     orgEditext.setText(Utils.isNull(project.getbPosition()));
                     //具体描述
                     describe.setText(Utils.isNull(project.getbDescription()));
+                    header_contet.setText(Utils.isNull(project.getName()));
                     //是否整改
                     if (project.getbGenerate() != null) {
                         if ("2".equals(project.getbGenerate())) {
@@ -564,6 +575,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     score.setText(Utils.isNull(company.getfScore()));
                     //位置
                     orgEditext.setText(Utils.isNull(company.getfPosition()));
+                    header_contet.setText(Utils.isNull(company.getName()));
                     //具体描述
                     describe.setText(Utils.isNull(company.getfDescription()));
                     //是否整改
@@ -605,6 +617,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     orgEditext.setText(Utils.isNull(group.getjPosition()));
                     //具体描述
                     describe.setText(Utils.isNull(group.getjDescription()));
+                    header_contet.setText(Utils.isNull(group.getName()));
                     //是否整改
                     if (group.getjGenerate() != null) {
                         if ("2".equals(group.getjGenerate())) {
@@ -627,6 +640,17 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     break;
                 default:
                     break;
+            }
+        } else {
+            if (map.containsKey("project")) {
+                CheckDetailBean.Project project = (CheckDetailBean.Project) map.get("project");
+                header_contet.setText(Utils.isNull(project.getName()));
+            } else if (map.containsKey("company")) {
+                CheckDetailBean.Company company = (CheckDetailBean.Company) map.get("company");
+                header_contet.setText(Utils.isNull(company.getName()));
+            } else if (map.containsKey("group")) {
+                CheckDetailBean.Group group = (CheckDetailBean.Group) map.get("group");
+                header_contet.setText(Utils.isNull(group.getName()));
             }
         }
     }
@@ -652,7 +676,14 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
         //评分
         if (score_warning.getVisibility() == View.VISIBLE) {
             if (!TextUtils.isEmpty(score.getText().toString())) {
-                map.put(replace("jScore"), score.getText().toString());
+                int num = Integer.parseInt(score.getText().toString());
+                int snum = Integer.parseInt(standardscore.getText().toString());
+                if (num > snum) {
+                    ToastUtils.showShortToastCenter("评分不能大于标准分");
+                    return;
+                } else {
+                    map.put(replace("jScore"), score.getText().toString());
+                }
             } else {
                 ToastUtils.showShortToast("评分不能为空");
                 return;
@@ -803,7 +834,9 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
             if (Integer.parseInt(status) > 3) {
                 data.add(map.get("project"));
                 data.add(map.get("company"));
-                data.add(map.get("group"));
+                if (isLeveOption) {
+                    data.add(map.get("group"));
+                }
             } else {
                 //没有检测完成，现在处在什么层级检查
                 if (Enum.STATUS_THREE.equals(checkLevel)) {
@@ -949,8 +982,14 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     describe.setEnabled(lean);
                     //是否整改
                     footerSwitch.setClickable(lean);
-                    footer_manger.setVisibility(View.VISIBLE);
-                    manger_score.setEnabled(lean);
+                    if (checkLevel.equals(level)) {
+                        footer_manger.setVisibility(View.GONE);
+                        manger_score.setEnabled(false);
+                    } else {
+                        footer_manger.setVisibility(View.VISIBLE);
+                        manger_score.setEnabled(lean);
+                    }
+
                     if (lean) {
                         toolbartext.setText("保存");
                         import_org.setVisibility(View.VISIBLE);
@@ -987,8 +1026,14 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     if ("1".equals(checkLevel)) {
                         footer_manger.setVisibility(View.GONE);
                     } else if ("2".equals(checkLevel)) {
-                        footer_manger.setVisibility(View.VISIBLE);
-                        manger_score.setEnabled(lean);
+                        if (checkLevel.equals(level)) {
+                            footer_manger.setVisibility(View.GONE);
+                            manger_score.setEnabled(false);
+                        } else {
+                            footer_manger.setVisibility(View.VISIBLE);
+                            manger_score.setEnabled(lean);
+                        }
+
                     }
                     if (lean) {
                         toolbartext.setText("保存");
@@ -1016,8 +1061,13 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     describe.setEnabled(false);
                     //是否整改
                     footerSwitch.setClickable(false);
-                    footer_manger.setVisibility(View.VISIBLE);
-                    manger_score.setEnabled(false);
+                    if (checkLevel.equals(level)) {
+                        footer_manger.setVisibility(View.GONE);
+                        manger_score.setEnabled(false);
+                    } else {
+                        footer_manger.setVisibility(View.VISIBLE);
+                        manger_score.setEnabled(lean);
+                    }
                     toolbartext.setText("编辑");
                     import_org.setVisibility(View.GONE);
                 } else {
@@ -1075,8 +1125,13 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     describe.setEnabled(false);
                     //是否整改
                     footerSwitch.setClickable(false);
-                    footer_manger.setVisibility(View.VISIBLE);
-                    manger_score.setEnabled(false);
+                    if (checkLevel.equals(level)) {
+                        footer_manger.setVisibility(View.GONE);
+                        manger_score.setEnabled(false);
+                    } else {
+                        footer_manger.setVisibility(View.VISIBLE);
+                        manger_score.setEnabled(lean);
+                    }
                     toolbartext.setText("编辑");
                     import_org.setVisibility(View.GONE);
                 } else {
@@ -1085,4 +1140,5 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
             }
         }
     }
+
 }

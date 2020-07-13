@@ -30,6 +30,15 @@ public class CheckDetailBean {
         String fNoticeId;
         //集团整改通知单
         String jNoticeId;
+        String name;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
 
         private List<BFileListBean> bFileList;
 
@@ -209,7 +218,17 @@ public class CheckDetailBean {
         String checkGrade;
         String fCheckScore;
         String bCheckScore;
-        private List<FFileListBean> FFileList;
+        List<FFileListBean> FFileList;
+        String name;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
 
         public List<FFileListBean> getFFileList() {
             return FFileList;

@@ -56,6 +56,15 @@ public class CheckNewBean {
         //管理行为扣分（值为负数，小于0则被扣分）
         Integer checkScore;
         String checkGrade;
+        boolean isLeveOption;
+
+        public boolean isLeveOption() {
+            return isLeveOption;
+        }
+
+        public void setLeveOption(boolean leveOption) {
+            isLeveOption = leveOption;
+        }
 
         public String getCheckGrade() {
             return checkGrade;

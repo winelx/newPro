@@ -39,7 +39,7 @@ public class ExternalCheckListAdapter extends BaseQuickAdapter<ExternalCheckList
         slanted.setVisibility(View.INVISIBLE);
         helper.setText(R.id.check_title, Utils.isNull(item.getName()));
         helper.setText(R.id.check_user, "检查人：" + Utils.isNull(item.getCheckPersonName()));
-        helper.setText(R.id.org_title, Utils.isNull(item.getWbsTaskTypeName()));
+        helper.setText(R.id.org_title,"工程类型："+ Utils.isNull(item.getWbsTaskTypeName()));
         helper.setText(R.id.check_tiem, "检查日期：" + Utils.isNull(item.getCheckDate().substring(0, 10)));
         helper.setText(R.id.check_bid, Dates.setText(mContext, 4, "所属标段：" + Utils.isNull(item.getOrgName()), R.color.black));
         helper.setText(R.id.check_org, Dates.setText(mContext, 4, "所属组织：" + Utils.isNull(item.getCheckOrgName()), R.color.black));

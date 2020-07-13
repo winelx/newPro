@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.activity.ImprotExternalActivity;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ChangedNewAdapter;
@@ -183,14 +184,14 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 }
                 break;
             case R.id.chaged_import_problem:
-                //导入
+                //导入内业检查项
                 Intent intent = new Intent(mContext, ChagedImportitemActivity.class);
                 intent.putExtra("orgid", orgId);
                 intent.putExtra("noticeId", id);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.chaged_add_problem:
-                //添加内业检查问题项
+                //添加问题项
                 Intent intent2 = new Intent(mContext, ChagedProblemitemActivity.class);
                 intent2.putExtra("orgname", chagedOrganizeText.getText().toString());
                 intent2.putExtra("orgid", orgId);
@@ -201,7 +202,10 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.chaged_import_external:
                 //添加外业检查问题项
-
+                Intent external = new Intent(mContext, ImprotExternalActivity.class);
+                external.putExtra("orgid", orgId);
+                external.putExtra("noticeId", id);
+                startActivityForResult(external, 1);
                 break;
             case R.id.chaged_head_lin:
                 //选择联系人

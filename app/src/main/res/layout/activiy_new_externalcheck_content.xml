@@ -144,6 +144,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/poroject_score"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/item_bottom"

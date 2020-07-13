@@ -66,7 +66,7 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
     private TextView ascriptionOrg, ascriptionBid, ascriptionUser, fTotalSocre, totalSocre;
     private TextView comTitle, comButton, commit, checkTypeContent, checkTimeContent, projectTypeContent;
     private EditText checkName;
-    private LinearLayout checkType, checkTime, projectType;
+    private LinearLayout checkType, checkTime, projectType, poroject_score;
     private DrawerLayout drawerLayout;
     private NewExternalCheckAdapter adapter;
     private NestedScrollView nestedScrollView;
@@ -91,6 +91,7 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
         findViewById(R.id.toolbar_menu).setOnClickListener(this);
         findViewById(R.id.com_back).setOnClickListener(this);
         comTitle = findViewById(R.id.com_title);
+        poroject_score = findViewById(R.id.poroject_score);
         fTotalSocre = findViewById(R.id.fTotalSocre);
         totalSocre = findViewById(R.id.totalSocre);
         repulse = findViewById(R.id.repulse);
@@ -148,6 +149,7 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
                 intent1.putExtra("checkLevel", checkLevel);
                 intent1.putExtra("orgid", orgid);
                 intent1.putExtra("status", status);
+                intent1.putExtra("isLeveOption", scorePaneList.get(position).isLeveOption());
                 //是否又编辑权限
                 intent1.putExtra("edStatus", edStatus);
                 startActivity(intent1);
@@ -194,7 +196,7 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
                     //是否又编辑权限
                     intent1.putExtra("edStatus", edStatus);
                     startActivity(intent1);
-                } else if ("提交".equals(commit.getText().toString())) {
+                } else if ("提交".equals(commit.getText().toString()) || "确认并签名".equals(commit.getText().toString())) {
                     BaseDialog.confirmdialog(mContext, "是否提交数据", "", new Onclicklitener() {
                         @Override
                         public void confirm(String string) {
@@ -212,7 +214,7 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
                 BaseDialog.confirmdialog(mContext, "是否打回检查", "", new Onclicklitener() {
                     @Override
                     public void confirm(String string) {
-
+                        returnsafetycheckbyapp();
                     }
 
                     @Override
@@ -266,8 +268,12 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
             if (resultCode == Enum.CHECK_TYPE) {
-                checkTypeContent.setText(data.getStringExtra("name"));
-                checktype = data.getStringExtra("id");
+                if (!checkTypeContent.getText().toString().equals(data.getStringExtra("name"))) {
+                    checkTypeContent.setText(data.getStringExtra("name"));
+                    checktype = data.getStringExtra("id");
+                    projectTypeContent.setText("");
+                    protype = "";
+                }
             } else if (resultCode == Enum.PRROJECT_TYPE) {
                 projectTypeContent.setText(data.getStringExtra("name"));
                 protype = data.getStringExtra("id");
@@ -307,9 +313,6 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
      * @author winelx
      */
     public void control() {
-        status = intent.getStringExtra("status");
-        newExternalCheckModel = new NewExternalCheckModel(commit, comButton, nestedScrollView,
-                checkType, checkTime, projectType, checkName, status);
         String isNew = intent.getStringExtra("isNew");
         if ("编辑".equals(isNew)) {
             checkid = intent.getStringExtra("id");
@@ -317,6 +320,8 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
             comButton.setVisibility(View.VISIBLE);
             getSafetyCheck();
         } else {
+            newExternalCheckModel = new NewExternalCheckModel(commit, comButton, nestedScrollView,
+                    checkType, checkTime, projectType, checkName, status);
             comTitle.setText("新增检查");
             comButton.setText("保存");
             dkDragView.setVisibility(View.INVISIBLE);
@@ -335,8 +340,16 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
      * @author winelx
      */
     public void setPermission(CheckNewBean.permission bean, SafetyCheck beans) {
+        status = beans.getStatus();
+        if (newExternalCheckModel == null) {
+            newExternalCheckModel = new NewExternalCheckModel(commit, comButton, nestedScrollView,
+                    checkType, checkTime, projectType, checkName, status);
+        }
         //判断是否编辑权限
         edStatus = newExternalCheckModel.setEditButton(bean.isEditButton(), beans.getLevel(), beans.getCheckLevel());
+        if (!level.equals("1")) {
+            poroject_score.setVisibility(View.GONE);
+        }
         if (edStatus) {
             comButton.setVisibility(View.VISIBLE);
         } else {
@@ -379,6 +392,7 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
             //已确认
             newExternalCheckModel.submitButton(mContext, false);
         }
+
     }
 
     /**
@@ -404,7 +418,7 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
             return;
         }
         //组织名称
-        map.put("orgName", intent.getStringExtra("orgname"));
+        map.put("orgName", ascriptionBid.getText().toString());
         //检查类型
         if (checktype != null) {
             map.put("checkType", checktype);
@@ -451,7 +465,6 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
                         status = bean.getName();
                         getSafetyCheck();
                     }
-
                     @Override
                     public void onerror() {
                         super.onerror();
@@ -459,7 +472,6 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
                     }
                 });
             }
-
             @Override
             public void cancel(String string) {
 
@@ -579,6 +591,35 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
             public void onsuccess() {
                 LiveDataBus.get().with("ex_list").setValue("刷新");
                 finish();
+            }
+        });
+    }
+
+    /**
+     * 说明：打回数据
+     * *创建时间： 2020/7/13 0013 9:59
+     *
+     * @author winelx
+     */
+    public void returnsafetycheckbyapp() {
+        Map<String, String> map = new HashMap<>();
+        map.put("id", checkid);
+        map.put("checkLevel", checkLevel);
+        Dates.getDialogs(this, "正在打回数据");
+        externalModel.returnsafetycheckbyapp(map, new NetworkAdapter() {
+            @Override
+            public void onsuccess() {
+                super.onsuccess();
+                Dates.disDialog();
+                ToastUtils.showShortToastCenter("打回成功");
+                finish();
+                LiveDataBus.get().with("ex_list").setValue("刷新");
+            }
+
+            @Override
+            public void onerror(String string) {
+                super.onerror(string);
+                Dates.disDialog();
             }
         });
     }

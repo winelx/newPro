@@ -14,7 +14,7 @@ import java.util.List;
  * @author lx
  * 版本：1.0
  * 创建日期：{2019/2/15 0015}
- * 描述：新增整改列表
+ * 描述：列表
  * {@link  ChagedReplyNewActivity}
  */
 public class ChangedReplyNewAdapter extends BaseQuickAdapter<Chagereplydetails, BaseViewHolder> {

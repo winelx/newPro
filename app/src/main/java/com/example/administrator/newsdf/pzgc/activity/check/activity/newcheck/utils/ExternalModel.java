@@ -354,25 +354,33 @@ public class ExternalModel {
         });
     }
 
+
     /**
      * 说明：
-     * 创建时间： 2020/7/10 0010 16:56
+     * 创建时间： 2020/7/13 0013 9:55
      *
      * @author winelx
      */
-    public void getwbstreebyapp(String orgid, String nodeid, NetworkAdapter adapter) {
-        Map<String, String> map = new HashMap<>();
-        map.put("orgId",orgid);
-        map.put("nodeId",nodeid);
-        NetWork.postHttp(ExternalApi.GETWBSTREEBYAPP, map, new NetWork.networkCallBack() {
+    public void returnsafetycheckbyapp(Map<String, String> map, NetworkAdapter adapter) {
+        NetWork.postHttp(ExternalApi.RETURNSAFETYCHECKBYAPP, map, new NetWork.networkCallBack() {
             @Override
             public void onSuccess(String s, Call call, Response response) {
-
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int ret = jsonObject.getInt("ret");
+                    if (ret == 0) {
+                        adapter.onsuccess();
+                    } else {
+                        adapter.onerror(jsonObject.getString("msg"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void onError(Call call, Response response, Exception e) {
-
+                adapter.onerror("请求失败");
             }
         });
     }

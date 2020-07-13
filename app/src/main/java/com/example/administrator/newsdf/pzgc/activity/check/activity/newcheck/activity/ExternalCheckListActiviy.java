@@ -18,6 +18,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.ad
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.Enum;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.ExternalCheckListBean;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.utils.ExternalModel;
+import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.PullDownMenu;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.base.BaseActivity;
@@ -56,6 +57,7 @@ public class ExternalCheckListActiviy extends BaseActivity implements View.OnCli
     private List<ExternalCheckListBean> list;
     private int page = 1;
     private String status = "全部";
+    private EmptyUtils emptyUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,7 @@ public class ExternalCheckListActiviy extends BaseActivity implements View.OnCli
         setContentView(R.layout.activiy_check_external_list);
         mContext = this;
         list = new ArrayList<>();
+        emptyUtils = new EmptyUtils(mContext);
         externalModel = new ExternalModel();
         Intent intent = getIntent();
         orgid = intent.getStringExtra("orgid");
@@ -77,6 +80,7 @@ public class ExternalCheckListActiviy extends BaseActivity implements View.OnCli
         recycler = findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(mContext));
         checkListAdapter = new ExternalCheckListAdapter(R.layout.adapter_item_externalchecklist, new ArrayList<>());
+        checkListAdapter.setEmptyView(emptyUtils.init());
         recycler.setAdapter(checkListAdapter);
         refreshlayout = findViewById(R.id.refreshlayout);
         //是否在列表不满一页时候开启上拉加载功能
@@ -106,10 +110,7 @@ public class ExternalCheckListActiviy extends BaseActivity implements View.OnCli
                 if (view.getId() == R.id.content_re) {
                     Intent intent = new Intent(mContext, NewExternalCheckActiviy.class);
                     intent.putExtra("isNew", "编辑");
-                    intent.putExtra("status", bean.getStatus() + "");
                     intent.putExtra("id", bean.getId());
-                    intent.putExtra("orgname", com_title.getText().toString());
-                    intent.putExtra("orgid", orgid);
                     startActivity(intent);
                 } else if (view.getId() == R.id.item_delete) {
                     BaseDialog.confirmdialog(mContext, "是否删除检查单", "", new Onclicklitener() {
@@ -130,13 +131,6 @@ public class ExternalCheckListActiviy extends BaseActivity implements View.OnCli
             @Override
             public void onClick(View v) {
                 finish();
-            }
-        });
-        LiveDataBus.get().with("ex_list", String.class).observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                page = 1;
-                getsafetychecklistbyapp();
             }
         });
         LiveDataBus.get().with("ex_list", String.class).observe(this, new Observer<String>() {
@@ -189,7 +183,7 @@ public class ExternalCheckListActiviy extends BaseActivity implements View.OnCli
             });
         } else if (i == R.id.list_add) {
             Intent intent = new Intent(mContext, NewExternalCheckActiviy.class);
-            intent.putExtra("status", "新增");
+            intent.putExtra("isNew", "新增");
             intent.putExtra("orgname", com_title.getText().toString());
             intent.putExtra("orgid", orgid);
             startActivity(intent);
@@ -213,6 +207,9 @@ public class ExternalCheckListActiviy extends BaseActivity implements View.OnCli
                 }
                 list.addAll((List<ExternalCheckListBean>) object);
                 checkListAdapter.setNewData(list);
+                if (list.size() == 0) {
+                    emptyUtils.noData("暂无数据，切换选项试试");
+                }
             }
 
             @Override

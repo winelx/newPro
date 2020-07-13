@@ -175,8 +175,6 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-
-
         <activity
             android:name=".pzgc.activity.BootupActivity"
             android:launchMode="singleTop"
@@ -487,6 +485,7 @@
         <activity android:name=".pzgc.activity.check.activity.newcheck.activity.ExternalCheckListActiviy" />
         <activity android:name=".pzgc.activity.check.activity.newcheck.activity.ExternalCheckTypeActivity" />
         <activity android:name=".pzgc.activity.check.activity.newcheck.activity.ExternalProjectTypeActivity" />
+        <activity android:name=".pzgc.activity.check.activity.newcheck.activity.ImprotExternalActivity" />
         <activity android:name=".pzgc.activity.check.activity.newcheck.activity.ExternalTreeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />

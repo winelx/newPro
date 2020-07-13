@@ -46,7 +46,6 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_itemlist);
-
         mContext = this;
         list = new ArrayList<>();
         chagedUtils = new ChagedUtils();

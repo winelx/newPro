@@ -808,7 +808,14 @@ public class Dates {
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return sp;
     }
-
+    public static SpannableString setText(Context mContext, String text, int color) {
+        SpannableString sp = new SpannableString(text);
+        sp.setSpan(new ForegroundColorSpan(mContext.getResources()
+                        .getColor(color)), 0,
+                text.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return sp;
+    }
     public static SpannableString setText(Context mContext, String text, int lenght, int lastlenght, int color2) {
         SpannableString sp = new SpannableString(text);
         sp.setSpan(new ForegroundColorSpan(mContext.getResources()

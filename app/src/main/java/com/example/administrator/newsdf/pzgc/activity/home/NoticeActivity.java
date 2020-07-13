@@ -17,6 +17,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckNewAddActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckNewAddsActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.activity.NewExternalCheckActiviy;
 import com.example.administrator.newsdf.pzgc.special.loedger.activity.LoedgerDetailsActivity;
 import com.example.administrator.newsdf.pzgc.special.loedger.activity.LoedgerRecordDetailActivity;
 import com.example.administrator.newsdf.pzgc.special.programme.activity.ProgrammeDetailsActivity;
@@ -78,7 +79,6 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice);
         mContext = this;
-
         emptyUtils = new EmptyUtils(mContext);
         RxBus.getInstance().subscribe(String.class, new Consumer<String>() {
             @Override
@@ -367,6 +367,12 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             intent.putExtra("id", bean.getModelId());
             startActivity(intent);
 
+        }else if (modelname==81){
+            //外业检查
+            Intent intent = new Intent(mContext, NewExternalCheckActiviy.class);
+            intent.putExtra("isNew", "编辑");
+            intent.putExtra("id", bean.getModelId());
+            startActivity(intent);
         }
     }
 
@@ -409,6 +415,12 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             intent.putExtra("id", bean.getModelId());
             intent.putExtra("taskid", bean.getId());
             intent.putExtra("orgid", bean.getModelName());
+            startActivity(intent);
+        } else if (modelType == 81) {
+            //外业检查
+            Intent intent = new Intent(mContext, NewExternalCheckActiviy.class);
+            intent.putExtra("isNew", "编辑");
+            intent.putExtra("id", bean.getModelId());
             startActivity(intent);
         }
     }
@@ -454,6 +466,12 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             intent.putExtra("id", bean.getModelId());
             intent.putExtra("taskid", "");
             intent.putExtra("orgid", bean.getModelCode());
+            startActivity(intent);
+        }else if (modelType == 81) {
+            //外业检查
+            Intent intent = new Intent(mContext, NewExternalCheckActiviy.class);
+            intent.putExtra("isNew", "编辑");
+            intent.putExtra("id", bean.getModelId());
             startActivity(intent);
         }
     }
