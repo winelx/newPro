@@ -59,6 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+
             android:paddingLeft="10dp"
             android:text=""
             android:textSize="13sp" />
@@ -108,19 +109,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
             android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/dp10"
-                android:text="总分："
-                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/import_checkscore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:layout_gravity="center"
                 android:textColor="@color/red" />
         </LinearLayout>

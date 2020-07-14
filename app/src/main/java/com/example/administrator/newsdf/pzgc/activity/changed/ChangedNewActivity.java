@@ -128,7 +128,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
                 intent.putExtra("orgname", chagedOrganizeText.getText().toString());
                 intent.putExtra("orgid", orgId);
                 intent.putExtra("status", false);
-                intent.putExtra("iwork", list.get(position).getIwork());
+                intent.putExtra("iwork", list.get(position).getIwork() == 0 ? "" : list.get(position).getIwork()+"");
                 //问题项Id
                 intent.putExtra("noticeDelId", list.get(position).getId());
                 //整改单Id

@@ -17,6 +17,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.ut
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.baselibrary.utils.network.NetWork;
 import com.example.baselibrary.utils.rx.LiveDataBus;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -170,7 +171,13 @@ public class MessageExternalFragment extends LazyloadFragment implements View.On
             } else {
                 helper.setBackgroundRes(R.id.check_image, R.mipmap.circular_ensure_false);
             }
-            helper.setText(R.id.check_item, "检测内容:" + checkitem.getName());
+            helper.setText(R.id.check_item, "检测位置：" + checkitem.getPosition());
+            //扣分标准
+            helper.setText(R.id.check_standard, checkitem.getCheckStandard());
+            helper.setText(R.id.title, checkitem.getName());
+            helper.setText(R.id.describe, checkitem.getDescription());
+            helper.setText(R.id.standardScore, "标准分：" + Utils.isNull(checkitem.getStandardScore()));
+            helper.setVisible(R.id.getscore, false);
             ImageView check_image = helper.getView(R.id.check_image);
             check_image.setOnClickListener(new View.OnClickListener() {
                 @Override

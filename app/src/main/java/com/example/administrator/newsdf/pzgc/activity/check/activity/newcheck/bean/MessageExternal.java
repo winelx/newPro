@@ -11,11 +11,20 @@ public class MessageExternal {
      */
 
     private String checkStandard;
+    private String standardScore;
     private String description;
     private String id;
     private String name;
     private String position;
     private boolean status = false;
+
+    public String getStandardScore() {
+        return standardScore;
+    }
+
+    public void setStandardScore(String standardScore) {
+        this.standardScore = standardScore;
+    }
 
     public boolean isStatus() {
         return status;

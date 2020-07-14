@@ -84,11 +84,9 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
     private LinearLayout checklistmeun, checkNewDialog;
     //当前单据状态
     private int status;
-
     public static CheckNewAddActivity getInstance() {
         return mContext;
     }
-
     private CheckUtils checkUtils;
     private ArrayList<View> viewlist = new ArrayList<>();
     private ArrayList<View> tVisibility = new ArrayList<>();

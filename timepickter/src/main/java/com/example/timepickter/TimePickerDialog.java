@@ -75,11 +75,14 @@ public class TimePickerDialog extends DialogFragment implements View.OnClickList
         TextView sure = (TextView) view.findViewById(R.id.tv_sure);
         sure.setOnClickListener(this);
         TextView title = (TextView) view.findViewById(R.id.tv_title);
+        TextView day_lin = (TextView) view.findViewById(R.id.day_lin);
         View toolbar = view.findViewById(R.id.toolbar);
-
         title.setText(mPickerConfig.mTitleString);
         cancel.setText(mPickerConfig.mCancelString);
         sure.setText(mPickerConfig.mSureString);
+        if (mPickerConfig.mType == Type.YEAR_MONTH) {
+            day_lin.setVisibility(View.GONE);
+        }
 //        toolbar.setBackgroundColor(mPickerConfig.mThemeColor);
         mTimeWheel = new TimeWheel(view, mPickerConfig);
         return view;

@@ -352,13 +352,6 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
-                    case R.id.btn_camera_pop_camera:
-                        //外业检查
-                        Intent intent1 = new Intent(mContext, CheckNewAddActivity.class);
-                        intent1.putExtra("orgId", orgId);
-                        intent1.putExtra("name", name);
-                        startActivity(intent1);
-                        break;
                     case R.id.btn_camera_pop_album:
                         //内业检查
                         Intent intent = new Intent(mContext, CheckNewAddsActivity.class);

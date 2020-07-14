@@ -10,6 +10,24 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="萨芬寄刀片"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/back" />
+
         <TextView
             android:id="@+id/check_item"
             android:layout_width="match_parent"
@@ -18,8 +36,9 @@
             android:paddingLeft="10dp"
             android:paddingTop="@dimen/dp10"
             android:paddingRight="10dp"
+            android:text="检查部位"
             android:textColor="#000000"
-            android:textSize="15sp" />
+            android:textSize="15sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,7 +50,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="检测标准："
+                android:text="考核扣分标准："
                 android:textColor="#000000"
                 android:textSize="15sp" />
 

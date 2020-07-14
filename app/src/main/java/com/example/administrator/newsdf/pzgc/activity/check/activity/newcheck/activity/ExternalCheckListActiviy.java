@@ -46,7 +46,7 @@ public class ExternalCheckListActiviy extends BaseActivity implements View.OnCli
     private ImageView comImg, list_add;
     private TextView com_title;
     private LinearLayout checklistmeun;
-    private String[] strings = {"全部", "保存", "待分公司核查", "待集团核查", "待分公司确认", "待标段确", "已确认"};
+    private String[] strings = {"全部", "保存", "待分公司核查", "待集团核查", "待分公司确认", "待标段确认", "已确认"};
     private PullDownMenu pullDownMenu = new PullDownMenu();
     private SmartRefreshLayout refreshlayout;
     private RecyclerView recycler;

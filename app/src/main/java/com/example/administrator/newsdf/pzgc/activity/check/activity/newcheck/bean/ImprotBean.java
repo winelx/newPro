@@ -14,7 +14,7 @@ public class ImprotBean {
     String   checkPersonId;//检查人id
     String   checkPersonName;//检查人名称
     String   status;//状态
-    String   fTotalSocre;//
+    String   totalSocre;//
 
 
     public String getId() {
@@ -25,12 +25,12 @@ public class ImprotBean {
         this.id = id;
     }
 
-    public String getfTotalSocre() {
-        return fTotalSocre;
+    public String getTotalSocre() {
+        return totalSocre;
     }
 
-    public void setfTotalSocre(String fTotalSocre) {
-        this.fTotalSocre = fTotalSocre;
+    public void setTotalSocre(String totalSocre) {
+        this.totalSocre = totalSocre;
     }
 
     public String getOrgId() {

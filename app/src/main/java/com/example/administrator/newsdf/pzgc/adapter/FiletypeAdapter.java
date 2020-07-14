@@ -24,6 +24,7 @@ import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.DialogUtils;
 import com.example.administrator.newsdf.pzgc.utils.NetUtils;
+import com.example.administrator.newsdf.pzgc.utils.RoundImageView;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.ui.utils.PdfPreview;
 import com.example.baselibrary.utils.log.LogUtil;
@@ -52,7 +53,7 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context mContext;
 
     private ArrayList<FileTypeBean> mData;
-
+    private String[]  filetype= {"xls","xlsx","pdf","doc","docx","dwg"};
     public FiletypeAdapter(Context mContext, ArrayList<FileTypeBean> data) {
         this.mContext = mContext;
         this.mData = data;
@@ -74,9 +75,8 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private void bindView(final FiletypeAdapter.TypeHolder holder, final int position) {
         //截取doc+1后面的字符串，包括doc+1；
-        String strs = mData.get(position).getUrl();
-        strs = strs.substring(strs.length() - 3, strs.length());
-        if ("pdf".equals(strs)) {
+        FileTypeBean bean=mData.get(position);
+        if ("pdf".equals(bean.getType())) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
             //背景色
@@ -86,7 +86,7 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             //字体背景色
             holder.audio_relat_icon.setBackgroundColor(Color.parseColor("#e98e90"));
             holder.audio_relat_icon.setTextColor(Color.parseColor("#FFFFFF"));
-        } else if ("doc".equals(strs) || "docx".equals(strs)) {
+        } else if ("doc".equals(bean.getType()) || "docx".equals(bean.getType())) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
             holder.audio_relat_name.setText(mData.get(position).getName());
@@ -94,7 +94,7 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.audio_relat_icon.setText("W");
             holder.audio_relat_icon.setTextColor(Color.parseColor("#FFFFFF"));
             holder.audio_relat_icon.setBackgroundColor(Color.parseColor("#5e8ed3"));
-        } else if ("xls".equals(strs) || "xlsx".equals(strs)) {
+        } else if ("xls".equals(bean.getType()) || "xlsx".equals(bean.getType())) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
             holder.audio_relat_name.setText(mData.get(position).getName());
@@ -102,7 +102,7 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.audio_relat_icon.setText("X");
             holder.audio_relat_icon.setTextColor(Color.parseColor("#FFFFFF"));
             holder.audio_relat_icon.setBackgroundColor(Color.parseColor("#67cf95"));
-        } else if ("dwg".equals(strs)) {
+        } else if ("dwg".equals(bean.getType())) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
             //背景色
@@ -144,11 +144,9 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ArrayList<String> imagepath = new ArrayList<String>();
                 ArrayList<String> path = new ArrayList<String>();
                 for (int i = 0; i < mData.size(); i++) {
-                    String strs = mData.get(position).getUrl();
-                    strs = strs.substring(strs.length() - 3, strs.length());
+                    String strs = mData.get(position).getType();
                     //图片可能为jpg 也可能是png
-                    if (strs.equals("xls") || strs.equals("xlsx") || strs.equals("pdf") || strs.equals("PNG") || strs.equals("doc") || strs.equals("docx")) {
-
+                    if ("xls".equals(strs) || "xlsx".equals(strs) || "pdf".equals(strs) || "PNG".equals(strs) || "doc".equals(strs) || "docx".equals(strs)||"dwg".equals(strs)) {
                     } else {
                         path.add(mData.get(i).getUrl());
                     }
@@ -191,7 +189,7 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public class TypeHolder extends RecyclerView.ViewHolder {
-        ImageView img;
+        RoundImageView img;
         RelativeLayout audio_relat;
         TextView audio_relat_name, audio_relat_icon, tips;
 

@@ -56,7 +56,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
     private BasePhotoAdapter adapter;
     private TextView menutext, comTitle, chagedOrganizeText, violationStandardText;
     private EditText exitextPosition, editProblem, delscore;
-    private LinearLayout standarddelscore, chagedPositionLin;
+    private LinearLayout standarddelscore, chagedPositionLin, violation_standard;
     private Context mContext;
     private ArrayList<photoBean> photolist;
     private PopCameraUtils popcamerautils;
@@ -72,24 +72,18 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
     //分值   /违反类别Id  违反标准ID    违反类别容
     private String score, categoryid, categoryedid, categorycontent;
     private ArrayList<String> deleltes = new ArrayList<>();
-    private int iwork = 0;
+    private String iwork;
     private TextView importWarning;
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_problemitem);
-
         Intent intent = getIntent();
         orgName = intent.getStringExtra("orgname");
         orgId = intent.getStringExtra("orgid");
-        try {
-            iwork = intent.getIntExtra("iwork", 1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        iwork = intent.getStringExtra("iwork");
         //整改单Id
         noticeId = intent.getStringExtra("id");
         //true 编辑问题项数据，  false 新增问题项
@@ -137,7 +131,8 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         /*整改组织*/
         findViewById(R.id.chaged_organize_lin).setOnClickListener(this);
         /*违反标准*/
-        findViewById(R.id.violation_standard).setOnClickListener(this);
+        violation_standard = findViewById(R.id.violation_standard);
+        violation_standard.setOnClickListener(this);
         /*菜单按钮*/
         menutext = (TextView) findViewById(R.id.com_button);
         menutext.setText("保存");
@@ -231,18 +226,18 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
             //隐藏添加按钮
             adapter.addview(false);
             //输入框不可点击
-            statusclose();
+            statusclose(false);
             request();
             //显示删除按钮
             checkItemDelete.setVisibility(View.VISIBLE);
         }
-        //i导入的外业检查，0为添加问题
-        if (iwork == 1 || iwork == 0) {
-            importWarning.setVisibility(View.VISIBLE);
-            chagedPositionLin.setVisibility(View.VISIBLE);
-        } else {
+        //1导入的外业检查，0为添加问题
+        if (!TextUtils.isEmpty(iwork)) {
             importWarning.setVisibility(View.GONE);
             chagedPositionLin.setVisibility(View.GONE);
+        } else {
+            importWarning.setVisibility(View.VISIBLE);
+            chagedPositionLin.setVisibility(View.VISIBLE);
         }
     }
 
@@ -257,19 +252,8 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 String str = menutext.getText().toString();
                 if (KEEP.equals(str)) {
                     if (score != null) {
-                        if (iwork == 1 || iwork == 0) {
-                            //外业和添加问题
-                            if (!TextUtils.isEmpty(exitextPosition.getText().toString()) || !TextUtils.isEmpty(chagedPosition.getText().toString())) {
-                                Dates.getDialog(this, "保存数据中...");
-                                save();
-                            } else {
-                                Snackbar.make(comTitle, "整改部位不能为空", Snackbar.LENGTH_LONG).show();
-                            }
-                        } else {
-                            //专项检查和内业检查
-                            Dates.getDialog(this, "保存数据中...");
-                            save();
-                        }
+                        Dates.getDialog(this, "保存数据中...");
+                        save();
                     } else {
                         ToastUtils.showShortToast("违反标准不能为空");
                     }
@@ -277,7 +261,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                     status = true;
                     menutext.setText("保存");
                     adapter.addview(true);
-                    statusopen();
+                    statusclose(true);
                 }
                 break;
             case R.id.check_item_delete:
@@ -400,21 +384,16 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
     }
 
     //输入框不可以输入
-    public void statusclose() {
-        exitextPosition.setEnabled(false);
-        editProblem.setEnabled(false);
-        delscore.setEnabled(false);
-    }
-
-    //输入可以输入
-    public void statusopen() {
-        exitextPosition.setEnabled(true);
-        editProblem.setEnabled(true);
-        //  添加的问题的分数不能编辑，但是导入的是可以编辑
-        if (iwork == 1 || iwork == 0) {
-            delscore.setEnabled(false);
-        } else {
+    public void statusclose(boolean lean) {
+        exitextPosition.setEnabled(lean);
+        editProblem.setEnabled(lean);
+        delscore.setEnabled(lean);
+        if (!TextUtils.isEmpty(iwork)) {
             delscore.setEnabled(true);
+            violation_standard.setEnabled(false);
+        } else {
+            delscore.setEnabled(false);
+            violation_standard.setEnabled(true);
         }
     }
 
@@ -492,12 +471,13 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
                 photolist.addAll((ArrayList<photoBean>) map.get("list"));
                 adapter.getData(photolist);
                 Dates.disDialog();
-                statusclose();
+                statusclose(false);
                 ToastUtils.showShortToastCenter("保存成功");
                 NetworkinterfaceCallbackUtils.Refresh("problem");
                 checkItemDelete.setVisibility(View.VISIBLE);
                 finish();
             }
+
             @Override
             public void onerror(String string) {
                 Dates.disDialog();
@@ -505,6 +485,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
             }
         });
     }
+
     /**
      * 请求参处数
      */
@@ -514,7 +495,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
             public void onsuccess(Map<String, Object> map) {
                 ChagedProblembean item = (ChagedProblembean) map.get("bean");
                 //整改期限
-                chagedOrganizeText.setText(item.getRectificationDate().substring(0, 10));
+                chagedOrganizeText.setText(item.getRectificationDate().length() > 10 ? item.getRectificationDate().substring(0, 10) : item.getRectificationDate());
                 //存在问题
                 editProblem.setText(item.getRectificationReason());
                 //违反标准

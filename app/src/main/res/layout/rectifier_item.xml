@@ -6,9 +6,9 @@
 
     <RelativeLayout
         android:id="@+id/audio_relat"
-        android:layout_width="78dp"
-        android:layout_height="78dp"
-        android:background="#f1f6f7">
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:background="@drawable/tab_item_gray">
 
         <TextView
             android:id="@+id/audio_relat_name"
@@ -17,8 +17,7 @@
             android:gravity="center"
             android:maxEms="10"
             android:ellipsize="end"
-
-            android:textSize="11sp" />
+            android:textSize="10sp" />
 
         <TextView
             android:id="@+id/audio_relat_icon"
@@ -43,13 +42,13 @@
             android:layout_marginLeft="55dp"
             android:text="点击查看"
             android:textColor="@color/colorAccent"
-            android:textSize="11sp" />
+            android:textSize="10sp" />
     </RelativeLayout>
 
-    <ImageView
+    <com.example.administrator.newsdf.pzgc.utils.RoundImageView
         android:id="@+id/imgage"
-        android:layout_width="78dp"
-        android:layout_height="78dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:paddingRight="5dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"

@@ -76,7 +76,7 @@
 
             <TextView
                 android:id="@+id/standardscore"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="end"
@@ -96,15 +96,15 @@
             android:paddingBottom="5dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:text="考核扣分标准"
                 android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/checkstandard"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:gravity="end"
@@ -132,7 +132,7 @@
 
             <TextView
                 android:id="@+id/score"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="end"
@@ -159,9 +159,9 @@
 
             <TextView
                 android:id="@+id/position"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:gravity="end"
                 android:textColor="@color/black" />
 
@@ -186,7 +186,7 @@
 
             <TextView
                 android:id="@+id/description"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="end"
@@ -213,7 +213,7 @@
 
             <TextView
                 android:id="@+id/generate"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="end"

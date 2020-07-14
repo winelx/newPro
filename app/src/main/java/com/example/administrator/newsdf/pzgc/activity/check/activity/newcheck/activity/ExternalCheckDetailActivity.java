@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,6 @@ import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileCallback;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -217,21 +217,27 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                 break;
             case R.id.tab_next:
                 if (page != pagelist.size() - 1) {
-                    if ("保存".equals(toolbartext.getText().toString())) {
-                        if (!TextUtils.isEmpty(score.getText().toString())) {
-                            BaseDialog.confirmmessagedialog(mContext, "已经打分，是否保存", "选择下一项内容会清除所填内容\n且不会保存数据", "保存", " 下一项", new Onclicklitener() {
-                                @Override
-                                public void confirm(String string) {
-                                    page++;
-                                    initCheckItem();
-                                }
+                    if (toolbartext.getVisibility() == View.VISIBLE) {
+                        if ("保存".equals(toolbartext.getText().toString())) {
+                            if (!TextUtils.isEmpty(score.getText().toString())) {
+                                BaseDialog.confirmmessagedialog(mContext, "已经打分，是否保存", "选择下一项内容会清除所填内容\n且不会保存数据", "保存", " 下一项", new Onclicklitener() {
+                                    @Override
+                                    public void confirm(String string) {
+                                        page++;
+                                        initCheckItem();
+                                    }
 
-                                @Override
-                                public void cancel(String string) {
-                                    saveSafetyCheckDelByApp();
+                                    @Override
+                                    public void cancel(String string) {
+                                        saveSafetyCheckDelByApp();
 
-                                }
-                            });
+                                    }
+                                });
+                            } else {
+                                page++;
+                                isLeveOption = pagelist.get(page).isLeveOption();
+                                initCheckItem();
+                            }
                         } else {
                             page++;
                             isLeveOption = pagelist.get(page).isLeveOption();
@@ -245,24 +251,31 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                 } else {
                     ToastUtils.showShortToast("已经是最后一项了");
                 }
+
                 break;
             case R.id.tab_previous:
                 if (page > 0) {
-                    if ("保存".equals(toolbartext.getText().toString())) {
-                        if (!TextUtils.isEmpty(score.getText().toString())) {
-                            BaseDialog.confirmmessagedialog(mContext, "已经打分，是否保存", "显示上一项内容会清除所填内容\n且不会保存数据", "上一项", "保存", new Onclicklitener() {
-                                @Override
-                                public void confirm(String string) {
+                    if (toolbartext.getVisibility() == View.VISIBLE) {
+                        if ("保存".equals(toolbartext.getText().toString())) {
+                            if (!TextUtils.isEmpty(score.getText().toString())) {
+                                BaseDialog.confirmmessagedialog(mContext, "已经打分，是否保存", "显示上一项内容会清除所填内容\n且不会保存数据", "上一项", "保存", new Onclicklitener() {
+                                    @Override
+                                    public void confirm(String string) {
 
-                                    saveSafetyCheckDelByApp();
-                                }
+                                        saveSafetyCheckDelByApp();
+                                    }
 
-                                @Override
-                                public void cancel(String string) {
-                                    page--;
-                                    initCheckItem();
-                                }
-                            });
+                                    @Override
+                                    public void cancel(String string) {
+                                        page--;
+                                        initCheckItem();
+                                    }
+                                });
+                            } else {
+                                page--;
+                                isLeveOption = pagelist.get(page).isLeveOption();
+                                initCheckItem();
+                            }
                         } else {
                             page--;
                             isLeveOption = pagelist.get(page).isLeveOption();
@@ -315,10 +328,10 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                 footerTitle.setText("集团公司质安部（A）");
                 break;
             case "2":
-                footerTitle.setText("分公司质安部（A）");
+                footerTitle.setText("分公司质安科（B）");
                 break;
             case "1":
-                footerTitle.setText("标段质安部（A）");
+                footerTitle.setText("项目质安部（C）");
                 footer_manger.setVisibility(View.GONE);
                 break;
             default:
@@ -535,7 +548,11 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     //考核扣分标准
                     checkstandard.setText(Utils.isNull(project.getbCheckStandard()));
                     //评分
-                    score.setText(Utils.isNull(project.getbScore()));
+                    try {
+                        score.setText(Utils.isNull(project.getbScore()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     //位置
                     orgEditext.setText(Utils.isNull(project.getbPosition()));
                     //具体描述
@@ -566,13 +583,17 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     //分公司
                     CheckDetailBean.Company company = (CheckDetailBean.Company) map.get("company");
                     //管理扣分
-                    manger_score.setText(TextUtils.isEmpty(Utils.isNull(company.getbCheckScore())) ? "0" : Utils.isNull(company.getbCheckScore()));
+                    manger_score.setText(company.getbCheckScore());
                     //标准分
                     standardscore.setText(Utils.isNull(company.getfStandardScore()));
                     //考核扣分标准
                     checkstandard.setText(Utils.isNull(company.getfCheckStandard()));
                     //评分
-                    score.setText(Utils.isNull(company.getfScore()));
+                    try {
+                        score.setText(Utils.isNull(company.getfScore()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     //位置
                     orgEditext.setText(Utils.isNull(company.getfPosition()));
                     header_contet.setText(Utils.isNull(company.getName()));
@@ -603,7 +624,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     CheckDetailBean.Group group = (CheckDetailBean.Group) map.get("group");
                     //管理扣分
                     if (!TextUtils.isEmpty(Utils.isNull(group.getfCheckScore()))) {
-                        manger_score.setText(Utils.isNull(group.getfCheckScore()));
+
                     } else {
                         manger_score.setText("0");
                     }
@@ -612,7 +633,11 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     //考核扣分标准
                     checkstandard.setText(Utils.isNull(group.getjCheckStandard()));
                     //评分
-                    score.setText(Utils.isNull(group.getjScore()));
+                    try {
+                        score.setText(Utils.isNull(group.getjScore()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     //位置
                     orgEditext.setText(Utils.isNull(group.getjPosition()));
                     //具体描述
@@ -664,12 +689,29 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
     public void saveSafetyCheckDelByApp() {
         Map<String, String> map = new HashMap<>();
         if (Integer.parseInt(checkLevel) > 1) {
-            //管理扣分
-            if ("3".equals(checkLevel)) {
-                map.put("fCheckScore", manger_score.getText().toString());
-            } else if ("2".equals(checkLevel)) {
-                map.put("bCheckScore", manger_score.getText().toString());
+            if (!TextUtils.isEmpty(standardscore.getText().toString()) && !TextUtils.isEmpty(manger_score.getText().toString())) {
+                int num = Integer.parseInt(manger_score.getText().toString());
+                int snum = Integer.parseInt(standardscore.getText().toString());
+                if (num > snum) {
+                    ToastUtils.showShortToastCenter("管理扣分不能大于标准分");
+                    return;
+                } else {
+                    //管理扣分
+                    if ("3".equals(checkLevel)) {
+                        map.put("fCheckScore", manger_score.getText().toString());
+                    } else if ("2".equals(checkLevel)) {
+                        map.put("bCheckScore", manger_score.getText().toString());
+                    }
+                }
+            } else {
+                //管理扣分
+                if ("3".equals(checkLevel)) {
+                    map.put("fCheckScore", manger_score.getText().toString());
+                } else if ("2".equals(checkLevel)) {
+                    map.put("bCheckScore", manger_score.getText().toString());
+                }
             }
+
         }
         map.put("safetyCheckId", checkid);
         map.put("id", scoreid);
@@ -715,8 +757,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                 ToastUtils.showShortToast("保存成功");
                 //更新记分面板
                 getScorePane();
-                setEnabled(false);
-
+                getSafetyCheckDelByApp(scoreid);
             }
 
             @Override
@@ -761,6 +802,11 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
             orgEditext.setEnabled(lean);
             adapter.addview(lean);
             score.setEnabled(lean);
+            if (score_warning.getVisibility() == View.VISIBLE) {
+                score.setEnabled(lean);
+            } else {
+                score.setEnabled(false);
+            }
             describe.setEnabled(lean);
             footerSwitch.setClickable(lean);
             manger_score.setEnabled(lean);

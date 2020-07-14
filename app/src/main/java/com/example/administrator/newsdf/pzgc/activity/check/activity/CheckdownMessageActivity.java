@@ -32,7 +32,6 @@ public class CheckdownMessageActivity extends BaseActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkdown_message);
-
         mFragment = new ArrayList<>();
         mFragment.add(new CheckdownMessageAllFragment());
         mFragment.add(new CheckdownMessageMeFragment());

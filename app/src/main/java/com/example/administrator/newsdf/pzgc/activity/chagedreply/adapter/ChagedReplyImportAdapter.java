@@ -30,7 +30,7 @@ public class ChagedReplyImportAdapter extends BaseQuickAdapter<ImprotItem, BaseV
         } else {
             helper.setBackgroundRes(R.id.chaged_reply_image, R.mipmap.circular_ensure_false);
         }
-        helper.setText(R.id.chagedposition, "整改部位：" + item.getRectificationPartName());
+        helper.setText(R.id.chagedposition, item.getPartDetails());
         helper.setText(R.id.chagedstandard, "违反标准：" + item.getStandardDelName());
         helper.setText(R.id.chagedproblem, "存在问题：" + item.getRectificationReason());
         helper.setText(R.id.chageddata, "整改期限：" + item.getRectificationDate().substring(0, 10));

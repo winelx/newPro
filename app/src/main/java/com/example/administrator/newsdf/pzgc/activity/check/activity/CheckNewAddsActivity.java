@@ -121,7 +121,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
         if (taskId == null) {
             checkNewOrgname.setText(SPUtils.getString(mContext, "username", ""));
             checkUsername.setText(SPUtils.getString(mContext, "staffName", ""));
-            datatime.setText(Dates.getDay());
+            datatime.setText(Dates.getDay().substring(0,7));
             checkNewWebtext.setText(name);
             statusF();
         } else {
@@ -716,7 +716,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
     public void dialog() {
         Date now = new Date();
         mDialogYearMonthDay = new TimePickerDialog.Builder()
-                .setType(Type.YEAR_MONTH_DAY)//展示模式
+                .setType(Type.YEAR_MONTH)//展示模式
                 .setWheelItemTextSize(15)//字体大小
                 .setMinMillseconds(now.getTime() - (24 * 60 * 60 * 1000) * 2)//最小值时间
                 .setCurrentMillseconds(now.getTime())//当前时间
@@ -725,7 +725,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                 .setCallBack(new OnDateSetListener() {
                     @Override
                     public void onDateSet(TimePickerDialog timePickerView, long millseconds) {
-                        datatime.setText(Dates.stampToDates(millseconds));
+                        datatime.setText(Dates.stampToDates(millseconds).substring(0,7));
                     }
                 })//回调
                 .build();

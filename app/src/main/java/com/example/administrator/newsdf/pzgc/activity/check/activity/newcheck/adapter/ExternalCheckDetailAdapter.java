@@ -14,7 +14,10 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.CheckDetailBean;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.utils.ExternalApi;
+import com.example.administrator.newsdf.pzgc.adapter.FiletypeAdapter;
 import com.example.administrator.newsdf.pzgc.adapter.PhotoAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.RectifierAdapter;
+import com.example.administrator.newsdf.pzgc.bean.FileTypeBean;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.baselibrary.adapter.multiitem.BaseItemProvider;
@@ -37,12 +40,12 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
     public static final int TYPE_RECORD = 1;
     public static final int TYPE_OPTION = 2;
     public static final int TYPE_TAB = 3;
-    private List<Object> mData;
+    private List<Object> lists;
     private String level;
 
     public ExternalCheckDetailAdapter(@Nullable List<Object> data) {
         super(data);
-        this.mData = data;
+        this.lists = data;
         finishInitialize();
     }
 
@@ -90,7 +93,7 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
             helper.setText(R.id.score, Utils.isNull(data.getbScore()));
             helper.setText(R.id.position, Utils.isNull(data.getbPosition()));
             helper.setText(R.id.description, Utils.isNull(data.getbDescription()));
-            helper.setText(R.id.generate, Utils.isNull(data.getbGenerate()));
+            helper.setText(R.id.generate, data.getbGenerate().equals("1") ? "否" : "是");
             TextView open_lin = helper.getView(R.id.open_lin);
             ImageView open_img = helper.getView(R.id.open_img);
             LinearLayout content_lin = helper.getView(R.id.content_lin);
@@ -117,12 +120,12 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
             }
             RecyclerView photo_rec = helper.getView(R.id.photo_rec);
             photo_rec.setLayoutManager(new GridLayoutManager(mContext, 4));
-            ArrayList<String> photoPaths = new ArrayList<>();
+            ArrayList<FileTypeBean> photoPaths = new ArrayList<>();
             //标段
             if (data.getBFileList() != null) {
                 for (int i = 0; i < data.getBFileList().size(); i++) {
                     CheckDetailBean.Project.BFileListBean beans = data.getBFileList().get(i);
-                    photoPaths.add(Requests.networks + "/" + beans.getFilepath());
+                    photoPaths.add(new FileTypeBean(beans.getFilename(), Requests.networks + "/" + beans.getFilepath(), beans.getFileext()));
                 }
             }
             if (photoPaths.size() > 0) {
@@ -130,9 +133,7 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
             } else {
                 photo_rec.setVisibility(View.GONE);
             }
-            PhotoAdapter adapter = new PhotoAdapter(mContext, photoPaths, "other");
-            adapter.addview(false);
-            adapter.addimage(false);
+            FiletypeAdapter adapter = new FiletypeAdapter(mContext, photoPaths);
             photo_rec.setAdapter(adapter);
         }
 
@@ -158,12 +159,12 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
 
         @Override
         public void convert(BaseViewHolder helper, CheckDetailBean.Company data, int position) {
-            helper.setText(R.id.item_title, "分公司质安部（B）");
+            helper.setText(R.id.item_title, "分公司质安科(B)");
             helper.setText(R.id.checkstandard, Utils.isNull(data.getfCheckStandard()));
             helper.setText(R.id.score, Utils.isNull(data.getfScore()));
             helper.setText(R.id.position, Utils.isNull(data.getfPosition()));
             helper.setText(R.id.description, Utils.isNull(data.getfDescription()));
-            helper.setText(R.id.generate, Utils.isNull(data.getfGenerate()));
+            helper.setText(R.id.generate, data.getfGenerate().equals("1") ? "否" : "是");
             TextView standardscore_text = helper.getView(R.id.standardscore_text);
             standardscore_text.setText("管理行为扣分");
             TextView standardscore = helper.getView(R.id.standardscore);
@@ -195,18 +196,25 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
                 }
             });
             if ("2".equals(level) || "1".equals(level)) {
-                open_lin.setText("展开");
-                open_img.setBackgroundResource(R.mipmap.bottom_blue_icon);
-                content_lin.setVisibility(View.GONE);
+                if (lists.size() == 2) {
+                    open_lin.setText("收起");
+                    open_img.setBackgroundResource(R.mipmap.top_blue_icon);
+                    content_lin.setVisibility(View.VISIBLE);
+                } else {
+                    open_lin.setText("展开");
+                    open_img.setBackgroundResource(R.mipmap.bottom_blue_icon);
+                    content_lin.setVisibility(View.GONE);
+                }
+
             }
             RecyclerView photo_rec = helper.getView(R.id.photo_rec);
             photo_rec.setLayoutManager(new GridLayoutManager(mContext, 4));
-            ArrayList<String> photoPaths = new ArrayList<>();
             //分公司
+            ArrayList<FileTypeBean> photoPaths = new ArrayList<>();
             if (data.getFFileList() != null) {
                 for (int i = 0; i < data.getFFileList().size(); i++) {
                     CheckDetailBean.Company.FFileListBean beans = data.getFFileList().get(i);
-                    photoPaths.add(Requests.networks + "/" + beans.getFilepath());
+                    photoPaths.add(new FileTypeBean(beans.getFilename(), Requests.networks + "/" + beans.getFilepath(), beans.getFileext()));
                 }
             }
             if (photoPaths.size() > 0) {
@@ -214,9 +222,7 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
             } else {
                 photo_rec.setVisibility(View.GONE);
             }
-            PhotoAdapter adapter = new PhotoAdapter(mContext, photoPaths, "other");
-            adapter.addview(false);
-            adapter.addimage(false);
+            FiletypeAdapter adapter = new FiletypeAdapter(mContext, photoPaths);
             photo_rec.setAdapter(adapter);
         }
 
@@ -241,16 +247,16 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
 
         @Override
         public void convert(BaseViewHolder helper, CheckDetailBean.Group data, int position) {
-            helper.setText(R.id.item_title, "集团公司质安部（A）");
+            helper.setText(R.id.item_title, "集团公司质安部(A)");
             helper.setText(R.id.score, Utils.isNull(data.getjScore()));
             helper.setText(R.id.position, Utils.isNull(data.getjPosition()));
             helper.setText(R.id.description, Utils.isNull(data.getjDescription()));
-            helper.setText(R.id.generate, Utils.isNull(data.getjGenerate()));
+            helper.setText(R.id.generate, data.getjGenerate().equals("1") ? "否" : "是");
             TextView standardscore_text = helper.getView(R.id.standardscore_text);
             standardscore_text.setText("管理行为扣分");
             TextView standardscore = helper.getView(R.id.standardscore);
             standardscore.setText(Utils.isNull(data.getfCheckScore()));
-            if (!TextUtils.isEmpty(data.getfCheckScore())){
+            if (!TextUtils.isEmpty(data.getfCheckScore())) {
                 int scor = Integer.parseInt(data.getfCheckScore());
                 if (scor < 0) {
                     standardscore.setTextColor(Color.parseColor("#FE0000"));
@@ -278,12 +284,12 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
             });
             RecyclerView photo_rec = helper.getView(R.id.photo_rec);
             photo_rec.setLayoutManager(new GridLayoutManager(mContext, 4));
-            ArrayList<String> photoPaths = new ArrayList<>();
+            ArrayList<FileTypeBean> photoPaths = new ArrayList<>();
             //集团
             if (data.getJFileList() != null) {
                 for (int i = 0; i < data.getJFileList().size(); i++) {
                     CheckDetailBean.Group.JFileListBean beans = data.getJFileList().get(i);
-                    photoPaths.add(Requests.networks + "/" + beans.getFilepath());
+                    photoPaths.add(new FileTypeBean(beans.getFilename(), Requests.networks + "/" + beans.getFilepath(), beans.getFileext()));
                 }
             }
             if (photoPaths.size() > 0) {
@@ -291,9 +297,7 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
             } else {
                 photo_rec.setVisibility(View.GONE);
             }
-            PhotoAdapter adapter = new PhotoAdapter(mContext, photoPaths, "other");
-            adapter.addview(false);
-            adapter.addimage(false);
+            FiletypeAdapter adapter = new FiletypeAdapter(mContext, photoPaths);
             photo_rec.setAdapter(adapter);
         }
     }

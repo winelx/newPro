@@ -383,11 +383,11 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
                 newExternalCheckModel.submitButton(mContext, bean.isSubmitButton());
             }
         } else if ("4".equals(status) || "5".equals(status)) {
-            newExternalCheckModel.confirmButton(mContext, bean.isConfirmButton());
             commit.setText("确认并签名");
             commit.setVisibility(View.VISIBLE);
             commit.setBackgroundResource(R.color.orange);
             repulse.setVisibility(View.GONE);
+            newExternalCheckModel.confirmButton(mContext, bean.isConfirmButton());
         } else if ("6".equals(status)) {
             //已确认
             newExternalCheckModel.submitButton(mContext, false);

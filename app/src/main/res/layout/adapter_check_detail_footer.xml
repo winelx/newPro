@@ -69,6 +69,7 @@
         <EditText
             android:id="@+id/manger_score"
             android:layout_width="0dp"
+            android:inputType="number"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="2"
@@ -176,6 +177,7 @@
             android:id="@+id/score"
             android:layout_width="0dp"
             android:focusable="true"
+            android:inputType="number"
             android:focusableInTouchMode="true"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

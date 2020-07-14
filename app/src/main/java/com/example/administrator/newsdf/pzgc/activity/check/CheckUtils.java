@@ -63,7 +63,6 @@ public class CheckUtils {
     }
 
 
-
     /**
      * /设置选择月，控制二月天数
      */
@@ -218,12 +217,42 @@ public class CheckUtils {
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         int number = i + 1;
                                         JSONObject json = jsonArray.getJSONObject(i);
-                                        String standardDel = json.getString("standardDel");
-                                        String standardDelCode = json.getString("standardDelCode");
-                                        String standardDelName = number + "、" + json.getString("standardDelName");
-                                        String standardDelScore = json.getString("standardDelScore");
-                                        String standardType = json.getString("standardType");
-                                        String standardTypeName = json.getString("standardTypeName");
+                                        String standardDel;
+                                        try {
+                                            standardDel = json.getString("standardDel");
+                                        } catch (Exception e) {
+                                            standardDel = "";
+                                        }
+                                        String standardDelCode;
+                                        try {
+                                            standardDelCode = json.getString("standardDelCode");
+                                        } catch (Exception e) {
+                                            standardDelCode = "";
+                                        }
+                                        String standardDelName;
+                                        try {
+                                            standardDelName = number + "、" + json.getString("standardDelName");
+                                        } catch (Exception e) {
+                                            standardDelName = "";
+                                        }
+                                        String standardDelScore;
+                                        try {
+                                            standardDelScore = json.getString("standardDelScore");
+                                        } catch (Exception e) {
+                                            standardDelScore = "";
+                                        }
+                                        String standardType;
+                                        try {
+                                            standardType = json.getString("standardType");
+                                        } catch (Exception e) {
+                                            standardType = "";
+                                        }
+                                        String standardTypeName;
+                                        try {
+                                            standardTypeName = json.getString("standardTypeName");
+                                        } catch (Exception e) {
+                                            standardTypeName = "";
+                                        }
                                         List.add(new standarBean(standardDel, standardDelCode, standardDelName, standardDelScore, standardType, standardTypeName));
                                     }
                                 } else {
@@ -232,12 +261,14 @@ public class CheckUtils {
                                 onclick.onSuccess(List);
                             } catch (JSONException e) {
                                 e.printStackTrace();
+                                ToastUtils.showShortToast("数据解析出问题");
                             }
                         }
 
                         @Override
                         public void onError(Call call, Response response, Exception e) {
                             super.onError(call, response, e);
+                            ToastUtils.showShortToast("请求失败");
                         }
                     });
         }

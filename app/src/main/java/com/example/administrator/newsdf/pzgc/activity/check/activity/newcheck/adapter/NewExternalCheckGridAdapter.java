@@ -12,10 +12,18 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.CheckNewBean;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.baselibrary.utils.log.LogUtil;
 
 import java.util.List;
 
+/**
+ * 说明：
+ * 创建时间： 2020/7/14 0014 9:45
+ *
+ * @author winelx
+ */
 public class NewExternalCheckGridAdapter extends BaseQuickAdapter<CheckNewBean.scorePane, BaseViewHolder> {
     public NewExternalCheckGridAdapter(int layoutResId, @Nullable List<CheckNewBean.scorePane> data) {
         super(layoutResId, data);
@@ -27,20 +35,37 @@ public class NewExternalCheckGridAdapter extends BaseQuickAdapter<CheckNewBean.s
         ImageView angleofthe = helper.getView(R.id.angleofthe);
         helper.setText(R.id.text_item, (helper.getLayoutPosition() + 1) + "");
         if (item.isLeveOption()) {
-            if (TextUtils.isEmpty(item.getScore())) {
+            if (TextUtils.isEmpty(Utils.isNull(item.getScore()))) {
                 content.setBackgroundResource(R.color.persomal_text);
             } else {
                 /* 绿色 橙色*/
-                int compare = item.getScore().compareTo(item.getStandardScore());
-                Integer checkScore = item.getCheckScore() == null ? 0 : item.getCheckScore();
-                if (checkScore < 0 || compare < 0) {
-                    //被扣分
-                    content.setBackgroundResource(R.color.Orange);
+                if (!TextUtils.isEmpty(item.getStandardScore())) {
+                    if (Integer.parseInt(item.getStandardScore()) == Integer.parseInt(Utils.isNull(item.getScore()))) {
+                        Integer checkScore = (item.getCheckScore() == null ? 0 : item.getCheckScore());
+                        if (checkScore < 0) {
+                            //被扣分
+                            content.setBackgroundResource(R.color.Orange);
+                        } else {
+                            content.setBackgroundResource(R.color.green);
+                        }
+                    } else {
+                        content.setBackgroundResource(R.color.Orange);
+                    }
                 } else {
-                    content.setBackgroundResource(R.color.green);
+                    Integer checkScore = (item.getCheckScore() == null ? null : item.getCheckScore());
+                    if (checkScore == null) {
+                        content.setBackgroundResource(R.color.persomal_text);
+                    } else {
+                        if (checkScore < 0) {
+                            //被扣分
+                            content.setBackgroundResource(R.color.Orange);
+                        } else {
+                            content.setBackgroundResource(R.color.green);
+                        }
+                    }
                 }
             }
-        }else {
+        } else {
             helper.setTextColor(R.id.text_item, Color.parseColor("#e0e0e0"));
             content.setBackgroundResource(R.color.gray);
         }

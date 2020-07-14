@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,7 +17,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ImportChageditemAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.ImprotBean;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.utils.ExternalApi;
-import com.example.administrator.newsdf.pzgc.bean.ChagedImportitem;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
@@ -39,6 +40,12 @@ import java.util.Map;
 import okhttp3.Call;
 import okhttp3.Response;
 
+/**
+ * 说明：
+ * 创建时间： 2020/7/14 0014 9:11
+ *
+ * @author winelx
+ */
 public class ImprotExternalFragment extends LazyloadFragment implements View.OnClickListener {
     private TextView com_title;
     private SmartRefreshLayout refreshlayout;
@@ -145,6 +152,9 @@ public class ImprotExternalFragment extends LazyloadFragment implements View.OnC
                         }
                         mData.addAll(list);
                         adapter.setNewData(mData);
+                        if (mData.size() == 0) {
+                            emptyUtils.noData("暂无数据");
+                        }
                     } else {
                         ToastUtils.showShortToast(jsonObject.getString("msg"));
                     }
@@ -174,7 +184,7 @@ public class ImprotExternalFragment extends LazyloadFragment implements View.OnC
             helper.setText(R.id.import_checkdata, "检查日期：" + item.getCheckDate().substring(0, 10));
             helper.setText(R.id.import_checkorg, "检查组织：" + item.getCheckOrgName());
 //            //总分
-            helper.setText(R.id.import_checkscore, item.getfTotalSocre());
+            helper.setText(R.id.import_checkscore, TextUtils.isEmpty(item.getTotalSocre()) ? "" : Dates.setText(mContext,"总分：" + item.getTotalSocre(),3,R.color.red));
             helper.setText(R.id.import_status, "外业检查");
             helper.setVisible(R.id.import_status, true);
 

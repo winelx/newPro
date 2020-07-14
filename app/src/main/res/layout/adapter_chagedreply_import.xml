@@ -5,14 +5,27 @@
     android:orientation="vertical"
     android:padding="@dimen/dp10">
 
-
-    <TextView
-        android:id="@+id/chagedposition"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="整改部位：CCCCCCCCCCCC"
-        android:textColor="#000000"
-        android:textSize="15sp" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="整改部位："
+            android:textColor="#000000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/chagedposition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/chagedstandard"

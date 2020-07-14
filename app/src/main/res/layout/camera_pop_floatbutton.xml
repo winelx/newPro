@@ -25,6 +25,7 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
+                android:visibility="gone"
                 android:background="@drawable/pop_first_selector"
                 android:text="新增外业检查"
                 android:textSize="15sp" />

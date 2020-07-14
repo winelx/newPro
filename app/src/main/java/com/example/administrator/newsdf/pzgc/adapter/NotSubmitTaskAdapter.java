@@ -87,7 +87,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
                 ((MyViewHolder) holder).managementNumber.setText(setText("总分：" + success.getScore()));
             }
 
-            ((MyViewHolder) holder).managementUser.setText("检查人：" + success.getCheckUser() + "   检查日期：" + success.getCreateDate());
+            ((MyViewHolder) holder).managementUser.setText("检查人：" + success.getCheckUser() + "   所属月份：" + success.getCreateDate().substring(0,7));
             iwork = success.getIwork();
             if (iwork == 1) {
                 ((MyViewHolder) holder).managementIndustry.setVisibility(View.GONE);
@@ -123,7 +123,7 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
 //            ((SubViewHolder) holder).layoutContent.getLayoutParams().width = Utils.getScreenWidth(mContext);
             ((SubViewHolder) holder).Content.getLayoutParams().width = Utils.getScreenWidth(mContext);
             ((SubViewHolder) holder).managementTitle.setText(Sub.getWbsMainName());
-            ((SubViewHolder) holder).managementUser.setText("检查人：" + Sub.getCheckUser() + "    检查日期：" + Sub.getCreateDate());
+            ((SubViewHolder) holder).managementUser.setText("检查人：" + Sub.getCheckUser() + "    所属月份：" + Sub.getCreateDate().substring(0,7));
             ((SubViewHolder) holder).sub_management_block.setText(Sub.getOrgName());
             ((SubViewHolder) holder).subManagementOrg.setText("检查组织：" + Sub.getCheckOrgName());
             ((SubViewHolder) holder).slantedTextView.setTextString("未提交");
