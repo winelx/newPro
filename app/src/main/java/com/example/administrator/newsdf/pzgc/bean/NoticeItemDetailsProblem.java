@@ -25,6 +25,17 @@ public class NoticeItemDetailsProblem {
     String rectificationReason;
     //扣分
     String standardDelScore;
+    // 工区长id
+    String  chiefId;
+    //工区长名称
+    String  chiefName;
+    // 技术负责人id
+    String  technicianId;
+    //技术负责人名称
+    String  technicianName;
+    //施工班主
+    String  team;
+
     //图片
     ArrayList<photoBean> afterFileslist;
 
@@ -36,6 +47,63 @@ public class NoticeItemDetailsProblem {
         this.rectificationReason = rectificationReason;
         this.standardDelScore = standardDelScore;
         this.afterFileslist = afterFileslist;
+    }
+
+
+
+
+    public NoticeItemDetailsProblem(String rectificationPartName, String rectificationDate, String standardDelName, String rectificationReason, String standardDelScore, String chiefId, String chiefName, String technicianId, String technicianName, String team, ArrayList<photoBean> afterFileslist) {
+        this.rectificationPartName = rectificationPartName;
+        this.rectificationDate = rectificationDate;
+        this.standardDelName = standardDelName;
+        this.rectificationReason = rectificationReason;
+        this.standardDelScore = standardDelScore;
+        this.chiefId = chiefId;
+        this.chiefName = chiefName;
+        this.technicianId = technicianId;
+        this.technicianName = technicianName;
+        this.team = team;
+        this.afterFileslist = afterFileslist;
+    }
+
+    public String getChiefId() {
+        return chiefId;
+    }
+
+    public void setChiefId(String chiefId) {
+        this.chiefId = chiefId;
+    }
+
+    public String getChiefName() {
+        return chiefName;
+    }
+
+    public void setChiefName(String chiefName) {
+        this.chiefName = chiefName;
+    }
+
+    public String getTechnicianId() {
+        return technicianId;
+    }
+
+    public void setTechnicianId(String technicianId) {
+        this.technicianId = technicianId;
+    }
+
+    public String getTechnicianName() {
+        return technicianName;
+    }
+
+    public void setTechnicianName(String technicianName) {
+        this.technicianName = technicianName;
+    }
+
+    public String getTeam() {
+        return team;
+    }
+
+    public void setTeam(String team) {
+        this.team = team;
     }
 
     public String getRectificationPartName() {

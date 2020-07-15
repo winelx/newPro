@@ -2,7 +2,6 @@ package com.example.administrator.newsdf.pzgc.activity.chagedreply;
 
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,23 +18,25 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
-import com.example.baselibrary.utils.rx.RxBus;
-import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
-import com.example.administrator.newsdf.pzgc.adapter.BasePhotoAdapter;
-import com.example.administrator.newsdf.pzgc.adapter.RectifierAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ReplyBillBean;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckuserActivity;
+import com.example.administrator.newsdf.pzgc.adapter.BasePhotoAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.RectifierAdapter;
 import com.example.administrator.newsdf.pzgc.callback.NetworkinterfaceCallbackUtils;
-import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
-import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.bean.photoBean;
+import com.example.baselibrary.utils.rx.RxBus;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -61,10 +62,11 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
     private RecyclerView chagedOldRecycler, photoRecycler;
     private EditText replydescription;
     private TextView content, rectificationreason, standarddel, delete;
-
+    private TextView teamName, technicianName, chiefName;
+    private String chiefId, technicianId;
     private static final int IMAGE_PICKER = 1011;
-    private String replyId, replyDelId, optionType;
-
+    private String replyId, replyDelId, optionType, orgId;
+    private LinearLayout chiefLin, technicianLin, teamLin;
     private ArrayList<String> deletelist = new ArrayList<>();
     private ArrayList<photoBean> photoPaths;
     private ArrayList<String> photolist;
@@ -83,12 +85,12 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chagedreply_bill);
-
         mContext = this;
         Intent intent = getIntent();
         isReply = intent.getIntExtra("isReply", 0);
         //回复单id
         replyId = intent.getStringExtra("replyId");
+        orgId = intent.getStringExtra("orgId");
         lean = intent.getBooleanExtra("status", true);
         //问题项Id
         replyDelId = intent.getStringExtra("replyDelId");
@@ -101,6 +103,18 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
         delete.setOnClickListener(this);
         findViewById(R.id.checklistback).setOnClickListener(this);
         findViewById(R.id.checklistmeun).setOnClickListener(this);
+        teamName = findViewById(R.id.teamName);
+        technicianName = findViewById(R.id.technicianName);
+        chiefName = findViewById(R.id.chiefName);
+        chiefLin = findViewById(R.id.chief_lin);
+        chiefLin.setOnClickListener(this);
+        chiefLin.setVisibility(View.VISIBLE);
+        teamLin = findViewById(R.id.team_lin);
+        teamLin.setVisibility(View.VISIBLE);
+        technicianLin = findViewById(R.id.technician_lin);
+        technicianLin.setVisibility(View.VISIBLE);
+        technicianLin.setOnClickListener(this);
+        findViewById(R.id.team_text).setOnClickListener(this);
         TextView titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText("整改回复");
         TextView checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
@@ -171,6 +185,7 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                     }
                 });
             }
+
             @Override
             public void delete(int position) {
                 //删除图片Id集合
@@ -221,6 +236,20 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                     chaged();
                 }
                 break;
+            case R.id.chief_lin:
+                Intent intent1 = new Intent(mContext, CheckuserActivity.class);
+                intent1.putExtra("orgId", orgId);
+                startActivityForResult(intent1, 5);
+                break;
+            case R.id.technician_lin:
+                Intent intent = new Intent(mContext, CheckuserActivity.class);
+                intent.putExtra("orgId", orgId);
+                startActivityForResult(intent, 6);
+                break;
+            case R.id.team_text:
+                Intent intent2 = new Intent(mContext, CheckuserActivity.class);
+                intent2.putExtra("orgId", orgId);
+                startActivityForResult(intent2, 7);
             default:
                 break;
         }
@@ -261,6 +290,14 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
             } else {
                 Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
             }
+        } else if (requestCode == 5 && resultCode == 2) {
+            chiefName.setText(data.getStringExtra("name"));
+            chiefId = data.getStringExtra("userid");
+        } else if (requestCode == 6 && resultCode == 2) {
+            technicianId = data.getStringExtra("userid");
+            technicianName.setText(data.getStringExtra("name"));
+        } else if (requestCode == 7 && resultCode == 2) {
+            teamName.setText(data.getStringExtra("name"));
         }
     }
 
@@ -307,8 +344,13 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
                     if (TextUtils.isEmpty(score)) {
                         score = "";
                     }
-
+                    chiefName.setText(Utils.isNull(billBean.getChiefName()));
+                    chiefId = Utils.isNull(billBean.getChiefId());
+                    technicianName.setText(Utils.isNull(billBean.getTechnicianName()));
+                    technicianId = Utils.isNull(billBean.getTechnicianId());
+                    teamName.setText(Utils.isNull(billBean.getTeam()));
                     content.setText("整改部位：" + PartName + "\n" +
+
                             "整改期限：" + date + "\n" +
                             "整改扣总分分值：" + score
                     );
@@ -349,46 +391,67 @@ public class ChagedReplyBillActivity extends BaseActivity implements View.OnClic
 
     /*创建、编辑回复单*/
     public void chaged() {
-        String editext = replydescription.getText().toString();
-        if (!editext.isEmpty()) {
-            Dates.getDialogs(this, "提交数据中...");
-            ArrayList<File> fileList = new ArrayList<>();
+        Map<String, String> map = new HashMap<>();
+        if (!TextUtils.isEmpty(replydescription.getText().toString())) {
+            map.put("replyDescription", replydescription.getText().toString());
+        } else {
+            ToastUtils.showShortToastCenter("整改描述不能为空");
+        }
+        if (!TextUtils.isEmpty(chiefName.getText().toString())) {
+            map.put("chiefId", chiefId);
+            map.put("chiefName", chiefName.getText().toString());
+        } else {
+            ToastUtils.showShortToast("工区长不能为空");
+            return;
+        }
+        if (!TextUtils.isEmpty(technicianName.getText().toString())) {
+            map.put("technicianId", technicianId);
+            map.put("technicianName", technicianName.getText().toString());
+        } else {
+            ToastUtils.showShortToast("技术负责人不能为空");
+            return;
+        }
+        if (!TextUtils.isEmpty(teamName.getText().toString())) {
+            map.put("team", teamName.getText().toString());
+        } else {
+            ToastUtils.showShortToast("施工班组不能为空");
+            return;
+        }
+        ArrayList<File> fileList = new ArrayList<>();
+        if (photoPaths != null) {
             for (int i = 0; i < photoPaths.size(); i++) {
                 String name = photoPaths.get(i).getPhotoname();
                 if (name.isEmpty()) {
                     fileList.add(new File(photoPaths.get(i).getPhotopath()));
                 }
             }
-            Map<String, String> map = new HashMap<>();
-            map.put("id", replyDelId);
-            map.put("replyId", replyId);
-            map.put("deleteFileIds", Dates.listToStrings(deletelist));
-            map.put("replyDescription", editext);
-            map.put("optionType", optionType);
-            ChagedreplyUtils.editReplyFormDel(map, fileList, new ChagedreplyUtils.ObjectCallBacks() {
-                @Override
-                public void onsuccess(String string) {
-                    ToastUtils.showShortToastCenter("保存成功");
-                    status = true;
-                    Dates.disDialog();
-                    try {
-                        RxBus.getInstance().send("chagedDetails");
-                        NetworkinterfaceCallbackUtils.Refresh("reply");
-                    } catch (Exception e) {
-                    }
-                    finish();
-                }
-
-                @Override
-                public void onerror(String string) {
-                    Dates.disDialog();
-                    ToastUtils.showsnackbar(rectificationreason, string);
-                    status = true;
-                }
-            });
-        } else {
-            ToastUtils.showShortToastCenter("整改描述不能为空");
         }
+        map.put("id", replyDelId);
+        map.put("replyId", replyId);
+        map.put("deleteFileIds", Dates.listToStrings(deletelist));
+        map.put("optionType", optionType);
+        Dates.getDialogs(this, "提交数据中...");
+        ChagedreplyUtils.editReplyFormDel(map, fileList, new ChagedreplyUtils.ObjectCallBacks() {
+            @Override
+            public void onsuccess(String string) {
+                ToastUtils.showShortToastCenter("保存成功");
+                status = true;
+                Dates.disDialog();
+                try {
+                    RxBus.getInstance().send("chagedDetails");
+                    NetworkinterfaceCallbackUtils.Refresh("reply");
+                } catch (Exception e) {
+                }
+                finish();
+            }
+
+            @Override
+            public void onerror(String string) {
+                Dates.disDialog();
+                ToastUtils.showsnackbar(rectificationreason, string);
+                status = true;
+            }
+        });
     }
 
     /*删除该项单据*/

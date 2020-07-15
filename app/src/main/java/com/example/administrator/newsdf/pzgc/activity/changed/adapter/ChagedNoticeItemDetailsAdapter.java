@@ -23,6 +23,8 @@ import com.example.administrator.newsdf.pzgc.activity.changed.ChagedNoticeItemDe
 import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsChaged;
 import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsProblem;
 import com.example.administrator.newsdf.pzgc.bean.NoticeItemDetailsRecord;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.baselibrary.bean.photoBean;
 
 import java.util.ArrayList;
@@ -92,13 +94,14 @@ public class ChagedNoticeItemDetailsAdapter extends RecyclerView.Adapter<Recycle
     private void bindproblem(Typeproblem holder, int position) {
         NoticeItemDetailsProblem problem = (NoticeItemDetailsProblem) list.get(position);
         String str;
-
         str = "整改扣总分分值：" + problem.getStandardDelScore() + "\n";
-
         holder.typeproblem.setText(
-                "整改部位：" + problem.getRectificationPartName() + "\n"
-                        + "整改期限：" + problem.getRectificationDate().substring(0, 10) + "\n"
-                        + "违反标准：" + problem.getStandardDelName() + "\n"
+                "整改部位：" + Utils.isNull( problem.getRectificationPartName()) + "\n"
+                        + "责任工区长：" + Utils.isNull(problem.getChiefName()) + "\n"
+                        + "责任技术员：" + Utils.isNull(problem.getTechnicianName()) + "\n"
+                        + "责任施工班组：" + Utils.isNull(problem.getTeam()) + "\n"
+                        + "整改期限：" + Utils.isNull(problem.getRectificationDate().substring(0, 10)) + "\n"
+                        + "违反标准：" + Utils.isNull(problem.getStandardDelName()) + "\n"
                         + str
                         + "存在问题：" + problem.getRectificationReason() + "\n"
                         + "整改前附件："

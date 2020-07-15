@@ -17,6 +17,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.changed.adapter.ImportChageditemAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.ImprotBean;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.utils.ExternalApi;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
@@ -111,7 +112,7 @@ public class ImprotExternalFragment extends LazyloadFragment implements View.OnC
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 ImprotBean bean = (ImprotBean) adapter.getData().get(position);
                 LiveDataBus.get().with("ex_viewpager").setValue(1);
-                LiveDataBus.get().with("ex_check_item").setValue(bean.getId());
+                LiveDataBus.get().with("ex_check_item").setValue(new Audio(bean.getName(),bean.getId(),bean.getWbsTaskTypeName()));
             }
         });
         request();

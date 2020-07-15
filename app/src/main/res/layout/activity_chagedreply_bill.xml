@@ -88,6 +88,124 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp" />
 
+            <LinearLayout
+                android:id="@+id/chief_lin"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="gone"
+                android:background="@color/bg_white"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/warning_red"
+                    android:gravity="center_vertical"
+                    android:text="工区长"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/chiefName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:drawableRight="@mipmap/arrow_right"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/back2"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp" />
+
+            <LinearLayout
+                android:id="@+id/technician_lin"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/bg_white"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:drawableLeft="@mipmap/warning_red"
+                    android:text="技术负责人"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/technicianName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:drawableRight="@mipmap/arrow_right"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/back2"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp" />
+
+            <LinearLayout
+                android:id="@+id/team_lin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_white"
+                android:minHeight="40dp"
+                android:visibility="gone"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10">
+
+                <TextView
+                    android:id="@+id/team_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:drawableRight="@mipmap/arrow_right"
+                    android:drawableLeft="@mipmap/warning_red"
+                    android:text="施工班组"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/teamName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:hint="请输入"
+                    android:minHeight="40dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="10dp"
+                    android:textColor="#000000"
+                    android:textColorHint="@color/graytext"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/back2"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -145,9 +263,9 @@
                 android:id="@+id/delete"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
+                android:layout_marginTop="15dp"
                 android:background="@color/white"
                 android:gravity="center"
-                android:layout_marginTop="15dp"
                 android:text="删除该项问题"
                 android:textColor="@color/red"
                 android:textSize="16sp" />

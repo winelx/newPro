@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.MessageExternal;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.utils.ExternalApi;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
@@ -41,6 +42,7 @@ public class MessageExternalFragment extends LazyloadFragment implements View.On
     private SmartRefreshLayout refreshlayout;
     private RecyclerView recyclerView;
     private TextView com_button;
+    private TextView title,top_title;
 
     @Override
     protected int setContentView() {
@@ -53,11 +55,13 @@ public class MessageExternalFragment extends LazyloadFragment implements View.On
         noticeId = intent.getStringExtra("noticeId");
         ids = new ArrayList<>();
         findViewById(R.id.com_back).setOnClickListener(this);
+        title = (TextView) findViewById(R.id.com_title);
+        top_title = (TextView) findViewById(R.id.top_title);
+        top_title.setVisibility(View.VISIBLE);
         refreshlayout = (SmartRefreshLayout) findViewById(R.id.refreshlayout);
         com_button = (TextView) findViewById(R.id.com_button);
         com_button.setText("确定");
         com_button.setVisibility(View.GONE);
-
         //是否启用下拉刷新功能
         refreshlayout.setEnableRefresh(false);
         //是否启用上拉加载功能
@@ -70,12 +74,14 @@ public class MessageExternalFragment extends LazyloadFragment implements View.On
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         adapter = new MessageExternalAdapter(R.layout.adapter_chaged_checkitem, new ArrayList<>());
         recyclerView.setAdapter(adapter);
-        LiveDataBus.get().with("ex_check_item", String.class).observe(this, new Observer<String>() {
+        LiveDataBus.get().with("ex_check_item", Audio.class).observe(this, new Observer<Audio>() {
             @Override
-            public void onChanged(@Nullable String string) {
+            public void onChanged(@Nullable Audio bean) {
                 ids.clear();
                 com_button.setVisibility(View.GONE);
-                request(string);
+                request(bean.getContent());
+                top_title.setText(bean.getName());
+                title.setText(bean.getTitle());
             }
         });
         com_button.setOnClickListener(new View.OnClickListener() {

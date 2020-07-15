@@ -31,7 +31,12 @@ import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Response;
-
+/**
+ *
+ *说明：外业检查
+ *创建时间： 2020/7/15 0015 9:21
+ *@author winelx
+ */
 public class ExternalModel {
 
     public void getsafetychecklistbyapp(Map<String, String> map, NetworkAdapter adapter) {

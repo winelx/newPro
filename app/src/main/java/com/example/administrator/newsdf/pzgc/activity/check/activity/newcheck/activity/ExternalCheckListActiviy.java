@@ -20,7 +20,6 @@ import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.be
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.utils.ExternalModel;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.PullDownMenu;
-import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.inface.Onclicklitener;
 import com.example.baselibrary.utils.network.NetworkAdapter;
@@ -43,8 +42,8 @@ import java.util.Map;
  * @author winelx
  */
 public class ExternalCheckListActiviy extends BaseActivity implements View.OnClickListener {
-    private ImageView comImg, list_add;
-    private TextView com_title;
+    private ImageView comImg, listAdd;
+    private TextView comTitle;
     private LinearLayout checklistmeun;
     private String[] strings = {"全部", "保存", "待分公司核查", "待集团核查", "待分公司确认", "待标段确认", "已确认"};
     private PullDownMenu pullDownMenu = new PullDownMenu();
@@ -70,10 +69,10 @@ public class ExternalCheckListActiviy extends BaseActivity implements View.OnCli
         Intent intent = getIntent();
         orgid = intent.getStringExtra("orgid");
         comImg = findViewById(R.id.com_img);
-        com_title = findViewById(R.id.com_title);
-        com_title.setText(intent.getStringExtra("orgName"));
-        list_add = findViewById(R.id.list_add);
-        list_add.setOnClickListener(this);
+        comTitle = findViewById(R.id.com_title);
+        comTitle.setText(intent.getStringExtra("orgName"));
+        listAdd = findViewById(R.id.list_add);
+        listAdd.setOnClickListener(this);
         comImg.setBackgroundResource(R.mipmap.meun);
         checklistmeun = findViewById(R.id.toolbar_menu);
         checklistmeun.setOnClickListener(this);
@@ -168,7 +167,7 @@ public class ExternalCheckListActiviy extends BaseActivity implements View.OnCli
                         case "待分公司确认":
                             status = "4";
                             break;
-                        case "待标段确":
+                        case "待标段确认":
                             status = "5";
                             break;
                         case "已确认":
@@ -184,7 +183,7 @@ public class ExternalCheckListActiviy extends BaseActivity implements View.OnCli
         } else if (i == R.id.list_add) {
             Intent intent = new Intent(mContext, NewExternalCheckActiviy.class);
             intent.putExtra("isNew", "新增");
-            intent.putExtra("orgname", com_title.getText().toString());
+            intent.putExtra("orgname", comTitle.getText().toString());
             intent.putExtra("orgid", orgid);
             startActivity(intent);
         }

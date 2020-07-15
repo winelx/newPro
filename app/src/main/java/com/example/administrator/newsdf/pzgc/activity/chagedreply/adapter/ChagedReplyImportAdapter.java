@@ -1,12 +1,14 @@
 package com.example.administrator.newsdf.pzgc.activity.chagedreply.adapter;
 
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedReplyImportActivity;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ImprotItem;
+import com.example.administrator.newsdf.pzgc.utils.Utils;
 
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class ChagedReplyImportAdapter extends BaseQuickAdapter<ImprotItem, BaseV
         } else {
             helper.setBackgroundRes(R.id.chaged_reply_image, R.mipmap.circular_ensure_false);
         }
-        helper.setText(R.id.chagedposition, item.getPartDetails());
+        helper.setText(R.id.chagedposition, TextUtils.isEmpty(Utils.isNull(item.getRectificationPartName()))==true? item.getPartDetails():item.getRectificationPartName()+">>"+item.getPartDetails());
         helper.setText(R.id.chagedstandard, "违反标准：" + item.getStandardDelName());
         helper.setText(R.id.chagedproblem, "存在问题：" + item.getRectificationReason());
         helper.setText(R.id.chageddata, "整改期限：" + item.getRectificationDate().substring(0, 10));

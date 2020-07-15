@@ -62,7 +62,6 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chagedreply_new);
-
         mContext = this;
         list = new ArrayList<>();
         final Intent intent = getIntent();
@@ -110,6 +109,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                 intent1.putExtra("replyDelId", list.get(position).getId());
                 //回复单id
                 intent1.putExtra("replyId", list.get(position).getReplyId());
+                intent1.putExtra("orgId", orgId);
                 startActivity(intent1);
             }
         });
@@ -249,6 +249,7 @@ public class ChagedReplyNewActivity extends BaseActivity implements View.OnClick
                         replycommit.setBackgroundColor(Color.parseColor("#888888"));
                     }
                 }
+                request();
             }
 
             @Override

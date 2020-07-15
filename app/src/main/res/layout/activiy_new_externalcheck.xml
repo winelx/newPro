@@ -77,7 +77,7 @@
                     android:layout_height="50dp"
                     android:layout_alignParentBottom="true"
                     android:layout_weight="1"
-                    android:background="@color/Orange"
+                    android:background="@color/red"
                     android:gravity="center"
                     android:visibility="gone"
                     android:text="打回"

@@ -15,7 +15,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +71,6 @@ import java.util.Map;
  */
 public class ExternalCheckDetailActivity extends BaseActivity implements View.OnClickListener {
     private TextView toolbartext, title, tabPrevious, tabNext;
-
     private DKDragView dkDragView;
     private RecyclerView drawableRecycler, recycler, recPhoto;
     private DrawerLayout drawerLayout;
@@ -103,7 +101,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
     private ArrayList<photoBean> photoPaths;
     private ArrayList<String> detelist;
     private ExternalModel externalModel;
-    private String checkid, scoreid, level, status, checkLevel, orgid;
+    private String checkid, scoreid, level, status, checkLevel, orgid, clickStatus;
     private boolean edStatus, isLeveOption;
 
 
@@ -206,6 +204,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     BaseDialog.confirmdialog(mContext, "是否保存数据", "", new Onclicklitener() {
                         @Override
                         public void confirm(String string) {
+                            clickStatus = null;
                             saveSafetyCheckDelByApp();
                         }
 
@@ -220,19 +219,8 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     if (toolbartext.getVisibility() == View.VISIBLE) {
                         if ("保存".equals(toolbartext.getText().toString())) {
                             if (!TextUtils.isEmpty(score.getText().toString())) {
-                                BaseDialog.confirmmessagedialog(mContext, "已经打分，是否保存", "选择下一项内容会清除所填内容\n且不会保存数据", "保存", " 下一项", new Onclicklitener() {
-                                    @Override
-                                    public void confirm(String string) {
-                                        page++;
-                                        initCheckItem();
-                                    }
-
-                                    @Override
-                                    public void cancel(String string) {
-                                        saveSafetyCheckDelByApp();
-
-                                    }
-                                });
+                                clickStatus = "next";
+                                saveSafetyCheckDelByApp();
                             } else {
                                 page++;
                                 isLeveOption = pagelist.get(page).isLeveOption();
@@ -258,19 +246,8 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     if (toolbartext.getVisibility() == View.VISIBLE) {
                         if ("保存".equals(toolbartext.getText().toString())) {
                             if (!TextUtils.isEmpty(score.getText().toString())) {
-                                BaseDialog.confirmmessagedialog(mContext, "已经打分，是否保存", "显示上一项内容会清除所填内容\n且不会保存数据", "上一项", "保存", new Onclicklitener() {
-                                    @Override
-                                    public void confirm(String string) {
-
-                                        saveSafetyCheckDelByApp();
-                                    }
-
-                                    @Override
-                                    public void cancel(String string) {
-                                        page--;
-                                        initCheckItem();
-                                    }
-                                });
+                                clickStatus = "top";
+                                saveSafetyCheckDelByApp();
                             } else {
                                 page--;
                                 isLeveOption = pagelist.get(page).isLeveOption();
@@ -325,13 +302,13 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
         footer_manger = footerView.findViewById(R.id.footer_manger);
         switch (checkLevel) {
             case "3":
-                footerTitle.setText("集团公司质安部（A）");
+                footerTitle.setText("集团公司质安部(A)");
                 break;
             case "2":
-                footerTitle.setText("分公司质安科（B）");
+                footerTitle.setText("分公司质安科(B)");
                 break;
             case "1":
-                footerTitle.setText("项目质安部（C）");
+                footerTitle.setText("项目质安部(C)");
                 footer_manger.setVisibility(View.GONE);
                 break;
             default:
@@ -757,7 +734,17 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                 ToastUtils.showShortToast("保存成功");
                 //更新记分面板
                 getScorePane();
-                getSafetyCheckDelByApp(scoreid);
+                if (clickStatus != null) {
+                    isLeveOption = pagelist.get(page).isLeveOption();
+                    if ("next".equals(clickStatus)) {
+                        page++;
+                    } else {
+                        page--;
+                    }
+                    initCheckItem();
+                }else {
+                    getSafetyCheckDelByApp(scoreid);
+                }
             }
 
             @Override
@@ -814,12 +801,25 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                 if (lean) {
                     toolbartext.setText("保存");
                     import_org.setVisibility(View.VISIBLE);
+                    describe.setHint("");
+                    score.setHint("");
+                    manger_score.setHint("");
+                    orgEditext.setHint("");
                 } else {
                     toolbartext.setText("编辑");
+                    describe.setHint("请输入");
+                    score.setHint("请输入");
+                    manger_score.setHint("请输入");
+                    orgEditext.setHint("请输入");
                     import_org.setVisibility(View.GONE);
                 }
             } else {
+                describe.setHint("");
+                score.setHint("");
+                manger_score.setHint("");
+                orgEditext.setHint("");
                 toolbartext.setVisibility(View.GONE);
+                import_org.setVisibility(View.GONE);
             }
 
         }
@@ -880,9 +880,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
             if (Integer.parseInt(status) > 3) {
                 data.add(map.get("project"));
                 data.add(map.get("company"));
-                if (isLeveOption) {
-                    data.add(map.get("group"));
-                }
+                data.add(map.get("group"));
             } else {
                 //没有检测完成，现在处在什么层级检查
                 if (Enum.STATUS_THREE.equals(checkLevel)) {
@@ -1079,7 +1077,6 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                             footer_manger.setVisibility(View.VISIBLE);
                             manger_score.setEnabled(lean);
                         }
-
                     }
                     if (lean) {
                         toolbartext.setText("保存");

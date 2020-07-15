@@ -6,7 +6,7 @@ package com.example.baselibrary.utils;
  * 说明：网络请求端口'/.</>
  */
 public class Requests {
- //public static final String networks = "http://192.168.20.38:8082/pzgc/";
+// public static final String networks = "http://192.168.20.38:8082/pzgc/";
  public static final String networks = "http://192.168.20.120:8085/pzgc/";
    // public static final String networks = "http://139.9.234.213:8085/pzgc/";
     //  public static final String networks = "http://192.168.20.81:8080/pzgc/";

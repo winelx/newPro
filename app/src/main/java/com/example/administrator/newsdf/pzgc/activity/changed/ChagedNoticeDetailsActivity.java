@@ -60,7 +60,6 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
-
         utils = new Utils();
         mContext = this;
         list = new ArrayList<>();

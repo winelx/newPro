@@ -12,7 +12,6 @@
         android:focusableInTouchMode="true"
         android:orientation="vertical">
 
-
         <include layout="@layout/toolbar_icon" />
 
         <android.support.v4.widget.NestedScrollView
@@ -251,7 +250,6 @@
                         android:textSize="14sp" />
 
                 </LinearLayout>
-
 
                 <LinearLayout
                     android:layout_width="match_parent"

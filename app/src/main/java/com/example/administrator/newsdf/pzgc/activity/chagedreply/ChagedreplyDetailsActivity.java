@@ -56,7 +56,6 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
     private Context mContext;
     private ReplyDetailsContent bean;
     private ChagedreplyDetailsAdapter mAdapter;
-
     private ArrayList<Object> list;
 
     @SuppressLint("HandlerLeak")

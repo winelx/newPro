@@ -17,6 +17,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
@@ -26,6 +27,7 @@ import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.adapter.RectifierAdapter;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.ChagedreplyUtils;
 import com.example.administrator.newsdf.pzgc.activity.chagedreply.utils.bean.ReplyBillBean;
+import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.bean.photoBean;
 
@@ -44,6 +46,7 @@ public class ChagedReplyBillsActivity extends BaseActivity implements View.OnCli
     private Context mContext;
     private RecyclerView chagedOldRecycler, photoRecycler;
     private RectifierAdapter mAdapter;
+
     private FiletypeAdapter adapter;
     private ArrayList<FileTypeBean> photoPaths;
     private ArrayList<String> photolist;
@@ -55,15 +58,12 @@ public class ChagedReplyBillsActivity extends BaseActivity implements View.OnCli
     private int isReply;
 
 
-
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chagedreply_bill);
-
         mContext = this;
-
         Intent intent = getIntent();
         isReply = intent.getIntExtra("isReply", 0);
         //回复单id
@@ -81,6 +81,7 @@ public class ChagedReplyBillsActivity extends BaseActivity implements View.OnCli
         findViewById(R.id.checklistmeun).setOnClickListener(this);
         TextView titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText("查看详情");
+
         TextView checklistmeuntext = (TextView) findViewById(R.id.checklistmeuntext);
         checklistmeuntext.setTextSize(15f);
         checklistmeuntext.setVisibility(View.GONE);
@@ -186,8 +187,22 @@ public class ChagedReplyBillsActivity extends BaseActivity implements View.OnCli
                 if (TextUtils.isEmpty(score)) {
                     score = "";
                 }
-
+                String chiefName = Utils.isNull(billBean.getChiefName());
+                if (TextUtils.isEmpty(chiefName)) {
+                    chiefName = "";
+                }
+                String technicianName = Utils.isNull(billBean.getTechnicianName());
+                if (TextUtils.isEmpty(technicianName)) {
+                    technicianName = "";
+                }
+                String team = Utils.isNull(billBean.getTeam());
+                if (TextUtils.isEmpty(team)) {
+                    team = "";
+                }
                 content.setText("整改部位：" + PartName + "\n" +
+                        "责任工区长：" + chiefName + "\n" +
+                        "责任技术员：" + technicianName + "\n" +
+                        "责任施工班组：" + team + "\n" +
                         "整改期限：" + date + "\n" +
                         "整改扣总分分值：" + score
                 );

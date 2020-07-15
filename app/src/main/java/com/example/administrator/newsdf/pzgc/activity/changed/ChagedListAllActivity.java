@@ -61,7 +61,6 @@ public class ChagedListAllActivity extends BaseActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_list);
-
         mContext = this;
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgid");

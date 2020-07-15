@@ -42,7 +42,7 @@ public class ExternalCheckListAdapter extends BaseQuickAdapter<ExternalCheckList
         helper.setText(R.id.org_title,"工程类型："+ Utils.isNull(item.getWbsTaskTypeName()));
         helper.setText(R.id.check_tiem, "检查日期：" + Utils.isNull(item.getCheckDate().substring(0, 10)));
         helper.setText(R.id.check_bid, Dates.setText(mContext, 4, "所属标段：" + Utils.isNull(item.getOrgName()), R.color.black));
-        helper.setText(R.id.check_org, Dates.setText(mContext, 4, "所属组织：" + Utils.isNull(item.getCheckOrgName()), R.color.black));
+        helper.setText(R.id.check_org, Dates.setText(mContext, 4, "检查组织：" + Utils.isNull(item.getCheckOrgName()), R.color.black));
         helper.setText(R.id.score, Dates.setText(mContext, 3,"得分：" + Utils.isNull(item.getTotalSocre()),  R.color.red));
         //0：保存；2：待分公司核查；3：待集团核查；4：待分公司确认；5：待标段确认；6：已确认
 

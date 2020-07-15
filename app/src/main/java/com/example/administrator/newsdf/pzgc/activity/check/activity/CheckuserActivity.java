@@ -53,13 +53,10 @@ public class CheckuserActivity extends BaseActivity implements View.OnClickListe
     private TextView deleteSearch;
     private EditText searchEditext;
     private RelativeLayout listSearch;
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.checkuser_list);
-
         mContext = CheckuserActivity.this;
         Intent intent = getIntent();
         orgId = intent.getStringExtra("orgId");

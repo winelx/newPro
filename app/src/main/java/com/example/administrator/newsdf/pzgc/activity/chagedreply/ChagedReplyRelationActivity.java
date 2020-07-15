@@ -26,6 +26,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,12 +47,10 @@ public class ChagedReplyRelationActivity extends BaseActivity implements View.On
     private int page = 1;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chaged_importchageditem);
-
         mContext = this;
         list = new ArrayList<>();
         emptyUtils = new EmptyUtils(mContext);
@@ -66,7 +65,7 @@ public class ChagedReplyRelationActivity extends BaseActivity implements View.On
         //是否启用越界拖动（仿苹果效果）1.0.4
         refreshlayout.setEnableOverScrollDrag(false);
         //是否在列表不满一页时候开启上拉加载功能
-        refreshlayout.setEnableLoadmoreWhenContentNotFull(false);
+        refreshlayout.setEnableLoadmoreWhenContentNotFull(true);
         recyclerList = (RecyclerView) findViewById(R.id.recycler_list);
         recyclerList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ChagedReplyRelationAdapter(R.layout.adapter_item_improtreply, list);
@@ -124,7 +123,7 @@ public class ChagedReplyRelationActivity extends BaseActivity implements View.On
                 if (page == 1) {
                     list.clear();
                 }
-                list = (ArrayList<RelationList>) map.get("Relation");
+                list.addAll((List<RelationList>) map.get("Relation"));
                 adapter.setNewData(list);
                 if (list.size() == 0) {
                     emptyUtils.noData("暂无数据,下拉刷新");

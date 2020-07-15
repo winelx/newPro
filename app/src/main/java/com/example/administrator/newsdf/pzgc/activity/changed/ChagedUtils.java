@@ -535,9 +535,7 @@ public class ChagedUtils implements Serializable {
                                 callBack.onerror(jsonObject.getString("msg"));
                             }
                         } catch (
-                                JSONException e)
-
-                        {
+                                JSONException e) {
                             e.printStackTrace();
                             callBack.onerror("数据解析失败");
                         }
@@ -701,7 +699,36 @@ public class ChagedUtils implements Serializable {
                             } catch (Exception e) {
                                 standardDelScore = "";
                             }
-
+                            String chiefId;
+                            try {
+                                chiefId = data.getString("chiefId");
+                            } catch (Exception e) {
+                                chiefId = "";
+                            }
+                            String chiefName;
+                            try {
+                                chiefName = data.getString("chiefName");
+                            } catch (Exception e) {
+                                chiefName = "";
+                            }
+                            String technicianId;
+                            try {
+                                technicianId = data.getString("technicianId");
+                            } catch (Exception e) {
+                                technicianId = "";
+                            }
+                            String technicianName;
+                            try {
+                                technicianName = data.getString("technicianName");
+                            } catch (Exception e) {
+                                technicianName = "";
+                            }
+                            String team;
+                            try {
+                                team = data.getString("team");
+                            } catch (Exception e) {
+                                team = "";
+                            }
                             ArrayList<photoBean> afterFileslist = new ArrayList<>();
                             JSONArray afterFiles;
                             try {
@@ -716,7 +743,10 @@ public class ChagedUtils implements Serializable {
                                 String phototype = json1.getString("id");
                                 afterFileslist.add(new photoBean(photopath, photoname, phototype));
                             }
-                            list.add(new NoticeItemDetailsProblem(rectificationPartName, rectificationDate, standardDelName, rectificationReason, standardDelScore, afterFileslist));
+                            list.add(new NoticeItemDetailsProblem(rectificationPartName, rectificationDate,
+                                    standardDelName, rectificationReason,
+                                    standardDelScore,chiefId,chiefName,technicianId,technicianName,team,
+                                    afterFileslist));
                             /*整改后*/
 
                             //回复时间

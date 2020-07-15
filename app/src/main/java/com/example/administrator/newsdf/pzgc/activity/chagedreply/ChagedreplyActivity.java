@@ -32,7 +32,6 @@ public class ChagedreplyActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkdown_message);
-
         mFragment = new ArrayList<>();
         //全部回复单
         mFragment.add(new ChagedReplyAllFragment());

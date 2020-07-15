@@ -8,8 +8,8 @@
         android:id="@+id/check_lin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/item_bottom"
         android:orientation="vertical">
-
 
         <TextView
             android:id="@+id/title"
@@ -19,7 +19,6 @@
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="萨芬寄刀片"
             android:textColor="@color/black"
             android:textSize="16sp" />
 

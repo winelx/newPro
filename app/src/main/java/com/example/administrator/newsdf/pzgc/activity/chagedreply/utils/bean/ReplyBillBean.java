@@ -26,6 +26,51 @@ public class ReplyBillBean {
     private String partDetails;
     private String isReply;
     private String id;
+    private String chiefName;
+    private String chiefId;
+    private String technicianId;
+    private String technicianName;
+    private String team;
+
+    public String getChiefId() {
+        return chiefId;
+    }
+
+    public void setChiefId(String chiefId) {
+        this.chiefId = chiefId;
+    }
+
+    public String getChiefName() {
+        return chiefName;
+    }
+
+    public void setChiefName(String chiefName) {
+        this.chiefName = chiefName;
+    }
+
+    public String getTechnicianId() {
+        return technicianId;
+    }
+
+    public void setTechnicianId(String technicianId) {
+        this.technicianId = technicianId;
+    }
+
+    public String getTechnicianName() {
+        return technicianName;
+    }
+
+    public void setTechnicianName(String technicianName) {
+        this.technicianName = technicianName;
+    }
+
+    public String getTeam() {
+        return team;
+    }
+
+    public void setTeam(String team) {
+        this.team = team;
+    }
 
     public String getRectificationReason() {
         return rectificationReason;

@@ -46,7 +46,7 @@ public class NewExternalCheckGridAdapter extends BaseQuickAdapter<CheckNewBean.s
                             //被扣分
                             content.setBackgroundResource(R.color.Orange);
                         } else {
-                            content.setBackgroundResource(R.color.green);
+                            content.setBackgroundResource(R.color.finish_green);
                         }
                     } else {
                         content.setBackgroundResource(R.color.Orange);
@@ -60,7 +60,7 @@ public class NewExternalCheckGridAdapter extends BaseQuickAdapter<CheckNewBean.s
                             //被扣分
                             content.setBackgroundResource(R.color.Orange);
                         } else {
-                            content.setBackgroundResource(R.color.green);
+                            content.setBackgroundResource(R.color.finish_green);
                         }
                     }
                 }

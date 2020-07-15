@@ -420,13 +420,13 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
         //组织名称
         map.put("orgName", ascriptionBid.getText().toString());
         //检查类型
-        if (checktype != null) {
+        if (!TextUtils.isEmpty(checkTypeContent.getText().toString())) {
             map.put("checkType", checktype);
         } else {
             ToastUtils.showShortToast("检查类型没选");
             return;
         }
-        if (protype != null) {
+        if (!TextUtils.isEmpty(projectTypeContent.getText().toString())) {
             //工程类型
             map.put("wbsTaskTypeId", protype);
             //工程类型
@@ -465,6 +465,7 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
                         status = bean.getName();
                         getSafetyCheck();
                     }
+
                     @Override
                     public void onerror() {
                         super.onerror();
@@ -472,6 +473,7 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
                     }
                 });
             }
+
             @Override
             public void cancel(String string) {
 

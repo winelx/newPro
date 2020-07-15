@@ -67,7 +67,6 @@ public class TreeAdapter<T> extends TreeListViewAdapter<T> {
         holder.statusImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!node.isIsperent()) {
                     if (!node.iswbs()) {
                         node.setIswbs(true);
                         holder.statusImg.setBackgroundResource(R.mipmap.circular_blue);
@@ -76,9 +75,6 @@ public class TreeAdapter<T> extends TreeListViewAdapter<T> {
                         holder.statusImg.setBackgroundResource(R.mipmap.checkbox_gray);
                         node.setIswbs(false);
                     }
-                } else {
-                    ToastUtils.showShortToast("必须选择末节点");
-                }
             }
         });
 

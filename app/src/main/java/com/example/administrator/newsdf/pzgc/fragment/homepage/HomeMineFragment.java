@@ -96,14 +96,16 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                if (hasMap.size() == 0) {
-                    expandable.setVisibility(View.GONE);
-                    nullposion.setVisibility(View.GONE);
-                    probar.setVisibility(View.VISIBLE);
+                if (hasMap!=null){
+                    if (hasMap.size() == 0) {
+                        expandable.setVisibility(View.GONE);
+                        nullposion.setVisibility(View.GONE);
+                        probar.setVisibility(View.VISIBLE);
+                    }
                 }
                 Okgo();
                 //传入false表示刷新失败
-                refreshlayout.finishRefresh(1000);
+                refreshlayout.finishRefresh(true);
             }
         });
         //网络请求
@@ -219,8 +221,6 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                                     expandable.setVisibility(View.GONE);
                                     probar.setVisibility(View.GONE);
                                 }
-                                //关闭刷新提示
-                                refreshLayout.finishRefresh(true);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -235,6 +235,7 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
                         Dates.disDialog();
+                        ToastUtils.showShortToast(e.getMessage().equals("timeout")?"请求超时":e.getMessage());
                         probar.setVisibility(View.GONE);
                         nullposion.setVisibility(View.VISIBLE);
                         expandable.setVisibility(View.GONE);

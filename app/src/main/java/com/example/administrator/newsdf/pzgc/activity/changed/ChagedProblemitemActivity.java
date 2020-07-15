@@ -74,8 +74,6 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
     private ArrayList<String> deleltes = new ArrayList<>();
     private String iwork;
     private TextView importWarning;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

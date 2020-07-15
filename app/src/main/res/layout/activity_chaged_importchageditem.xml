@@ -10,6 +10,16 @@
 
         <include layout="@layout/toolbar_icon" />
 
+        <TextView
+            android:id="@+id/top_title"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            android:paddingLeft="10dp"
+            android:background="@drawable/item_bottom"
+            android:textColor="@color/black" />
+
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/refreshlayout"
             android:layout_width="match_parent"

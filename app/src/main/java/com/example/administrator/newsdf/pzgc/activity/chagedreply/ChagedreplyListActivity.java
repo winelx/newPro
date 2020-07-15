@@ -167,6 +167,7 @@ public class ChagedreplyListActivity extends BaseActivity implements View.OnClic
                 if (savestatus == 0) {
                     Intent intent1 = new Intent(mContext, ChagedReplyNewActivity.class);
                     intent1.putExtra("id", list.get(pos).getId());
+                    intent1.putExtra("orgId", orgId);
                     intent1.putExtra("status", true);
                     startActivity(intent1);
                 } else {

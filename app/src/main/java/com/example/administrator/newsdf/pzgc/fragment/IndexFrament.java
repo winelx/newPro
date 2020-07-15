@@ -121,6 +121,7 @@ public class IndexFrament extends Fragment implements JPushCallBack, View.OnClic
             }
 
         });
+        homeageViewpager.setCurrentItem(1);
         return rootView;
     }
 
