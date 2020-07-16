@@ -99,11 +99,16 @@ public class CheckReportOrgDetailsAdapter extends RecyclerView.Adapter<RecyclerV
             int iwork = Tbean.getIwork();
             if (iwork == 1) {
                 ((ViewHolder) holder).managementIndustry.setVisibility(View.GONE);
-            }else if (iwork == 4){
+            } else if (iwork == 4) {
                 ((ViewHolder) holder).managementIndustry.setVisibility(View.VISIBLE);
                 ((ViewHolder) holder).managementIndustry.setText("专项检查");
-            }
-            else  {
+            } else if (iwork == 8) {
+                ((ViewHolder) holder).managementIndustry.setVisibility(View.VISIBLE);
+                ((ViewHolder) holder).managementIndustry.setText("安全检查");
+            } else if (iwork == 9) {
+              ((ViewHolder) holder).managementIndustry.setVisibility(View.VISIBLE);
+                ((ViewHolder) holder).managementIndustry.setText("质量检查");
+            } else {
                 ((ViewHolder) holder).managementIndustry.setVisibility(View.VISIBLE);
             }
         } else if (holder instanceof ViewHolder2) {
@@ -139,7 +144,14 @@ public class CheckReportOrgDetailsAdapter extends RecyclerView.Adapter<RecyclerV
             } else if (iwork == 4) {
                 ((ViewHolder2) holder).managementIndustry.setVisibility(View.VISIBLE);
                 ((ViewHolder2) holder).managementIndustry.setText("专项检查");
-            } else {
+            }else if (iwork == 8) {
+                ((ViewHolder2) holder).managementIndustry.setVisibility(View.VISIBLE);
+                ((ViewHolder2) holder).managementIndustry.setText("安全检查");
+            } else if (iwork == 9) {
+                ((ViewHolder2) holder).managementIndustry.setVisibility(View.VISIBLE);
+                ((ViewHolder2) holder).managementIndustry.setText("质量检查");
+            }
+            else {
                 ((ViewHolder2) holder).managementIndustry.setVisibility(View.VISIBLE);
             }
         }

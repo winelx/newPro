@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.baselibrary.utils.Requests;
@@ -20,6 +21,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.cookie.store.CookieStore;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -149,7 +151,6 @@ public class BootupActivity extends BaseActivity {
                                     e.printStackTrace();
                                     staffName = "";
                                 }
-
                                 //所在组织id
                                 String orgId = jsom.getString("orgId");
                                 //手机号
@@ -172,6 +173,17 @@ public class BootupActivity extends BaseActivity {
                                 //是否保存数据
                                 SPUtils.putString(mContext, "user", user);
                                 SPUtils.putString(mContext, "password", password);
+                                if (extend.getString("qrCodeList") != null) {
+                                    JSONArray qclist = extend.getJSONArray("qrCodeList");
+                                    for (int i = 0; i < qclist.length(); i++) {
+                                        JSONObject jsonOb = qclist.getJSONObject(i);
+                                        if ("1".equals(jsonOb.getString("type"))) {
+                                            SPUtils.putString(mContext, "androidimg", Requests.networks+Utils.isNull(jsonOb.getString("qrcodeUrl")));
+                                        } else if ("2".equals(jsonOb.getString("type"))) {
+                                            SPUtils.putString(mContext, "iosimg", Requests.networks+Utils.isNull(jsonOb.getString("qrcodeUrl")));
+                                        }
+                                    }
+                                }
                                 startActivity(new Intent(BootupActivity.this, MainActivity.class));
                                 finish();
                             } else {

@@ -84,9 +84,11 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
     private LinearLayout checklistmeun, checkNewDialog;
     //当前单据状态
     private int status;
+
     public static CheckNewAddActivity getInstance() {
         return mContext;
     }
+
     private CheckUtils checkUtils;
     private ArrayList<View> viewlist = new ArrayList<>();
     private ArrayList<View> tVisibility = new ArrayList<>();
@@ -115,7 +117,6 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
         if (taskId == null) {
             checkNewOrgname.setText(SPUtils.getString(mContext, "username", ""));
             checkUsername.setText(SPUtils.getString(mContext, "staffName", ""));
-            datatime.setText(Dates.getDay());
             checkNewWebtext.setText(name);
             statusF();
         } else {
@@ -393,6 +394,10 @@ public class CheckNewAddActivity extends BaseActivity implements View.OnClickLis
     public void Save(String content, String nodeId) {
         if (TextUtils.isEmpty(nodeId)) {
             nodeId = "";
+        }
+        if (TextUtils.isEmpty(datatime.getText().toString())) {
+            ToastUtils.showShortToast("所属月份不能为空");
+            return;
         }
         Dates.getDialogs(CheckNewAddActivity.this, "提交数据中...");
         OkGo.<String>post(Requests.CHECKMANGERSAVE)

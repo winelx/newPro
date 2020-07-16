@@ -65,8 +65,6 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
     private static final String TAG = "CheckTasklistActivity";
     private NotSubmitTaskAdapter mAdapter;
     private ArrayList<Object> list;
-    private ArrayList<CheckTasklistBean> listsuccess;
-    private ArrayList<SCheckTasklistBean> listsub;
     private Context mContext;
     private PopupWindow mPopupWindow;
     private LinearLayout checklistmeun;
@@ -75,7 +73,6 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
     private int pages = 1;
     private String orgId, name;
     private RecyclerView rmanageRecy;
-    private CheckUtils checkUtils;
     private String status = "3";
     private Checkjson checkjson;
 
@@ -85,7 +82,6 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_checkmanagementlist);
         mContext = CheckTasklistActivity.this;
         CheckTaskCallbackUtils.setCallBack(this);
-        checkUtils = new CheckUtils();
         checkjson = new Checkjson();
         try {
             Intent intent = getIntent();
@@ -95,9 +91,7 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
             name = "";
             orgId = "";
         }
-
         list = new ArrayList<>();
-        listsub = new ArrayList<>();
         //获取屏幕对比比例1DP=？PX 比例有 1 ，2 ，3 ，4
         resolution = ScreenUtil.getDensity(App.getInstance());
         TextView titleView = (TextView) findViewById(R.id.titleView);
@@ -155,7 +149,6 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
         checkmamgrlist();
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -175,7 +168,6 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
                 break;
         }
     }
-
 
     //弹出框
     private void MeunPop() {
@@ -234,7 +226,6 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
         getWindow().setAttributes(lp);
     }
     //编辑页面新增或者修改后刷新界面
-
 
     @Override
     public void updata() {
@@ -299,7 +290,6 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
             intent.putExtra("type", iwork + "");
             startActivity(intent);
         }
-
     }
 
     public void delete(final int pos, String id) {
@@ -331,8 +321,6 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
                     }
                 });
     }
-
-
     //初始化
     public void showPopwindow() {
         backgroundAlpha(0.5f);

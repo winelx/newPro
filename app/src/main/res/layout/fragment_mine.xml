@@ -22,14 +22,13 @@
                 android:layout_height="50dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:visibility="gone">
+                android:layout_alignParentTop="true">
 
                 <android.support.v7.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:src="@mipmap/mine_setting" />
+                    android:src="@mipmap/qrcode" />
             </RelativeLayout>
 
             <de.hdodenhof.circleimageview.CircleImageView

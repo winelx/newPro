@@ -121,7 +121,6 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
         if (taskId == null) {
             checkNewOrgname.setText(SPUtils.getString(mContext, "username", ""));
             checkUsername.setText(SPUtils.getString(mContext, "staffName", ""));
-            datatime.setText(Dates.getDay().substring(0,7));
             checkNewWebtext.setText(name);
             statusF();
         } else {
@@ -427,6 +426,10 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
     public void Save(String content, String nodeId) {
         if (TextUtils.isEmpty(nodeId)) {
             nodeId = "";
+        }
+        if (TextUtils.isEmpty(datatime.getText().toString())){
+            ToastUtils.showShortToast("所属月份不能为空");
+            return;
         }
         Dates.getDialogs(CheckNewAddsActivity.this, "提交数据中...");
         OkGo.<String>post(Requests.CHECKMANGERSAVE)

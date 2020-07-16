@@ -55,7 +55,34 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:id="@+id/checkscore_lin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/writer"
+            android:paddingLeft="@dimen/dp15"
+            android:paddingTop="5dp"
+            android:paddingRight="@dimen/dp15"
+            android:paddingBottom="5dp">
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="管理行为扣分"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/checkscore"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="end"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+
+
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/standardscore_lin"
             android:layout_width="match_parent"
@@ -72,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="标准分"
-                android:textSize="15sp" />
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/standardscore"
@@ -80,8 +107,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="end"
-                android:textSize="14sp"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="13sp" />
 
 
         </LinearLayout>
@@ -100,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:text="考核扣分标准"
-                android:textSize="15sp" />
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/checkstandard"
@@ -108,8 +135,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:gravity="end"
-                android:textSize="14sp"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="13sp" />
 
 
         </LinearLayout>
@@ -124,11 +151,12 @@
             android:paddingBottom="5dp">
 
             <TextView
+                android:id="@+id/score_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="自评分"
-                android:textSize="15sp" />
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/score"
@@ -136,7 +164,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="end"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="13sp" />
 
 
         </LinearLayout>
@@ -155,7 +184,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="位置"
-                android:textSize="15sp" />
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/position"
@@ -163,7 +192,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:gravity="end"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="13sp" />
 
 
         </LinearLayout>
@@ -182,7 +212,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="具体描述"
-                android:textSize="15sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/description"
@@ -190,7 +220,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="end"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="13sp" />
 
 
         </LinearLayout>
@@ -209,7 +240,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="是否整改"
-                android:textSize="15sp" />
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/generate"
@@ -217,7 +248,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="end"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="13sp" />
 
 
         </LinearLayout>

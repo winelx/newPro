@@ -10,7 +10,6 @@ public class photoBean {
     String photopath;
     String photoname;
     String phototype;//(id)
-
     public photoBean(String photopath, String photoname, String phototype) {
         this.photopath = photopath;
         this.photoname = photoname;

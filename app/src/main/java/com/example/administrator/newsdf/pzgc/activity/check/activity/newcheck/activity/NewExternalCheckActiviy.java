@@ -316,13 +316,11 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
         String isNew = intent.getStringExtra("isNew");
         if ("编辑".equals(isNew)) {
             checkid = intent.getStringExtra("id");
-            comTitle.setText("外业检查");
             comButton.setVisibility(View.VISIBLE);
             getSafetyCheck();
         } else {
             newExternalCheckModel = new NewExternalCheckModel(commit, comButton, nestedScrollView,
                     checkType, checkTime, projectType, checkName, status);
-            comTitle.setText("新增检查");
             comButton.setText("保存");
             dkDragView.setVisibility(View.INVISIBLE);
             orgid = intent.getStringExtra("orgid");
@@ -371,6 +369,11 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
         }
         // {0：保存；2：待分公司核查；3：待集团核查；4：待分公司确认；5：待标段确认；6：已确认}
         if ("0".equals(status) || "2".equals(status) || "3".equals(status)) {
+            if (bean.isSubmitButton()) {
+                comTitle.setText("新增检查");
+            } else {
+                comTitle.setText("外业检查");
+            }
             if (lean) {
                 commit.setText("提交");
                 commit.setBackgroundResource(R.color.orange);
@@ -384,12 +387,14 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
             }
         } else if ("4".equals(status) || "5".equals(status)) {
             commit.setText("确认并签名");
+            comTitle.setText("外业检查");
             commit.setVisibility(View.VISIBLE);
             commit.setBackgroundResource(R.color.orange);
             repulse.setVisibility(View.GONE);
             newExternalCheckModel.confirmButton(mContext, bean.isConfirmButton());
         } else if ("6".equals(status)) {
             //已确认
+            comTitle.setText("外业检查");
             newExternalCheckModel.submitButton(mContext, false);
         }
 
@@ -534,9 +539,9 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
         totalSocre.setText(beans.getTotalSocre());
         checkName.setText(beans.getName());
         //所属标段
-        ascriptionOrg.setText(beans.getOrgName());
+        ascriptionOrg.setText(beans.getCheckOrgName());
         //检查组织
-        ascriptionBid.setText(beans.getCheckOrgName());
+        ascriptionBid.setText(beans.getOrgName());
         //检查人
         ascriptionUser.setText(beans.getCheckPersonName());
         if ("8".equals(beans.getCheckType())) {

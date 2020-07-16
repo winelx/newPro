@@ -87,12 +87,12 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
     private SmartRefreshLayout refreshlayout;
     private BasePhotoAdapter adapter;
     private Context mContext;
-    private TextView standardscore, checkstandard, import_org;
-    private TextView header_contet;
-    private EditText describe, orgEditext, score, manger_score;
-    private ImageView score_warning;
+    private TextView standardscore, checkstandard, importOrg;
+    private TextView headerContet, scoreText;
+    private EditText describe, orgEditext, score, mangerScore;
+    private ImageView scoreWarning;
     private Switch footerSwitch;
-    LinearLayout footer_manger;
+    private LinearLayout footerManger;
     /**
      * 相机相册请求弹窗帮助类
      */
@@ -285,7 +285,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
     public View getHeaderView() {
         View headerView = getLayoutInflater().inflate(R.layout.adapter_check_detail_header, null);
         headerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        header_contet = headerView.findViewById(R.id.header_contet);
+        headerContet = headerView.findViewById(R.id.header_contet);
         return headerView;
     }
 
@@ -299,7 +299,8 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
         View footerView = getLayoutInflater().inflate(R.layout.adapter_check_detail_footer, null);
         footerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         TextView footerTitle = footerView.findViewById(R.id.footer_title);
-        footer_manger = footerView.findViewById(R.id.footer_manger);
+        footerManger = footerView.findViewById(R.id.footer_manger);
+        scoreText = footerView.findViewById(R.id.score_text);
         switch (checkLevel) {
             case "3":
                 footerTitle.setText("集团公司质安部(A)");
@@ -309,29 +310,35 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                 break;
             case "1":
                 footerTitle.setText("项目质安部(C)");
-                footer_manger.setVisibility(View.GONE);
+
+                footerManger.setVisibility(View.GONE);
                 break;
             default:
                 break;
         }
-        score_warning = footerView.findViewById(R.id.score_warning);
+        if (checkLevel.equals(level)) {
+            scoreText.setText("自评分");
+        }else {
+            scoreText.setText("评分");
+        }
+        scoreWarning = footerView.findViewById(R.id.score_warning);
         recPhoto = footerView.findViewById(R.id.rec_photo);
         footerSwitch = footerView.findViewById(R.id.footer_switch);
         describe = footerView.findViewById(R.id.describe);
         checkstandard = footerView.findViewById(R.id.checkstandard);
         standardscore = footerView.findViewById(R.id.standardscore);
-        manger_score = footerView.findViewById(R.id.manger_score);
+        mangerScore = footerView.findViewById(R.id.manger_score);
         score = footerView.findViewById(R.id.score);
         orgEditext = footerView.findViewById(R.id.org_editext);
         recPhoto.setLayoutManager(new GridLayoutManager(this, 4));
         adapter = new BasePhotoAdapter(mContext, photoPaths);
         recPhoto.setAdapter(adapter);
-        import_org = footerView.findViewById(R.id.import_org);
+        importOrg = footerView.findViewById(R.id.import_org);
         //如果创建层级和检查层级相同，那么就不能对管理扣分
         if (checkLevel.equals(level)) {
-            footer_manger.setVisibility(View.GONE);
+            footerManger.setVisibility(View.GONE);
         }
-        import_org.setOnClickListener(new View.OnClickListener() {
+        importOrg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ExternalTreeActivity.class);
@@ -534,7 +541,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     orgEditext.setText(Utils.isNull(project.getbPosition()));
                     //具体描述
                     describe.setText(Utils.isNull(project.getbDescription()));
-                    header_contet.setText(Utils.isNull(project.getName()));
+                    headerContet.setText(Utils.isNull(project.getName()));
                     //是否整改
                     if (project.getbGenerate() != null) {
                         if ("2".equals(project.getbGenerate())) {
@@ -560,7 +567,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     //分公司
                     CheckDetailBean.Company company = (CheckDetailBean.Company) map.get("company");
                     //管理扣分
-                    manger_score.setText(company.getbCheckScore());
+                    mangerScore.setText(company.getbCheckScore());
                     //标准分
                     standardscore.setText(Utils.isNull(company.getfStandardScore()));
                     //考核扣分标准
@@ -573,7 +580,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     }
                     //位置
                     orgEditext.setText(Utils.isNull(company.getfPosition()));
-                    header_contet.setText(Utils.isNull(company.getName()));
+                    headerContet.setText(Utils.isNull(company.getName()));
                     //具体描述
                     describe.setText(Utils.isNull(company.getfDescription()));
                     //是否整改
@@ -603,7 +610,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     if (!TextUtils.isEmpty(Utils.isNull(group.getfCheckScore()))) {
 
                     } else {
-                        manger_score.setText("0");
+                        mangerScore.setText("0");
                     }
                     //标准分
                     standardscore.setText(Utils.isNull(group.getjStandardScore()));
@@ -619,7 +626,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     orgEditext.setText(Utils.isNull(group.getjPosition()));
                     //具体描述
                     describe.setText(Utils.isNull(group.getjDescription()));
-                    header_contet.setText(Utils.isNull(group.getName()));
+                    headerContet.setText(Utils.isNull(group.getName()));
                     //是否整改
                     if (group.getjGenerate() != null) {
                         if ("2".equals(group.getjGenerate())) {
@@ -646,13 +653,13 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
         } else {
             if (map.containsKey("project")) {
                 CheckDetailBean.Project project = (CheckDetailBean.Project) map.get("project");
-                header_contet.setText(Utils.isNull(project.getName()));
+                headerContet.setText(Utils.isNull(project.getName()));
             } else if (map.containsKey("company")) {
                 CheckDetailBean.Company company = (CheckDetailBean.Company) map.get("company");
-                header_contet.setText(Utils.isNull(company.getName()));
+                headerContet.setText(Utils.isNull(company.getName()));
             } else if (map.containsKey("group")) {
                 CheckDetailBean.Group group = (CheckDetailBean.Group) map.get("group");
-                header_contet.setText(Utils.isNull(group.getName()));
+                headerContet.setText(Utils.isNull(group.getName()));
             }
         }
     }
@@ -666,8 +673,8 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
     public void saveSafetyCheckDelByApp() {
         Map<String, String> map = new HashMap<>();
         if (Integer.parseInt(checkLevel) > 1) {
-            if (!TextUtils.isEmpty(standardscore.getText().toString()) && !TextUtils.isEmpty(manger_score.getText().toString())) {
-                int num = Integer.parseInt(manger_score.getText().toString());
+            if (!TextUtils.isEmpty(standardscore.getText().toString()) && !TextUtils.isEmpty(mangerScore.getText().toString())) {
+                int num = Integer.parseInt(mangerScore.getText().toString());
                 int snum = Integer.parseInt(standardscore.getText().toString());
                 if (num > snum) {
                     ToastUtils.showShortToastCenter("管理扣分不能大于标准分");
@@ -675,17 +682,17 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                 } else {
                     //管理扣分
                     if ("3".equals(checkLevel)) {
-                        map.put("fCheckScore", manger_score.getText().toString());
+                        map.put("fCheckScore", mangerScore.getText().toString());
                     } else if ("2".equals(checkLevel)) {
-                        map.put("bCheckScore", manger_score.getText().toString());
+                        map.put("bCheckScore", mangerScore.getText().toString());
                     }
                 }
             } else {
                 //管理扣分
                 if ("3".equals(checkLevel)) {
-                    map.put("fCheckScore", manger_score.getText().toString());
+                    map.put("fCheckScore", mangerScore.getText().toString());
                 } else if ("2".equals(checkLevel)) {
-                    map.put("bCheckScore", manger_score.getText().toString());
+                    map.put("bCheckScore", mangerScore.getText().toString());
                 }
             }
 
@@ -693,7 +700,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
         map.put("safetyCheckId", checkid);
         map.put("id", scoreid);
         //评分
-        if (score_warning.getVisibility() == View.VISIBLE) {
+        if (scoreWarning.getVisibility() == View.VISIBLE) {
             if (!TextUtils.isEmpty(score.getText().toString())) {
                 int num = Integer.parseInt(score.getText().toString());
                 int snum = Integer.parseInt(standardscore.getText().toString());
@@ -742,7 +749,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                         page--;
                     }
                     initCheckItem();
-                }else {
+                } else {
                     getSafetyCheckDelByApp(scoreid);
                 }
             }
@@ -789,37 +796,37 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
             orgEditext.setEnabled(lean);
             adapter.addview(lean);
             score.setEnabled(lean);
-            if (score_warning.getVisibility() == View.VISIBLE) {
+            if (scoreWarning.getVisibility() == View.VISIBLE) {
                 score.setEnabled(lean);
             } else {
                 score.setEnabled(false);
             }
             describe.setEnabled(lean);
             footerSwitch.setClickable(lean);
-            manger_score.setEnabled(lean);
+            mangerScore.setEnabled(lean);
             if (edStatus) {
                 if (lean) {
                     toolbartext.setText("保存");
-                    import_org.setVisibility(View.VISIBLE);
-                    describe.setHint("");
-                    score.setHint("");
-                    manger_score.setHint("");
-                    orgEditext.setHint("");
-                } else {
-                    toolbartext.setText("编辑");
+                    importOrg.setVisibility(View.VISIBLE);
                     describe.setHint("请输入");
                     score.setHint("请输入");
-                    manger_score.setHint("请输入");
+                    mangerScore.setHint("请输入");
                     orgEditext.setHint("请输入");
-                    import_org.setVisibility(View.GONE);
+                } else {
+                    toolbartext.setText("编辑");
+                    describe.setHint("");
+                    score.setHint("");
+                    mangerScore.setHint("");
+                    orgEditext.setHint("");
+                    importOrg.setVisibility(View.GONE);
                 }
             } else {
                 describe.setHint("");
                 score.setHint("");
-                manger_score.setHint("");
+                mangerScore.setHint("");
                 orgEditext.setHint("");
                 toolbartext.setVisibility(View.GONE);
-                import_org.setVisibility(View.GONE);
+                importOrg.setVisibility(View.GONE);
             }
 
         }
@@ -857,7 +864,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
             adapter.getData(photoPaths);
             describe.setText("");
             orgEditext.setText("");
-            manger_score.setText("");
+            mangerScore.setText("");
             score.setText("");
             footerSwitch.setChecked(false);
         }
@@ -872,7 +879,7 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
      */
     private void setPermission(Map<String, Object> map) {
         //level 控制显示内容
-        detailAdapter.getlevel(level);
+        detailAdapter.getlevel(level,checkLevel);
         List<Object> data = new ArrayList<>();
         //如果状态大于等于3进入确认流程，无需编辑
         if ("1".equals(level)) {
@@ -979,12 +986,12 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     //自评分（必填）及其他项
                     //导入
                     orgEditext.setEnabled(lean);
-                    import_org.setVisibility(lean ? View.VISIBLE : View.GONE);
+                    importOrg.setVisibility(lean ? View.VISIBLE : View.GONE);
                     //图片
                     adapter.addview(lean);
                     //自评分
                     score.setEnabled(lean);
-                    score_warning.setVisibility(View.VISIBLE);
+                    scoreWarning.setVisibility(View.VISIBLE);
                     if (lean) {
                         score.setHint("请输入");
                     } else {
@@ -994,13 +1001,15 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     describe.setEnabled(lean);
                     //是否整改
                     footerSwitch.setClickable(lean);
-                    footer_manger.setVisibility(View.GONE);
+                    footerManger.setVisibility(View.GONE);
                     if (lean) {
                         toolbartext.setText("保存");
-                        import_org.setVisibility(View.VISIBLE);
+                        setEnabled(true);
+                        importOrg.setVisibility(View.VISIBLE);
                     } else {
                         toolbartext.setText("编辑");
-                        import_org.setVisibility(View.GONE);
+                        setEnabled(false);
+                        importOrg.setVisibility(View.GONE);
                     }
                 } else {
                     setEnabled(false);
@@ -1011,12 +1020,12 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     //自评分（必填）及其他项
                     //导入
                     orgEditext.setEnabled(lean);
-                    import_org.setVisibility(lean ? View.VISIBLE : View.GONE);
+                    importOrg.setVisibility(lean ? View.VISIBLE : View.GONE);
                     //图片
                     adapter.addview(lean);
                     //自评分
                     score.setEnabled(lean);
-                    score_warning.setVisibility(View.VISIBLE);
+                    scoreWarning.setVisibility(View.VISIBLE);
                     if (lean) {
                         score.setHint("请输入");
                     } else {
@@ -1027,19 +1036,20 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     //是否整改
                     footerSwitch.setClickable(lean);
                     if (checkLevel.equals(level)) {
-                        footer_manger.setVisibility(View.GONE);
-                        manger_score.setEnabled(false);
+                        footerManger.setVisibility(View.GONE);
+                        mangerScore.setEnabled(false);
                     } else {
-                        footer_manger.setVisibility(View.VISIBLE);
-                        manger_score.setEnabled(lean);
+                        footerManger.setVisibility(View.VISIBLE);
+                        mangerScore.setEnabled(lean);
                     }
-
                     if (lean) {
                         toolbartext.setText("保存");
-                        import_org.setVisibility(View.VISIBLE);
+                        setEnabled(true);
+                        importOrg.setVisibility(View.VISIBLE);
                     } else {
                         toolbartext.setText("编辑");
-                        import_org.setVisibility(View.GONE);
+                        setEnabled(false);
+                        importOrg.setVisibility(View.GONE);
                     }
                 } else {
                     setEnabled(false);
@@ -1052,12 +1062,12 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     //自评分（必填）及其他项
                     //导入
                     orgEditext.setEnabled(lean);
-                    import_org.setVisibility(lean ? View.VISIBLE : View.GONE);
+                    importOrg.setVisibility(lean ? View.VISIBLE : View.GONE);
                     //图片
                     adapter.addview(lean);
                     //自评分
                     score.setEnabled(lean);
-                    score_warning.setVisibility(View.VISIBLE);
+                    scoreWarning.setVisibility(View.VISIBLE);
                     if (lean) {
                         score.setHint("请输入");
                     } else {
@@ -1068,22 +1078,24 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     //是否整改
                     footerSwitch.setClickable(lean);
                     if ("1".equals(checkLevel)) {
-                        footer_manger.setVisibility(View.GONE);
+                        footerManger.setVisibility(View.GONE);
                     } else if ("2".equals(checkLevel)) {
                         if (checkLevel.equals(level)) {
-                            footer_manger.setVisibility(View.GONE);
-                            manger_score.setEnabled(false);
+                            footerManger.setVisibility(View.GONE);
+                            mangerScore.setEnabled(false);
                         } else {
-                            footer_manger.setVisibility(View.VISIBLE);
-                            manger_score.setEnabled(lean);
+                            footerManger.setVisibility(View.VISIBLE);
+                            mangerScore.setEnabled(lean);
                         }
                     }
                     if (lean) {
                         toolbartext.setText("保存");
-                        import_org.setVisibility(View.VISIBLE);
+                        setEnabled(true);
+                        importOrg.setVisibility(View.VISIBLE);
                     } else {
                         toolbartext.setText("编辑");
-                        import_org.setVisibility(View.GONE);
+                        setEnabled(false);
+                        importOrg.setVisibility(View.GONE);
                     }
                 } else {
                     setEnabled(false);
@@ -1098,21 +1110,21 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     adapter.addview(false);
                     //自评分
                     score.setEnabled(false);
-                    score_warning.setVisibility(View.INVISIBLE);
+                    scoreWarning.setVisibility(View.INVISIBLE);
                     score.setHint("");
                     //内容
                     describe.setEnabled(false);
                     //是否整改
                     footerSwitch.setClickable(false);
                     if (checkLevel.equals(level)) {
-                        footer_manger.setVisibility(View.GONE);
-                        manger_score.setEnabled(false);
+                        footerManger.setVisibility(View.GONE);
+                        mangerScore.setEnabled(false);
                     } else {
-                        footer_manger.setVisibility(View.VISIBLE);
-                        manger_score.setEnabled(lean);
+                        footerManger.setVisibility(View.VISIBLE);
+                        mangerScore.setEnabled(lean);
                     }
                     toolbartext.setText("编辑");
-                    import_org.setVisibility(View.GONE);
+                    importOrg.setVisibility(View.GONE);
                 } else {
                     setEnabled(false);
                 }
@@ -1125,12 +1137,12 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     //自评分（必填）及其他项
                     //导入
                     orgEditext.setEnabled(lean);
-                    import_org.setVisibility(lean ? View.VISIBLE : View.GONE);
+                    importOrg.setVisibility(lean ? View.VISIBLE : View.GONE);
                     //图片
                     adapter.addview(lean);
                     //自评分
                     score.setEnabled(lean);
-                    score_warning.setVisibility(View.VISIBLE);
+                    scoreWarning.setVisibility(View.VISIBLE);
                     if (lean) {
                         score.setHint("请输入");
                     } else {
@@ -1140,13 +1152,15 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     describe.setEnabled(lean);
                     //是否整改
                     footerSwitch.setClickable(lean);
-                    footer_manger.setVisibility(View.GONE);
+                    footerManger.setVisibility(View.GONE);
                     if (lean) {
                         toolbartext.setText("保存");
-                        import_org.setVisibility(View.VISIBLE);
+                        setEnabled(true);
+                        importOrg.setVisibility(View.VISIBLE);
                     } else {
                         toolbartext.setText("编辑");
-                        import_org.setVisibility(View.GONE);
+                        setEnabled(false);
+                        importOrg.setVisibility(View.GONE);
                     }
                 } else {
                     setEnabled(false);
@@ -1162,21 +1176,22 @@ public class ExternalCheckDetailActivity extends BaseActivity implements View.On
                     adapter.addview(false);
                     //自评分
                     score.setEnabled(false);
-                    score_warning.setVisibility(View.INVISIBLE);
+                    scoreWarning.setVisibility(View.INVISIBLE);
                     score.setHint("");
                     //内容
                     describe.setEnabled(false);
                     //是否整改
                     footerSwitch.setClickable(false);
                     if (checkLevel.equals(level)) {
-                        footer_manger.setVisibility(View.GONE);
-                        manger_score.setEnabled(false);
+                        footerManger.setVisibility(View.GONE);
+                        mangerScore.setEnabled(false);
                     } else {
-                        footer_manger.setVisibility(View.VISIBLE);
-                        manger_score.setEnabled(lean);
+                        footerManger.setVisibility(View.VISIBLE);
+                        mangerScore.setEnabled(lean);
                     }
                     toolbartext.setText("编辑");
-                    import_org.setVisibility(View.GONE);
+                    setEnabled(false);
+                    importOrg.setVisibility(View.GONE);
                 } else {
                     setEnabled(false);
                 }

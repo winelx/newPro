@@ -71,7 +71,7 @@ public class WorkFragment extends Fragment {
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//避免重复绘制界面
+        //避免重复绘制界面
         if (rootView == null) {
             mContext = getActivity();
             rootView = inflater.inflate(R.layout.fragment_work, null);
@@ -106,9 +106,7 @@ public class WorkFragment extends Fragment {
 
     private void findId() {
         swiprefresh = rootView.findViewById(R.id.swiprefresh);
-        swiprefresh.setColorSchemeResources(R.color.colorAccent,
-                R.color.finish_green, R.color.Orange,
-                R.color.yellow);
+        swiprefresh.setColorSchemeResources(R.color.colorAccent, R.color.finish_green, R.color.Orange, R.color.yellow);
         swiprefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -182,7 +180,6 @@ public class WorkFragment extends Fragment {
         });
     }
 
-
     public void okgo() {
         OkGo.get(Requests.getMenu)
                 .execute(new StringCallback() {
@@ -239,10 +236,9 @@ public class WorkFragment extends Fragment {
                                     if ("true".equals(json.getString("特种设备"))) {
                                         checklist.add(new bean("特种设备", R.mipmap.specialdevices));
                                     }
-//                                    if ("true".equals(json.getString("外业检查"))){
-//                                        checklist.add(new bean("外业检查", R.mipmap.reply_external));
-//                                    }
-                                   checklist.add(new bean("外业检查", R.mipmap.reply_external));
+                                    if ("true".equals(json.getString("外业检查"))){
+                                        checklist.add(new bean("外业检查", R.mipmap.reply_external));
+                                    }
                                     if ("true".equals(json.getString("台账管理"))) {
                                         special.add(new bean("台账管理", R.mipmap.loedger));
                                     }

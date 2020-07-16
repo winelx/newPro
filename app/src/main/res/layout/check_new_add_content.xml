@@ -331,7 +331,7 @@
                 android:id="@+id/check_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="测试员"
+
                 android:textColor="@color/black"
                 android:textSize="15sp" />
         </LinearLayout>
@@ -372,7 +372,6 @@
                 android:id="@+id/check_new_orgname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="测试一标"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
         </LinearLayout>
@@ -421,7 +420,6 @@
                     android:id="@+id/check_new_data_tx"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2018-08-04"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 

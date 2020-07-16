@@ -146,7 +146,7 @@ public class ChagedReplyBillsActivity extends BaseActivity implements View.OnCli
     }
 
 
-    /*获取整改验证单数据详情*/
+    /**获取整改验证单数据详情*/
     private void request() {
         ChagedreplyUtils.getReplyFormDel(replyDelId, new ChagedreplyUtils.MapCallBack() {
             @SuppressLint("SetTextI18n")

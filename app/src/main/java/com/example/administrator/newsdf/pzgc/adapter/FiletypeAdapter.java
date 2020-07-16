@@ -26,6 +26,7 @@ import com.example.administrator.newsdf.pzgc.utils.DialogUtils;
 import com.example.administrator.newsdf.pzgc.utils.NetUtils;
 import com.example.administrator.newsdf.pzgc.utils.RoundImageView;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
+import com.example.baselibrary.bean.bean;
 import com.example.baselibrary.ui.utils.PdfPreview;
 import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.utils.network.NetWork;
@@ -76,7 +77,7 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private void bindView(final FiletypeAdapter.TypeHolder holder, final int position) {
         //截取doc+1后面的字符串，包括doc+1；
         FileTypeBean bean=mData.get(position);
-        if ("pdf".equals(bean.getType())) {
+        if (bean.getUrl().contains(".pdf")||bean.getUrl().contains(".PDF")) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
             //背景色
@@ -86,7 +87,7 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             //字体背景色
             holder.audio_relat_icon.setBackgroundColor(Color.parseColor("#e98e90"));
             holder.audio_relat_icon.setTextColor(Color.parseColor("#FFFFFF"));
-        } else if ("doc".equals(bean.getType()) || "docx".equals(bean.getType())) {
+        } else if (bean.getUrl().contains(".doc")|| bean.getUrl().contains(".docx")) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
             holder.audio_relat_name.setText(mData.get(position).getName());
@@ -94,7 +95,7 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.audio_relat_icon.setText("W");
             holder.audio_relat_icon.setTextColor(Color.parseColor("#FFFFFF"));
             holder.audio_relat_icon.setBackgroundColor(Color.parseColor("#5e8ed3"));
-        } else if ("xls".equals(bean.getType()) || "xlsx".equals(bean.getType())) {
+        } else if (bean.getUrl().contains(".xls") || bean.getUrl().contains(".xlsx")) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
             holder.audio_relat_name.setText(mData.get(position).getName());
@@ -102,7 +103,7 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.audio_relat_icon.setText("X");
             holder.audio_relat_icon.setTextColor(Color.parseColor("#FFFFFF"));
             holder.audio_relat_icon.setBackgroundColor(Color.parseColor("#67cf95"));
-        } else if ("dwg".equals(bean.getType())) {
+        } else if (bean.getUrl().contains(".dwg")) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
             //背景色

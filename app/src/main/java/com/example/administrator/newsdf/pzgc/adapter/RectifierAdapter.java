@@ -70,11 +70,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } catch (Exception e) {
             filename = "";
         }
-        //拿到.位置
-        int doc = imgUrl.lastIndexOf(".");
-        //截取doc+1后面的字符串，包括doc+1；
-        String strs = imgUrl.substring(doc + 1);
-        if (strs.equals("pdf")) {
+        if (imgUrl.contains(".pdf")||imgUrl.contains(".PDF")) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
             //背景色
@@ -84,7 +80,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             //字体背景色
             holder.audio_relat_icon.setBackgroundColor(Color.parseColor("#e98e90"));
             holder.audio_relat_icon.setTextColor(Color.parseColor("#FFFFFF"));
-        } else if ("doc".equals(strs) || "docx".equals(strs)) {
+        } else if (imgUrl.contains(".doc") || imgUrl.contains(".docx")) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
             holder.audio_relat_name.setText(filename + ".doc");
@@ -92,7 +88,7 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             holder.audio_relat_icon.setText("W");
             holder.audio_relat_icon.setTextColor(Color.parseColor("#FFFFFF"));
             holder.audio_relat_icon.setBackgroundColor(Color.parseColor("#5e8ed3"));
-        } else if ("xls".equals(strs) || "xlsx".equals(strs)) {
+        } else if (imgUrl.contains(".xls") || imgUrl.contains(".xlsx")) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
             holder.audio_relat_name.setText(filename + ".xsl");
@@ -140,7 +136,9 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     //截取doc+1后面的字符串，包括doc+1；
                     String strs = urlpath.substring(doc + 1);
                     //图片可能为jpg 也可能是png
-                    if (!strs.equals("xls") || strs.equals("xlsx") || strs.equals("pdf") || strs.equals("PNG") || strs.equals("doc") || strs.equals("docx")) {
+                    if (strs.equals("xls") || strs.equals("xlsx") || strs.equals("pdf") || strs.equals("PNG") || strs.equals("doc") || strs.equals("docx")) {
+
+                    }else {
                         path.add(mData.get(i));
                     }
                 }
@@ -154,12 +152,8 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             public void onClick(View v) {
                 //判断是否是pdf文件
                 String imgUrl = mData.get(position);
-                //拿到.位置
-                int doc = imgUrl.lastIndexOf(".");
-                //截取doc+1后面的字符串，包括doc+1；
-                String strs = imgUrl.substring(doc + 1);
-                if (strs.equals("pdf")) {
-                 PdfPreview.builder().setPdfUrl(mData.get(position)).start((Activity) mContext);
+                if (imgUrl.contains(".pdf")||imgUrl.contains(".PDF")) {
+                    PdfPreview.builder().setPdfUrl(mData.get(position)).start((Activity) mContext);
 
                 } else {
                     ToastUtils.showLongToast("请到pc端查看详情");

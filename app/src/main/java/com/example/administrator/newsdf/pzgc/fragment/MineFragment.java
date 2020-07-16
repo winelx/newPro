@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,10 +12,13 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.LoginActivity;
@@ -26,9 +30,12 @@ import com.example.administrator.newsdf.pzgc.activity.mine.ProjectMembersTreeAct
 import com.example.administrator.newsdf.pzgc.activity.mine.SettingActivity;
 import com.example.administrator.newsdf.pzgc.utils.AppUtils;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.baselibrary.inface.Onclicklitener;
 import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.baselibrary.ui.activity.SignatureViewActivity;
+import com.example.baselibrary.utils.screen.ScreenUtil;
+import com.example.baselibrary.view.BaseDialog;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.cookie.store.CookieStore;
@@ -53,7 +60,7 @@ import okhttp3.Response;
  * date: 2018/3/22 0022 下午 4:18
  * update: 2018/3/22 0022
  */
-public class  MineFragment extends Fragment implements View.OnClickListener {
+public class MineFragment extends Fragment implements View.OnClickListener {
     private View rootView;
     private CircleImageView mineAvatar;
     private Context mContext;
@@ -62,7 +69,8 @@ public class  MineFragment extends Fragment implements View.OnClickListener {
     private TextView mineOrganization, staffName;
     String version;
     private TextView mineUploading;
-
+    private AlertDialog dialog;
+    private RequestOptions options;
     @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -103,6 +111,14 @@ public class  MineFragment extends Fragment implements View.OnClickListener {
         dates = new Dates();
         version = AppUtils.getVersionName(getActivity());
         mineUploading.setText("(当前版本:" + version + ")");
+        options = new RequestOptions()
+                .centerCrop()
+                .skipMemoryCache(true)
+                .dontAnimate()
+                .fitCenter()
+                .override(ScreenUtil.getScreenHeight(mContext) / 2, ScreenUtil.getScreenWidth(mContext) / 2)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .error(com.example.baselibrary.R.mipmap.nonews);
         ititData();
         // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
         ViewGroup parent = (ViewGroup) rootView.getParent();
@@ -155,7 +171,8 @@ public class  MineFragment extends Fragment implements View.OnClickListener {
                 break;
             //系统设置
             case R.id.mine_setting:
-                startActivity(new Intent(getActivity(), SettingActivity.class));
+//                startActivity(new Intent(getActivity(), SettingActivity.class));
+                showqrcode();
                 break;
             //关于我们
             case R.id.about_us:
@@ -300,5 +317,60 @@ public class  MineFragment extends Fragment implements View.OnClickListener {
         });
         builder.show();
     }
+
+    /**
+     * 说明：显示二维码
+     * 创建时间： 2020/7/16 0016 13:16
+     *
+     * @author winelx
+     */
+    @SuppressLint("ResourceType")
+    public void showqrcode() {
+        dialog = new AlertDialog.Builder(mContext).create();
+        // 获取布局
+        View view = View.inflate(mContext, R.layout.fragment_mine_qrcode, null);
+        ImageView imgAndroid = view.findViewById(R.id.android);
+        ImageView imgIos = view.findViewById(R.id.ios);
+        TextView tabAndroid = view.findViewById(R.id.tab_android);
+        TextView tabIos = view.findViewById(R.id.tab_ios);
+        Glide.with(mContext)
+                .load(SPUtils.getString(mContext,"iosimg",""))
+                .apply(options)
+                .into(imgIos);
+        Glide.with(mContext)
+                .load(SPUtils.getString(mContext,"androidimg",""))
+                .apply(options)
+                .into(imgAndroid);
+        tabAndroid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tabAndroid.setBackgroundResource(R.color.colorAccent);
+                tabIos.setBackgroundResource(R.color.gray);
+                imgAndroid.setVisibility(View.VISIBLE);
+                imgIos.setVisibility(View.GONE);
+            }
+        });
+        tabIos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tabAndroid.setBackgroundResource(R.color.gray);
+                tabIos.setBackgroundResource(R.color.colorAccent);
+                imgAndroid.setVisibility(View.GONE);
+                imgIos.setVisibility(View.VISIBLE);
+
+            }
+        });
+        view.findViewById(R.id.diss).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        //添加布局
+        dialog.setView(view);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+    }
+
 }
 

@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.activity.NewExternalCheckActiviy;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.adapter.CheckReportOrgDetailsAdapter;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckListDetailsActivity;
@@ -93,18 +94,28 @@ public class CheckReportOrgDetailsT extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 Object obj = list.get(position);
-                Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
                 OrgDetailsTBean tBean = (OrgDetailsTBean) obj;
                 int iworkd = tBean.getIwork();
                 if (iworkd == 1) {
+                    Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
                     //外业标识
                     intent.putExtra("type", "1");
+                    intent.putExtra("id", tBean.getId());
+                    startActivity(intent);
+                } else if (iworkd == 8 || iworkd == 9) {
+                    Intent intent = new Intent(mContext, NewExternalCheckActiviy.class);
+                    //外业标识
+                    intent.putExtra("isNew", "编辑");
+                    intent.putExtra("id", tBean.getId());
+                    startActivity(intent);
                 } else {
+                    Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
                     //内业标识
                     intent.putExtra("type", "0");
+                    intent.putExtra("id", tBean.getId());
+                    startActivity(intent);
                 }
-                intent.putExtra("id", tBean.getId());
-                startActivity(intent);
+
             }
         });
         return view;

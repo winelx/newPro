@@ -13,7 +13,6 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.adapter.FragmentHomeListAdapter;
 import com.example.administrator.newsdf.pzgc.activity.home.MineListmessageActivity;
@@ -131,13 +130,13 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
 
     //网络请求
     private void Okgo() {
-        Dates.getDialogs((Activity) mContext, "请求数据中...");
+
         //请求数据库的数据
         OkGo.post(Requests.TaskMain)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        Dates.disDialog();
+
                         if (s.contains("data")) {
                             mData = new ArrayList<>();
                             Audit = new ArrayList<>();
@@ -234,7 +233,6 @@ public class HomeMineFragment extends Fragment implements AdapterView.OnItemClic
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        Dates.disDialog();
                         ToastUtils.showShortToast(e.getMessage().equals("timeout")?"请求超时":e.getMessage());
                         probar.setVisibility(View.GONE);
                         nullposion.setVisibility(View.VISIBLE);

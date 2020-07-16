@@ -42,6 +42,7 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
     public static final int TYPE_TAB = 3;
     private List<Object> lists;
     private String level;
+    private String checkLevel;
 
     public ExternalCheckDetailAdapter(@Nullable List<Object> data) {
         super(data);
@@ -94,6 +95,8 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
             helper.setText(R.id.position, Utils.isNull(data.getbPosition()));
             helper.setText(R.id.description, Utils.isNull(data.getbDescription()));
             helper.setText(R.id.generate, data.getbGenerate().equals("1") ? "否" : "是");
+            LinearLayout checkscore_lin = helper.getView(R.id.checkscore_lin);
+            checkscore_lin.setVisibility(View.GONE);
             TextView open_lin = helper.getView(R.id.open_lin);
             ImageView open_img = helper.getView(R.id.open_img);
             LinearLayout content_lin = helper.getView(R.id.content_lin);
@@ -113,10 +116,14 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
                     }
                 }
             });
+            TextView score_text = helper.getView(R.id.score_text);
             if ("1".equals(level)) {
                 open_lin.setText("展开");
+                score_text.setText("自评分");
                 open_img.setBackgroundResource(R.mipmap.bottom_blue_icon);
                 content_lin.setVisibility(View.GONE);
+            } else {
+                score_text.setText("评分");
             }
             RecyclerView photo_rec = helper.getView(R.id.photo_rec);
             photo_rec.setLayoutManager(new GridLayoutManager(mContext, 4));
@@ -165,18 +172,27 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
             helper.setText(R.id.position, Utils.isNull(data.getfPosition()));
             helper.setText(R.id.description, Utils.isNull(data.getfDescription()));
             helper.setText(R.id.generate, data.getfGenerate().equals("1") ? "否" : "是");
-            TextView standardscore_text = helper.getView(R.id.standardscore_text);
-            standardscore_text.setText("管理行为扣分");
             TextView standardscore = helper.getView(R.id.standardscore);
-            standardscore.setText(Utils.isNull(data.getbCheckScore()));
+            standardscore.setText(Utils.isNull(data.getfStandardScore()));
+            TextView checkscore = helper.getView(R.id.checkscore);
+            checkscore.setText(Utils.isNull(data.getbCheckScore()));
+            LinearLayout checkscore_lin = helper.getView(R.id.checkscore_lin);
+            TextView score_text = helper.getView(R.id.score_text);
+            if ("2".equals(level)) {
+                score_text.setText("自评分");
+                checkscore_lin.setVisibility(View.GONE);
+            } else {
+                score_text.setText("评分");
+            }
             if (!TextUtils.isEmpty(data.getbCheckScore())) {
                 int scor = Integer.parseInt(data.getbCheckScore());
                 if (scor < 0) {
-                    standardscore.setTextColor(Color.parseColor("#FE0000"));
+                    checkscore.setTextColor(Color.parseColor("#FE0000"));
                 } else {
-                    standardscore.setTextColor(Color.parseColor("#000000"));
+                    checkscore.setTextColor(Color.parseColor("#000000"));
                 }
             }
+
             TextView open_lin = helper.getView(R.id.open_lin);
             ImageView open_img = helper.getView(R.id.open_img);
             LinearLayout content_lin = helper.getView(R.id.content_lin);
@@ -195,6 +211,7 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
                     }
                 }
             });
+
             if ("2".equals(level) || "1".equals(level)) {
                 if (lists.size() == 2) {
                     open_lin.setText("收起");
@@ -252,38 +269,47 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
             helper.setText(R.id.position, Utils.isNull(data.getjPosition()));
             helper.setText(R.id.description, Utils.isNull(data.getjDescription()));
             helper.setText(R.id.generate, data.getjGenerate().equals("1") ? "否" : "是");
-            TextView standardscore_text = helper.getView(R.id.standardscore_text);
-            standardscore_text.setText("管理行为扣分");
+            helper.setText(R.id.checkstandard, Utils.isNull(data.getjCheckStandard()));
             TextView standardscore = helper.getView(R.id.standardscore);
-            standardscore.setText(Utils.isNull(data.getfCheckScore()));
+            standardscore.setText(Utils.isNull(data.getjStandardScore()));
+            TextView checkscore = helper.getView(R.id.checkscore);
+            checkscore.setText(Utils.isNull(data.getfCheckScore()));
             if (!TextUtils.isEmpty(data.getfCheckScore())) {
                 int scor = Integer.parseInt(data.getfCheckScore());
                 if (scor < 0) {
-                    standardscore.setTextColor(Color.parseColor("#FE0000"));
+                    checkscore.setTextColor(Color.parseColor("#FE0000"));
                 } else {
-                    standardscore.setTextColor(Color.parseColor("#000000"));
+                    checkscore.setTextColor(Color.parseColor("#000000"));
                 }
             }
-            TextView open_lin = helper.getView(R.id.open_lin);
-            ImageView open_img = helper.getView(R.id.open_img);
-            LinearLayout content_lin = helper.getView(R.id.content_lin);
-            open_lin.setOnClickListener(new View.OnClickListener() {
+            LinearLayout checkscore_lin = helper.getView(R.id.checkscore_lin);
+            TextView score_text = helper.getView(R.id.score_text);
+            if ("3".equals(level)) {
+                checkscore_lin.setVisibility(View.GONE);
+                score_text.setText("自评分");
+            } else {
+                score_text.setText("评分");
+            }
+            TextView openLin = helper.getView(R.id.open_lin);
+            ImageView openImg = helper.getView(R.id.open_img);
+            LinearLayout contentLin = helper.getView(R.id.content_lin);
+            openLin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if ("展开".equals(open_lin.getText().toString())) {
-                        open_lin.setText("收起");
-                        open_img.setBackgroundResource(R.mipmap.top_blue_icon);
-                        content_lin.setVisibility(View.VISIBLE);
+                    if ("展开".equals(openLin.getText().toString())) {
+                        openLin.setText("收起");
+                        openImg.setBackgroundResource(R.mipmap.top_blue_icon);
+                        contentLin.setVisibility(View.VISIBLE);
                         LiveDataBus.get().with("recycler").setValue(helper.getAdapterPosition() + "");
                     } else {
-                        open_lin.setText("展开");
-                        open_img.setBackgroundResource(R.mipmap.bottom_blue_icon);
-                        content_lin.setVisibility(View.GONE);
+                        openLin.setText("展开");
+                        openImg.setBackgroundResource(R.mipmap.bottom_blue_icon);
+                        contentLin.setVisibility(View.GONE);
                     }
                 }
             });
-            RecyclerView photo_rec = helper.getView(R.id.photo_rec);
-            photo_rec.setLayoutManager(new GridLayoutManager(mContext, 4));
+            RecyclerView photoRec = helper.getView(R.id.photo_rec);
+            photoRec.setLayoutManager(new GridLayoutManager(mContext, 4));
             ArrayList<FileTypeBean> photoPaths = new ArrayList<>();
             //集团
             if (data.getJFileList() != null) {
@@ -293,16 +319,18 @@ public class ExternalCheckDetailAdapter extends MultipleItemRvAdapter<Object, Ba
                 }
             }
             if (photoPaths.size() > 0) {
-                photo_rec.setVisibility(View.VISIBLE);
+                photoRec.setVisibility(View.VISIBLE);
             } else {
-                photo_rec.setVisibility(View.GONE);
+                photoRec.setVisibility(View.GONE);
             }
             FiletypeAdapter adapter = new FiletypeAdapter(mContext, photoPaths);
-            photo_rec.setAdapter(adapter);
+            photoRec.setAdapter(adapter);
         }
     }
 
-    public void getlevel(String string) {
+    public void getlevel(String string, String checkLevel) {
         this.level = string;
+        this.checkLevel = checkLevel;
     }
+
 }

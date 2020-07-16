@@ -86,7 +86,6 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
             } else {
                 ((MyViewHolder) holder).managementNumber.setText(setText("总分：" + success.getScore()));
             }
-
             ((MyViewHolder) holder).managementUser.setText("检查人：" + success.getCheckUser() + "   所属月份：" + success.getCreateDate().substring(0,7));
             iwork = success.getIwork();
             if (iwork == 1) {
@@ -94,7 +93,15 @@ public class NotSubmitTaskAdapter extends RecyclerView.Adapter<RecyclerView.View
             } else if (iwork == 4) {
                 ((MyViewHolder) holder).managementIndustry.setVisibility(View.VISIBLE);
                 ((MyViewHolder) holder).managementIndustry.setText("专项检查");
-            } else {
+            } else if (iwork == 8) {
+                ((MyViewHolder) holder).managementIndustry.setVisibility(View.VISIBLE);
+                ((MyViewHolder) holder).managementIndustry.setText("安全检查");
+            }
+            else if (iwork == 9) {
+                ((MyViewHolder) holder).managementIndustry.setVisibility(View.VISIBLE);
+                ((MyViewHolder) holder).managementIndustry.setText("质量检查");
+            }
+            else {
                 ((MyViewHolder) holder).managementIndustry.setVisibility(View.VISIBLE);
             }
             ((MyViewHolder) holder).item.setOnClickListener(new View.OnClickListener() {

@@ -25,7 +25,6 @@ import com.example.administrator.newsdf.pzgc.bean.CheckQuarterBean;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallBackUTils1;
 import com.example.administrator.newsdf.pzgc.callback.CheckCallback;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.inface.Onclicklitener;
 import com.example.baselibrary.utils.Requests;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
@@ -57,7 +56,7 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
     private View view;
     private Context mContext;
     private RecyclerView categoryList;
-    private TextView dataTime, addcheck_content;
+    private TextView dataTime, addcheckContent;
 
     private CheckQuarteradapter mAdapter;
     private NumberPicker yearPicker, monthPicker;
@@ -84,7 +83,7 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
         orgId = SPUtils.getString(mContext, "orgId", "");
         dataTime = view.findViewById(R.id.linear_data);
         checkQueater = view.findViewById(R.id.check_queater);
-        addcheck_content = view.findViewById(R.id.addcheck_content);
+        addcheckContent = view.findViewById(R.id.addcheck_content);
         categoryList = view.findViewById(R.id.category_list);
         linearDataTime = view.findViewById(R.id.linear_data_time);
         addcheck = view.findViewById(R.id.addcheck);
@@ -152,7 +151,7 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
                     checkstatus = 1;
                 }
                 //确认
-                addcheck_content.setText("是否列入奖罚(" + string + ")");
+                addcheckContent.setText("是否列入奖罚(" + string + ")");
                 getdate();
             }
 

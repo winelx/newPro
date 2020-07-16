@@ -24,16 +24,17 @@ import com.example.administrator.newsdf.R;
 
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
+import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;
 
 import com.example.baselibrary.view.ClearEditText;
 
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.FileCallback;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.cookie.store.CookieStore;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,9 +54,6 @@ import okhttp3.Response;
  */
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
-
-    private static final String TAG = "LoginActivity";
-
     /**
      * 状态图片
      */
@@ -248,7 +246,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 SPUtils.putString(mContext, "orgId", orgId);
                                 //手机号
                                 SPUtils.putString(mContext, "phone", moblie);
-                                ToastUtils.showLongToast(jsonObject.getString("msg"));
+                                if (extend.getString("qrCodeList") != null) {
+                                    JSONArray qclist = extend.getJSONArray("qrCodeList");
+                                    for (int i = 0; i < qclist.length(); i++) {
+                                        JSONObject jsonOb = qclist.getJSONObject(i);
+                                        if ("1".equals(jsonOb.getString("type"))) {
+                                            SPUtils.putString(mContext, "androidimg", Requests.networks+ Utils.isNull(jsonOb.getString("qrcodeUrl")));
+                                        } else if ("2".equals(jsonOb.getString("type"))) {
+                                            SPUtils.putString(mContext, "iosimg",Requests.networks+  Utils.isNull(jsonOb.getString("qrcodeUrl")));
+                                        }
+                                    }
+                                }
                                 //是否保存数据
                                 if (status) {
                                     SPUtils.putString(mContext, "user", user);
@@ -339,6 +347,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
         }
     }
+
     /**
      * 展示dailog
      */
@@ -356,8 +365,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             progressDialog.show();
         }
     }
-
-
 
 
 }

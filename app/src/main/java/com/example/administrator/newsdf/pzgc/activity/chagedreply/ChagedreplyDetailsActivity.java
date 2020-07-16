@@ -303,7 +303,7 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
     }
 
     public void operation(String string, int isreply) {
-        //跳转过去查看
+        //跳转过去编辑
         Intent intent1 = new Intent(mContext, ChagedReplyBillActivity.class);
         intent1.putExtra("replyDelId", string);
         intent1.putExtra("replyId", id);
