@@ -28,7 +28,6 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:text="夏末"
             android:textColor="@color/textViwe"
             android:textSize="15sp" />
 

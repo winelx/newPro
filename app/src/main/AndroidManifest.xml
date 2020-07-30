@@ -486,7 +486,8 @@
         <activity android:name=".pzgc.activity.check.activity.newcheck.activity.ExternalCheckTypeActivity" />
         <activity android:name=".pzgc.activity.check.activity.newcheck.activity.ExternalProjectTypeActivity" />
         <activity android:name=".pzgc.activity.check.activity.newcheck.activity.ImprotExternalActivity" />
-        <activity android:name=".pzgc.activity.check.activity.newcheck.activity.ExternalTreeActivity"
+        <activity
+            android:name=".pzgc.activity.check.activity.newcheck.activity.ExternalTreeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -495,6 +496,12 @@
         <activity
             android:name=".pzgc.activity.check.activity.newcheck.activity.NewExternalCheckActiviy"
             android:windowSoftInputMode="adjustPan|stateHidden" />
+        <!--监督检查记录-->
+        <activity android:name=".pzgc.activity.check.activity.record.activity.SuperviseCheckRecordActivity" />
+        <activity android:name=".pzgc.activity.check.activity.record.activity.SuperviseCheckRecordListActivity" />
+        <activity android:name=".pzgc.activity.check.activity.record.activity.SuperviseCheckRecordDetailActivity" />
+        <activity android:name=".pzgc.activity.check.activity.record.activity.NewRecordCheckActiviy" />
+        <activity android:name=".pzgc.activity.check.activity.record.activity.SuperviseCheckRecordUerListActivity" />
     </application>
 
 </manifest>

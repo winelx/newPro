@@ -1,6 +1,7 @@
 package com.example.baselibrary.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.baselibrary.R;
-import com.example.baselibrary.bean.photoBean;
+import com.example.baselibrary.bean.FileTypeBean;
 
 import java.util.ArrayList;
 
@@ -26,11 +27,10 @@ import java.util.ArrayList;
  * {@link }
  */
 public class BaseDisplayFileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private ArrayList<photoBean> list;
+    private ArrayList<FileTypeBean> list;
     private Context mContext;
-    private boolean compress=true;
 
-    public BaseDisplayFileAdapter( Context mContext,ArrayList<photoBean> list) {
+    public BaseDisplayFileAdapter(Context mContext, ArrayList<FileTypeBean> list) {
         this.mContext = mContext;
         this.list = list;
     }
@@ -49,61 +49,45 @@ public class BaseDisplayFileAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     @SuppressLint("SetTextI18n")
-    private void bindView(typeholder holder, int position, photoBean bean) {
-        String imgUrl;
-        try {
-            imgUrl = bean.getPhotopath();
-        } catch (Exception e) {
-            imgUrl = "";
-        }
-        String filename;
-        try {
-            filename = bean.getPhotoname();
-        } catch (Exception e) {
-            filename = "";
-        }
-        //拿到.位置
-        int doc = imgUrl.lastIndexOf(".");
-        //截取doc+1后面的字符串，包括doc+1；
-        String strs = imgUrl.substring(doc + 1);
-        if ("pdf".equals(strs)) {
+    private void bindView(typeholder holder, int position, FileTypeBean bean) {
+        if ("pdf".equals(bean.getFileext())) {
             holder.img.setVisibility(View.GONE);
             holder.audioRelat.setVisibility(View.VISIBLE);
             //背景色
             holder.audioRelat.setBackgroundColor(Color.parseColor("#f8f5f6"));
-            holder.audioRelatName.setText(filename + ".pdf");
+            holder.audioRelatName.setText(bean.getFilename() + ".pdf");
             holder.audioRelatIcon.setText("P");
             //字体背景色
             holder.audioRelatIcon.setBackgroundColor(Color.parseColor("#e98e90"));
             holder.audioRelatIcon.setTextColor(Color.parseColor("#FFFFFF"));
-        } else if ("doc".equals(strs) || "docx".equals(strs)) {
+        } else if ("doc".equals(bean.getFileext()) || "docx".equals(bean.getFileext())) {
             holder.img.setVisibility(View.GONE);
             holder.audioRelat.setVisibility(View.VISIBLE);
-            holder.audioRelatName.setText(filename + ".doc");
+            holder.audioRelatName.setText(bean.getFilename() + ".doc");
             holder.audioRelat.setBackgroundColor(Color.parseColor("#f1f6f7"));
             holder.audioRelatIcon.setText("W");
             holder.audioRelatIcon.setTextColor(Color.parseColor("#FFFFFF"));
             holder.audioRelatIcon.setBackgroundColor(Color.parseColor("#5e8ed3"));
-        } else if ("xls".equals(strs) || "xlsx".equals(strs)) {
+        } else if ("xls".equals(bean.getFileext()) || "xlsx".equals(bean.getFileext())) {
             holder.img.setVisibility(View.GONE);
             holder.audioRelat.setVisibility(View.VISIBLE);
-            holder.audioRelatName.setText(filename + ".xsl");
+            holder.audioRelatName.setText(bean.getFilename() + ".xsl");
             holder.audioRelat.setBackgroundColor(Color.parseColor("#f5f8f7"));
             holder.audioRelatIcon.setText("X");
+            holder.audioRelatIcon.setTextColor(Color.parseColor("#FFFFFF"));
+            holder.audioRelatIcon.setBackgroundColor(Color.parseColor("#67cf95"));
+        } else if ("txt".equals(bean.getFileext())) {
+            holder.img.setVisibility(View.GONE);
+            holder.audioRelat.setVisibility(View.VISIBLE);
+            holder.audioRelatName.setText(bean.getFilename() + ".txt");
+            holder.audioRelat.setBackgroundColor(Color.parseColor("#f5f8f7"));
+            holder.audioRelatIcon.setText("T");
             holder.audioRelatIcon.setTextColor(Color.parseColor("#FFFFFF"));
             holder.audioRelatIcon.setBackgroundColor(Color.parseColor("#67cf95"));
         } else {
             holder.audioRelat.setVisibility(View.GONE);
             holder.img.setVisibility(View.VISIBLE);
             //是否显示显示为缩略图
-            if (compress) {
-                //截取出后缀
-                String pas = imgUrl.substring(imgUrl.length() - 4, imgUrl.length());
-                //拿到截取后缀后的字段
-                imgUrl = imgUrl.replace(pas, "");
-                //在字段后面添加_min后再拼接后缀
-                imgUrl = imgUrl + "_min" + pas;
-            }
             RequestOptions options = new RequestOptions();
             options.centerCrop()
                     .dontAnimate()
@@ -111,12 +95,37 @@ public class BaseDisplayFileAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     .placeholder(R.mipmap.__picker_ic_photo_black_48dp)
                     .error(R.mipmap.image_error);
             Glide.with(mContext)
-                    .load(imgUrl)
+                    .load(bean.getFilepath())
                     .apply(options)
                     .thumbnail(Glide.with(mContext)
                             .load(R.mipmap.image_loading))
                     .into(holder.img);
         }
+        holder.img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //查看图片
+                ArrayList<String> imagepath = new ArrayList<String>();
+                ArrayList<String> path = new ArrayList<String>();
+                for (int i = 0; i < list.size(); i++) {
+                    String strs = list.get(position).getFileext();
+                    //图片可能为jpg 也可能是png
+                    if ("txt".equals(strs) || "xls".equals(strs) || "xlsx".equals(strs) || "pdf".equals(strs) || "PNG".equals(strs) || "doc".equals(strs) || "docx".equals(strs) || "dwg".equals(strs)) {
+                    } else {
+                        path.add(list.get(i).getFilepath());
+                    }
+                }
+                String str = list.get(position).getFilepath();
+                int pos = 0;
+                for (int i = 0; i < path.size(); i++) {
+                    String str1 = path.get(i);
+                    if (str.equals(str1)) {
+                        pos = i;
+                    }
+                }
+
+            }
+        });
     }
 
     @Override
@@ -136,5 +145,10 @@ public class BaseDisplayFileAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             audioRelatName = itemView.findViewById(R.id.audio_relat_name);
             audioRelatIcon = itemView.findViewById(R.id.audio_relat_icon);
         }
+    }
+
+    public void setNewData(ArrayList<FileTypeBean> list) {
+        this.list = list;
+        notifyDataSetChanged();
     }
 }

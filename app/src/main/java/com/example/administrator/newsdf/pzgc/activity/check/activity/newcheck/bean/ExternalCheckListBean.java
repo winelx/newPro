@@ -13,7 +13,6 @@ public class ExternalCheckListBean {
     String checkPersonName;
     //检查组织名称
     String checkOrgName;
-    //
     String wbsTaskTypeName;
     //单据名称
     String name;

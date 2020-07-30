@@ -70,7 +70,7 @@ public class BaseActivity extends AppCompatActivity {
      * 下载弹窗
      */
     private Dialog dialogs;
-    private Context mContext;
+    public Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

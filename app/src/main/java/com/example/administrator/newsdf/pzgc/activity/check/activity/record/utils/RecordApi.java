@@ -1,0 +1,41 @@
+package com.example.administrator.newsdf.pzgc.activity.check.activity.record.utils;
+
+import com.example.baselibrary.utils.Requests;
+/**
+ *
+ *说明：监督检查接口说明
+ *创建时间： 2020/7/30 0030 10:08
+ *@author winelx
+ */
+public class RecordApi {
+    /**
+     * 说明：组织树接口
+     * 创建时间： 2020/7/30 0030 9:56
+     *
+     * @author winelx
+     */
+    public static final String GETORGINFOBYCNFBYRECORD = Requests.networks + "iface/mobile/special/getOrgInfoBycnfByRecord";
+    /**
+     *
+     *说明：列表
+     *创建时间： 2020/7/30 0030 10:08
+     *@author winelx
+     */
+    public static final String GETSAFETYCHECKLISTBYAPP = Requests.networks + "iface/mobile/special/getSafetyCheckListByApp";
+    /**
+     *
+     *说明：详情实体
+     *创建时间： 2020/7/30 0030 11:01
+     *@author winelx
+     */
+    public static final String GETSPECIALCHECKRECORDBYAPP = Requests.networks + "iface/mobile/special/getSpecialCheckRecordByApp";
+
+
+    /**
+     *
+     *说明：人员选择公共方法
+     *创建时间： 2020/7/30 0030 16:42
+     *@author winelx
+     */
+    public static final String CHOOSEPERSIONBYAPP = Requests.networks + "iface/mobile/special/choosePersionByApp";
+}

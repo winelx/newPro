@@ -20,7 +20,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckdownMe
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckmanagementActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckstandardListActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.activity.ExternalCheckActiviy;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.activity.ExternalCheckListActiviy;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.record.activity.SuperviseCheckRecordActivity;
 import com.example.administrator.newsdf.pzgc.activity.device.DeviceActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.OrgrankingActivity;
 import com.example.administrator.newsdf.pzgc.activity.pchoose.activity.PchooseActivity;
@@ -173,6 +173,9 @@ public class WorkFragment extends Fragment {
                     case "外业检查":
                         startActivity(new Intent(mContext, ExternalCheckActiviy.class));
                         break;
+                    case "监督检查记录":
+                        startActivity(new Intent(mContext, SuperviseCheckRecordActivity.class));
+                        break;
                     default:
                         break;
                 }
@@ -236,15 +239,17 @@ public class WorkFragment extends Fragment {
                                     if ("true".equals(json.getString("特种设备"))) {
                                         checklist.add(new bean("特种设备", R.mipmap.specialdevices));
                                     }
-                                    if ("true".equals(json.getString("外业检查"))){
-                                        checklist.add(new bean("外业检查", R.mipmap.reply_external));
-                                    }
+//                                    if ("true".equals(json.getString("外业检查"))) {
+//                                        checklist.add(new bean("外业检查", R.mipmap.reply_external));
+//                                    }
                                     if ("true".equals(json.getString("台账管理"))) {
                                         special.add(new bean("台账管理", R.mipmap.loedger));
                                     }
+
                                     if ("true".equals(json.getString("方案管理"))) {
                                         special.add(new bean("方案管理", R.mipmap.programme));
                                     }
+                                    special.add(new bean("监督检查记录", R.mipmap.work_check_record));
                                 }
                                 if (tasklist.size() > 0) {
                                     list.add(new ItemBean(tasklist, "任务管理"));
@@ -266,6 +271,7 @@ public class WorkFragment extends Fragment {
                             e.printStackTrace();
                         }
                     }
+
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);

@@ -78,7 +78,7 @@ public class Dates {
             long lt = Long.valueOf(s);
             Date date = new Date(lt);
             res = simpleDateFormat.format(date);
-        }catch (Exception e){
+        } catch (Exception e) {
             return "";
         }
 
@@ -95,7 +95,7 @@ public class Dates {
             long lt = Long.valueOf(s);
             Date date = new Date(lt);
             res = simpleDateFormat.format(date);
-        }catch (Exception e){
+        } catch (Exception e) {
             return "";
         }
 
@@ -502,11 +502,11 @@ public class Dates {
     }
 
     public static List<String> stringToList(String strs, String type) {
-        if (strs == "" && strs.isEmpty()) {
-
-        } else {
+        if (strs != null && !strs.isEmpty()) {
             String str[] = strs.split(type);
-            return Arrays.asList(str);
+            List<String> lsit = Arrays.asList(str);
+            List<String> data = new ArrayList<>(lsit);
+            return data;
         }
         return null;
     }
@@ -808,6 +808,7 @@ public class Dates {
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return sp;
     }
+
     public static SpannableString setText(Context mContext, String text, int color) {
         SpannableString sp = new SpannableString(text);
         sp.setSpan(new ForegroundColorSpan(mContext.getResources()
@@ -816,6 +817,7 @@ public class Dates {
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return sp;
     }
+
     public static SpannableString setText(Context mContext, String text, int lenght, int lastlenght, int color2) {
         SpannableString sp = new SpannableString(text);
         sp.setSpan(new ForegroundColorSpan(mContext.getResources()
