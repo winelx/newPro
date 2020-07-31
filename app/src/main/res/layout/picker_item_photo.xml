@@ -13,6 +13,49 @@
         android:adjustViewBounds="true"
         android:scaleType="centerCrop" />
 
+    <RelativeLayout
+        android:id="@+id/audio_relat"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/tab_item_gray">
+
+        <TextView
+            android:id="@+id/audio_relat_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxEms="10"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/audio_relat_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:background="#5e8ed3"
+            android:gravity="center"
+            android:text="W"
+            android:textColor="@color/writer"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="55dp"
+            android:text="点击查看"
+            android:textColor="@color/colorAccent"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
 
     <ImageView
         android:id="@+id/v_selected"

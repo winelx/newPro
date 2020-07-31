@@ -46,7 +46,6 @@ public class SuperviseCheckRecordDetailActivity extends BaseActivity implements 
         recodModel = new RecodModel();
         intent = getIntent();
         intent.getStringExtra("id");
-
         code = findViewById(R.id.code);
         checkProject = findViewById(R.id.check_project);
         checkTime = findViewById(R.id.check_time);

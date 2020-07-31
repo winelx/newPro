@@ -20,7 +20,16 @@ public class FileTypeBean {
         this.filepath = filepath;
         this.fileext = fileext;
     }
+    public FileTypeBean(String filename, String filepath, String fileext) {
+        this.filename = filename;
+        this.filepath = filepath;
+        this.fileext = fileext;
+    }
 
+    public FileTypeBean( String filepath, String fileext) {
+        this.filepath = filepath;
+        this.fileext = fileext;
+    }
     public FileTypeBean() {
     }
 

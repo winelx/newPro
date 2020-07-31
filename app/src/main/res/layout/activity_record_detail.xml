@@ -83,7 +83,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="8"
-            android:paddingLeft="10dp"
+            android:paddingLeft="5dp"
             android:paddingTop="5dp"
             android:text="检查人员："
             android:textColor="@color/black" />
@@ -108,7 +108,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="8"
-            android:paddingLeft="10dp"
+            android:paddingLeft="5dp"
             android:paddingTop="5dp"
             android:textColor="@color/black" />
 
@@ -132,7 +132,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="8"
-            android:paddingLeft="10dp"
+            android:paddingLeft="5dp"
             android:paddingTop="5dp"
             android:textColor="@color/black" />
     </LinearLayout>
@@ -157,7 +157,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="8"
-            android:paddingLeft="10dp"
+            android:paddingLeft="5dp"
             android:paddingTop="5dp"
             android:textColor="@color/black" />
     </LinearLayout>

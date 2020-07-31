@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity.record.activity;
 
+import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.activity.record.bean
 import com.example.administrator.newsdf.pzgc.activity.check.activity.record.utils.RecodModel;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.PullDownMenu;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.inface.Onclicklitener;
 import com.example.baselibrary.utils.network.NetworkAdapter;
@@ -112,9 +115,18 @@ public class SuperviseCheckRecordListActivity extends BaseActivity implements Vi
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 RecordlistBean bean = (RecordlistBean) adapter.getData().get(position);
                 if (view.getId() == R.id.content_re) {
-                    Intent intent = new Intent(mContext, SuperviseCheckRecordDetailActivity.class);
-                    intent.putExtra("id", bean.getId());
-                    startActivity(intent);
+                    if (bean.getStatus().equals("0")){
+                        Intent intent = new Intent(mContext, NewRecordCheckActiviy.class);
+                        intent.putExtra("orgname", comTitle.getText().toString());
+                        intent.putExtra("orgid", orgid);
+                        intent.putExtra("id", bean.getId());
+                        startActivity(intent);
+                    }else {
+                        Intent intent = new Intent(mContext, SuperviseCheckRecordDetailActivity.class);
+                        intent.putExtra("id", bean.getId());
+                        startActivity(intent);
+                    }
+
                 } else if (view.getId() == R.id.item_delete) {
                     BaseDialog.confirmdialog(mContext, "是否删除检查单", "", new Onclicklitener() {
                         @Override
@@ -150,6 +162,7 @@ public class SuperviseCheckRecordListActivity extends BaseActivity implements Vi
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.toolbar_menu) {
+            backgroundAlpha(0.5f);
             pullDownMenu.showPopMeun(this, checklistmeun, strings);
             pullDownMenu.setOnItemClickListener(new PullDownMenu.OnItemClickListener() {
                 @Override
@@ -163,7 +176,7 @@ public class SuperviseCheckRecordListActivity extends BaseActivity implements Vi
                             status = "0";
                             break;
                         case "已提交":
-                            status = "2";
+                            status = "1";
                             break;
                         default:
                             break;
@@ -219,13 +232,27 @@ public class SuperviseCheckRecordListActivity extends BaseActivity implements Vi
      * @author winelx
      */
     private void deletesafetycheckbyapp(String id, int pos) {
-//        externalModel.deletesafetycheckbyapp(id, new NetworkAdapter() {
-//            @Override
-//            public void onsuccess() {
-//                super.onsuccess();
-//                list.remove(pos);
-//                checkListAdapter.setNewData(list);
-//            }
-//        });
+        recodModel.deleteSpecialCheckRecordByApp(id, new NetworkAdapter() {
+            @Override
+            public void onsuccess() {
+                super.onsuccess();
+                list.remove(pos);
+                checkListAdapter.setNewData(list);
+            }
+
+            @Override
+            public void onerror(String string) {
+                super.onerror(string);
+                ToastUtils.showShortToast(string);
+            }
+        });
+    }
+
+    //界面亮度
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = bgAlpha;
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        getWindow().setAttributes(lp);
     }
 }

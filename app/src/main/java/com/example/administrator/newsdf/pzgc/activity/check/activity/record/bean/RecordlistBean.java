@@ -42,7 +42,7 @@ public class RecordlistBean {
     private String problem;
     private String explanation;
     private String attachment;
-    private double status;
+    private String status;
 
     public String getId() {
         return id;
@@ -188,11 +188,11 @@ public class RecordlistBean {
         this.attachment = attachment;
     }
 
-    public double getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(double status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

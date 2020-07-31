@@ -181,10 +181,12 @@ public class ScreenUtil {
         return metrics;
     }
 
-    // 设置屏幕透明度
-    public static void backgroundAlpha(Activity activity, float bgAlpha) {
-        WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
-        lp.alpha = bgAlpha; // 0.0~1.0
-        activity.getWindow().setAttributes(lp); //act 是上下文context
+
+    public static void backgroundAlpha(Activity context, float bgAlpha) {
+        WindowManager.LayoutParams lp = context.getWindow().getAttributes();
+        lp.alpha = bgAlpha;
+        context.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        context.getWindow().setAttributes(lp);
     }
+
 }

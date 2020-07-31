@@ -38,7 +38,7 @@
                     android:textSize="15sp" />
 
 
-                <EditText
+                <TextView
                     android:id="@+id/project_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                     android:gravity="center_vertical|end"
                     android:hint="请输入"
                     android:textColor="@color/black"
-                    android:textSize="15sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -81,7 +81,7 @@
                     android:gravity="center_vertical|end"
                     android:hint="请选择"
                     android:textColor="@color/black"
-                    android:textSize="15sp" />
+                    android:textSize="14sp" />
 
                 <ImageView
                     android:id="@+id/arrow_right"
@@ -121,7 +121,7 @@
                     android:gravity="center_vertical|end"
                     android:hint="请输入"
                     android:textColor="@color/black"
-                    android:textSize="15sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -154,7 +154,7 @@
                     android:gravity="center_vertical|end"
                     android:hint="请输入"
                     android:textColor="@color/black"
-                    android:textSize="15sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -179,7 +179,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:drawableLeft="@mipmap/warning_red"
-                        android:drawablePadding="10dp"
+                        android:drawablePadding="5dp"
                         android:text="检查人员"
                         android:textColor="@color/black"
                         android:textSize="15sp" />
@@ -247,7 +247,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:drawableLeft="@mipmap/warning_red"
-                        android:drawablePadding="10dp"
+                        android:drawablePadding="5dp"
                         android:text="被检查人员"
                         android:textColor="@color/black"
                         android:textSize="15sp" />
@@ -328,7 +328,7 @@
                     android:gravity="center_vertical"
                     android:hint="请输入"
                     android:textColor="@color/black"
-                    android:textSize="15sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -365,9 +365,17 @@
                     android:gravity="center_vertical"
                     android:hint="请输入"
                     android:textColor="@color/black"
-                    android:textSize="15sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:textColor="@color/black"
+                android:paddingTop="15dp"
+                android:text="附件" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerview"

@@ -500,7 +500,9 @@
         <activity android:name=".pzgc.activity.check.activity.record.activity.SuperviseCheckRecordActivity" />
         <activity android:name=".pzgc.activity.check.activity.record.activity.SuperviseCheckRecordListActivity" />
         <activity android:name=".pzgc.activity.check.activity.record.activity.SuperviseCheckRecordDetailActivity" />
-        <activity android:name=".pzgc.activity.check.activity.record.activity.NewRecordCheckActiviy" />
+        <activity android:name=".pzgc.activity.check.activity.record.activity.NewRecordCheckActiviy"
+            android:windowSoftInputMode="adjustPan"
+            />
         <activity android:name=".pzgc.activity.check.activity.record.activity.SuperviseCheckRecordUerListActivity" />
     </application>
 

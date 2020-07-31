@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -179,7 +180,7 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
         // 设置好参数之后再show
         // 默认在mButton2的左下角显示
         mPopupWindow.showAsDropDown(checklistmeun);
-        backgroundAlpha(0.5f);
+        ScreenUtil.backgroundAlpha(this, 0.5f);
         //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new poponDismissListener());
     }
@@ -219,12 +220,6 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
         return contentView;
     }
 
-    //界面亮度
-    public void backgroundAlpha(float bgAlpha) {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = bgAlpha;
-        getWindow().setAttributes(lp);
-    }
     //编辑页面新增或者修改后刷新界面
 
     @Override
@@ -239,7 +234,7 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
     class poponDismissListener implements PopupWindow.OnDismissListener {
         @Override
         public void onDismiss() {
-            backgroundAlpha(1f);
+            ScreenUtil.backgroundAlpha(CheckTasklistActivity.this, 1f);
         }
     }
 
@@ -321,6 +316,7 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
                     }
                 });
     }
+
     //初始化
     public void showPopwindow() {
         backgroundAlpha(0.5f);
@@ -365,7 +361,7 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
 
                         break;
                 }
-                backgroundAlpha(1.0f);
+                ScreenUtil.backgroundAlpha(CheckTasklistActivity.this, 1f);
                 popWindow.dismiss();
             }
         };
@@ -382,6 +378,11 @@ public class CheckTasklistActivity extends BaseActivity implements View.OnClickL
         popWindow.showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 
-
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = bgAlpha;
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        getWindow().setAttributes(lp);
+    }
 
 }

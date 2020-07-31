@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import com.example.administrator.newsdf.R;
+import com.example.baselibrary.utils.screen.ScreenUtil;
 
 /**
  * @author lx
@@ -43,20 +44,20 @@ public class PullDownMenu {
         //创建一个simpleAdapter
         ArrayAdapter myAdapter = new ArrayAdapter(activity, R.layout.meun_list_item, R.id.text, strings);
         mListView.setAdapter(myAdapter);
-        mPopupWindow = new PopupWindow(contentView,
-                withFontSize(resolution) + 20,120 * strings.length, true);
+        mPopupWindow = new PopupWindow(contentView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
+//        mPopupWindow = new PopupWindow(contentView,
+//                withFontSize(resolution) + 20, 120 * strings.length, true);
         // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());
         // 设置好参数之后再show
         // 默认在mButton2的左下角显示
         mPopupWindow.setAnimationStyle(R.style.popmenu_animation);
         mPopupWindow.showAsDropDown(view);
-        backgroundAlpha(0.5f, activity);
         //添加pop窗口关闭事件
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                backgroundAlpha(1f, activity);
+                ScreenUtil.backgroundAlpha(activity, 1f);
             }
         });
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -68,12 +69,7 @@ public class PullDownMenu {
         });
     }
 
-    //界面亮度
-    public void backgroundAlpha(float bgAlpha, Activity activity) {
-        WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
-        lp.alpha = bgAlpha;
-        activity.getWindow().setAttributes(lp);
-    }
+
 
     /**
      * @description: 计算屏幕密度
@@ -98,10 +94,9 @@ public class PullDownMenu {
             // 480X800 或 480X854 屏幕
         } else if (screenWidth == 3.0) {
             return 300;
-        } else if (screenWidth == 3.5){
+        } else if (screenWidth == 3.5) {
             return 450;
-        }
-        else {
+        } else {
             return 300;
 
         }

@@ -38,7 +38,14 @@ public class SuperviseCheckRecordListAdapter extends BaseQuickAdapter<Recordlist
         SwipeMenuLayout swipmenu = helper.getView(R.id.swipmenu);
         SlantedTextView slanted = helper.getView(R.id.slanted);
         slanted.setVisibility(View.INVISIBLE);
-        slanted.setSlantedBackgroundColor(R.color.unfinish_gray);
-        swipmenu.setIos(true).setLeftSwipe(true).setSwipeEnable(true);
+        if (item.getStatus().equals("0")){
+            swipmenu.setIos(true).setLeftSwipe(true).setSwipeEnable(true);
+            slanted.setSlantedBackgroundColor(R.color.unfinish_gray);
+            slanted.setVisibility(View.VISIBLE);
+            slanted.setTextString("保存");
+        }else {
+            swipmenu.setIos(true).setLeftSwipe(true).setSwipeEnable(false);
+        }
+
     }
 }
