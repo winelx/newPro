@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.special.loedger.model;
 
 import android.arch.lifecycle.MutableLiveData;
+
 import com.example.administrator.newsdf.pzgc.special.loedger.bean.LoedgerRecordDetailBean;
 import com.example.baselibrary.base.BaseViewModel;
 import com.example.baselibrary.utils.Api;
@@ -21,20 +22,23 @@ public class LoedgerRecordDetailModel extends BaseViewModel {
     private MutableLiveData<List<LoedgerRecordDetailBean>> data;
     private List<LoedgerRecordDetailBean> list;
 
-    public MutableLiveData<List<LoedgerRecordDetailBean>> getData(String id) {
+    public MutableLiveData<List<LoedgerRecordDetailBean>> getData(String id, String sysMsgNoticeId) {
         if (data == null) {
             data = new MutableLiveData<>();
         }
         if (list == null) {
             list = new ArrayList<>();
         }
-        request(id);
+        request(id, sysMsgNoticeId);
         return data;
     }
 
-    private void request(String id) {
+    private void request(String id, String sysMsgNoticeId) {
         Map<String, String> map = new HashMap<>();
         map.put("specialItemMainDelId", id);
+        if (sysMsgNoticeId != null) {
+            map.put("sysMsgNoticeId", sysMsgNoticeId);
+        }
         NetWork.postHttp(Api.SPECIALITEMMAINDEL, map, new NetWork.networkCallBack() {
             @Override
             public void onSuccess(String s, Call call, Response response) {

@@ -27,6 +27,7 @@ public class SuperviseCheckRecordListAdapter extends BaseQuickAdapter<Recordlist
     @Override
     protected void convert(BaseViewHolder helper, RecordlistBean item) {
         helper.addOnClickListener(R.id.content_re);
+        helper.addOnClickListener(R.id.item_delete);
         helper.setText(R.id.check_title, item.getCode());
         helper.setText(R.id.check_project, "项目名称：" + Utils.isNull(item.getOrgName()));
         helper.setText(R.id.check_time, "检查日期：" + Utils.isNull(item.getCheckDate()));

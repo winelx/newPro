@@ -31,8 +31,10 @@ public class NoticedBean {
     private String beNoticeOrgId;
     private String beNoticeOrgName;
     private String id;
+    private String isRead;
     private String modelId;
     private String modelName;
+    private String sysMsgNoticeId;
     private int modelType;
     private String noticeCode;
     private String noticeDate;
@@ -41,8 +43,34 @@ public class NoticedBean {
     private String optionContent;
     private String sendPerson;
     private String showContent;
+    private String authority;
     private int totalCount;//任务数量
     private int iwork;
+
+    public String getSysMsgNoticeId() {
+        return sysMsgNoticeId;
+    }
+
+    public void setSysMsgNoticeId(String sysMsgNoticeId) {
+        this.sysMsgNoticeId = sysMsgNoticeId;
+    }
+
+    public String getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(String authority) {
+        this.authority = authority;
+    }
+
+    public String getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(String isRead) {
+        this.isRead = isRead;
+    }
+
     public String getBeNoticeOrgId() {
         return beNoticeOrgId;
     }

@@ -108,46 +108,52 @@ public class ChagedUtils implements Serializable {
      * @param id       单据Id
      * @param callBack
      */
-    public void getNoticeFormMainInfo(String id, final CallBack callBack) {
-        OkGo.get(Requests.GETNOTICEFORMMAININFO)
-                .params("id", id)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            Map<String, Object> map = new HashMap<>();
-                            if (jsonObject.getInt("ret") == 0) {
-                                JSONObject data = jsonObject.getJSONObject("data");
-                                ChagedNoticeDetails item = com.alibaba.fastjson.JSONObject.parseObject(data.toString(), ChagedNoticeDetails.class);
-                                int permission = item.getPermission();
-                                map.put("bean", item);
-                                JSONArray details = data.getJSONArray("details");
-                                List<ChagedNoticeDetailslsit> list1 = ListJsonUtils.getListByArray(ChagedNoticeDetailslsit.class, details.toString());
-                                List<ChagedNoticeDetailslsit> list2 = ListJsonUtils.getListByArray(ChagedNoticeDetailslsit.class, details.toString());
-                                for (int i = 0; i < list1.size(); i++) {
-                                    String name = list1.get(i).getStandardDelName();
-                                    list1.get(i).setStandardDelName("第" + (i + 1) + "项问题    " + name);
-                                    list2.get(i).setStandardDelName((i + 1) + "、" + name);
-                                }
-                                map.put("list", list1);
-                                map.put("list2", list2);
-                                callBack.onsuccess(map);
-                            } else {
-                                callBack.onerror(jsonObject.getString("msg"));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            callBack.onerror("数据解析失败");
+    public void getNoticeFormMainInfo(String id, String authority, String sysMsgNoticeId, final CallBack callBack) {
+        GetRequest strt = OkGo.get(Requests.GETNOTICEFORMMAININFO);
+        strt.params("id", id);
+        if (authority != null) {
+            strt.params("authority", authority);
+        }
+        if (sysMsgNoticeId!=null){
+            strt.params("sysMsgNoticeId", sysMsgNoticeId);
+        }
+        strt.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    Map<String, Object> map = new HashMap<>();
+                    if (jsonObject.getInt("ret") == 0) {
+                        JSONObject data = jsonObject.getJSONObject("data");
+                        ChagedNoticeDetails item = com.alibaba.fastjson.JSONObject.parseObject(data.toString(), ChagedNoticeDetails.class);
+                        int permission = item.getPermission();
+                        map.put("bean", item);
+                        JSONArray details = data.getJSONArray("details");
+                        List<ChagedNoticeDetailslsit> list1 = ListJsonUtils.getListByArray(ChagedNoticeDetailslsit.class, details.toString());
+                        List<ChagedNoticeDetailslsit> list2 = ListJsonUtils.getListByArray(ChagedNoticeDetailslsit.class, details.toString());
+                        for (int i = 0; i < list1.size(); i++) {
+                            String name = list1.get(i).getStandardDelName();
+                            list1.get(i).setStandardDelName("第" + (i + 1) + "项问题    " + name);
+                            list2.get(i).setStandardDelName((i + 1) + "、" + name);
                         }
+                        map.put("list", list1);
+                        map.put("list2", list2);
+                        callBack.onsuccess(map);
+                    } else {
+                        callBack.onerror(jsonObject.getString("msg"));
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    callBack.onerror("数据解析失败");
+                }
+            }
 
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                        callBack.onerror("请求失败");
-                    }
-                });
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                callBack.onerror("请求失败");
+            }
+        });
     }
 
     /*删除通知单问题项*/
@@ -745,7 +751,7 @@ public class ChagedUtils implements Serializable {
                             }
                             list.add(new NoticeItemDetailsProblem(rectificationPartName, rectificationDate,
                                     standardDelName, rectificationReason,
-                                    standardDelScore,chiefId,chiefName,technicianId,technicianName,team,
+                                    standardDelScore, chiefId, chiefName, technicianId, technicianName, team,
                                     afterFileslist));
                             /*整改后*/
 

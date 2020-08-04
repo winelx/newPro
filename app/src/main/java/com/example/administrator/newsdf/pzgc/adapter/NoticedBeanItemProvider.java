@@ -1,7 +1,11 @@
 package com.example.administrator.newsdf.pzgc.adapter;
 
+import android.view.View;
+import android.widget.TextView;
+
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.mine.Text;
 import com.example.baselibrary.adapter.multiitem.BaseItemProvider;
 
 /**
@@ -26,7 +30,7 @@ public class NoticedBeanItemProvider extends BaseItemProvider<NoticedBean, BaseV
     public void convert(BaseViewHolder holder, NoticedBean bean, int position) {
         //时间
         if (bean.getNoticeDate() != null) {
-            holder.setText(R.id.noticed_data, bean.getNoticeDate().substring(0,10));
+            holder.setText(R.id.noticed_data, bean.getNoticeDate().substring(0, 10));
         }
         //标题
         if (bean.getModelName() != null) {
@@ -36,5 +40,7 @@ public class NoticedBeanItemProvider extends BaseItemProvider<NoticedBean, BaseV
         if (bean.getShowContent() != null) {
             holder.setText(R.id.noticed_content, bean.getShowContent());
         }
+        TextView isread = holder.getView(R.id.isread);
+        isread.setVisibility(bean.getIsRead().equals("1") ? View.VISIBLE : View.GONE);
     }
 }

@@ -18,6 +18,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.photopicker.PhotoPreview;
 import com.example.administrator.newsdf.pzgc.utils.RoundImageView;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.bean.FileTypeBean;
 import com.example.baselibrary.ui.utils.PdfPreview;
 
@@ -160,7 +161,11 @@ public class AddFileAdapter extends RecyclerView.Adapter<AddFileAdapter.FileView
             holder.audio_relat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    PdfPreview.builder().setPdfUrl(bean.getFilepath()).start((Activity) mContext);
+                    if (bean.getFileext().equals("pdf")){
+                        PdfPreview.builder().setPdfUrl(bean.getFilepath()).start((Activity) mContext);
+                    }else {
+                        ToastUtils.showShortToast("请到pc端查看");
+                    }
                 }
             });
         } else {

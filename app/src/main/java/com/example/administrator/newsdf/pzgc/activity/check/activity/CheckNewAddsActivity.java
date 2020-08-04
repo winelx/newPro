@@ -41,6 +41,7 @@ import com.example.timepickter.listener.OnDateSetListener;
 import com.joanzapata.iconify.widget.IconTextView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.PostRequest;
 
 
 import org.json.JSONException;
@@ -90,7 +91,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
     private ArrayList<View> tVisibility = new ArrayList<>();
     //当前单据状态
     private int status;
-    private String success = null;
+    private String success = null, sysMsgNoticeId;
 
     public static CheckNewAddsActivity getInstance() {
         return mContext;
@@ -115,6 +116,11 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
         } catch (NullPointerException e) {
             e.printStackTrace();
             taskId = "";
+        }
+        try {
+            sysMsgNoticeId = intent.getStringExtra("sysMsgNoticeId");
+        } catch (Exception e) {
+            sysMsgNoticeId = null;
         }
         findbyid();
         initData();
@@ -427,7 +433,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
         if (TextUtils.isEmpty(nodeId)) {
             nodeId = "";
         }
-        if (TextUtils.isEmpty(datatime.getText().toString())){
+        if (TextUtils.isEmpty(datatime.getText().toString())) {
             ToastUtils.showShortToast("所属月份不能为空");
             return;
         }
@@ -494,7 +500,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
      * 生成检查后的检查项列表
      */
     public void getcheckitemList() {
-        checkUtils.getcheckitemlist(taskId, new NetworkCallback() {
+        checkUtils.getcheckitemlist(taskId, sysMsgNoticeId,new NetworkCallback() {
             @Override
             public void onsuccess(Map<String, Object> map) {
                 mData.clear();
@@ -517,74 +523,75 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
      */
     public void getdata() {
         Dates.getDialogs(CheckNewAddsActivity.this, "请求数据中...");
-        post(Requests.CHECKGET_BY_ID)
-                .params("Id", taskId)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        Dates.disDialog();
+        PostRequest str = post(Requests.CHECKGET_BY_ID);
+        str.params("Id", taskId);
+        str.params("sysMsgNoticeId", sysMsgNoticeId);
+        str.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                Dates.disDialog();
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int ret = jsonObject.getInt("ret");
+                    if (ret == 0) {
+                        JSONObject json = jsonObject.getJSONObject("data");
+                        //具体时间
+                        datatime.setText(json.getString("checkDate"));
+                        //检查标准类别
+                        categoryItem.setText(json.getString("wbsTaskTypeName"));
+                        //检查组织
+                        checkNewOrgname.setText(json.getString("checkOrgName"));
                         try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            int ret = jsonObject.getInt("ret");
-                            if (ret == 0) {
-                                JSONObject json = jsonObject.getJSONObject("data");
-                                //具体时间
-                                datatime.setText(json.getString("checkDate"));
-                                //检查标准类别
-                                categoryItem.setText(json.getString("wbsTaskTypeName"));
-                                //检查组织
-                                checkNewOrgname.setText(json.getString("checkOrgName"));
-                                try {
-                                    nodeId = json.getString("nodeId");
-                                } catch (JSONException e) {
-                                    nodeId = "";
-                                }
-                                status = json.getInt("status");
-                                //检查部位wbs
-                                try {
-                                    wbsName.setText(json.getString("wbsMainName"));
-                                    wbsName.setVisibility(View.VISIBLE);
-                                } catch (JSONException e) {
-                                    wbsName.setText("");
-                                }
-
-                                //检查人
-                                checkUsername.setText(json.getString("realname"));
-                                //检查标题
-                                String titikle = json.getString("name");
-                                try {
-                                    checkNewNumber.setText(json.getString("score"));
-                                } catch (JSONException e) {
-                                    checkNewNumber.setText("0");
-                                }
-                                checkNewTasktitle.setText(titikle);
-                                //所属标段
-                                checkNewWebtext.setText(json.getString("orgName"));
-                                //检查部位
-                                String partDetails = json.getString("partDetails");
-                                if (partDetails.length() > 0) {
-                                    checkNewTemporarysite.setText(partDetails);
-                                    checkNewTemporarysite.setTextColor(Color.parseColor("#000000"));
-                                }
-                                try {
-                                    categoryId = json.getString("WbsTaskTypeId");
-                                } catch (Exception e) {
-                                    categoryId = "";
-                                }
-                            } else {
-                                ToastUtils.showShortToast(jsonObject.getString("msg"));
-                            }
+                            nodeId = json.getString("nodeId");
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            nodeId = "";
                         }
-                    }
+                        status = json.getInt("status");
+                        //检查部位wbs
+                        try {
+                            wbsName.setText(json.getString("wbsMainName"));
+                            wbsName.setVisibility(View.VISIBLE);
+                        } catch (JSONException e) {
+                            wbsName.setText("");
+                        }
 
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                        Dates.disDialog();
+                        //检查人
+                        checkUsername.setText(json.getString("realname"));
+                        //检查标题
+                        String titikle = json.getString("name");
+                        try {
+                            checkNewNumber.setText(json.getString("score"));
+                        } catch (JSONException e) {
+                            checkNewNumber.setText("0");
+                        }
+                        checkNewTasktitle.setText(titikle);
+                        //所属标段
+                        checkNewWebtext.setText(json.getString("orgName"));
+                        //检查部位
+                        String partDetails = json.getString("partDetails");
+                        if (partDetails.length() > 0) {
+                            checkNewTemporarysite.setText(partDetails);
+                            checkNewTemporarysite.setTextColor(Color.parseColor("#000000"));
+                        }
+                        try {
+                            categoryId = json.getString("WbsTaskTypeId");
+                        } catch (Exception e) {
+                            categoryId = "";
+                        }
+                    } else {
+                        ToastUtils.showShortToast(jsonObject.getString("msg"));
                     }
-                });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                Dates.disDialog();
+            }
+        });
     }
 
     /**
@@ -728,7 +735,7 @@ public class CheckNewAddsActivity extends BaseActivity implements View.OnClickLi
                 .setCallBack(new OnDateSetListener() {
                     @Override
                     public void onDateSet(TimePickerDialog timePickerView, long millseconds) {
-                        datatime.setText(Dates.stampToDates(millseconds).substring(0,7));
+                        datatime.setText(Dates.stampToDates(millseconds).substring(0, 7));
                     }
                 })//回调
                 .build();

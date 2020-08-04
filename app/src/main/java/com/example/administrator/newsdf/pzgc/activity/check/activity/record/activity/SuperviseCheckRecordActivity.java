@@ -58,7 +58,7 @@ public class SuperviseCheckRecordActivity extends BaseActivity implements View.O
         map = new HashMap<>();
         comBack = findViewById(R.id.com_back);
         title = findViewById(R.id.com_title);
-        title.setText("外业检查");
+        title.setText("监督检查记录");
         comBack.setOnClickListener(this);
         expandable = findViewById(R.id.expandable);
         refreshLayout = findViewById(R.id.refreshlayout);

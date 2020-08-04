@@ -16,6 +16,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:maxEms="10"
+            android:singleLine="true"
+            android:maxLines="3"
             android:ellipsize="end"
             android:textSize="10sp" />
 
@@ -42,7 +44,7 @@
             android:layout_marginLeft="55dp"
             android:text="点击查看"
             android:textColor="@color/colorAccent"
-            android:textSize="10sp" />
+            android:textSize="8sp" />
     </RelativeLayout>
 
     <com.example.administrator.newsdf.pzgc.utils.RoundImageView

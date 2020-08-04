@@ -79,6 +79,7 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
     private Intent intent;
     private List<CheckNewBean.scorePane> scorePaneList;
     private boolean edStatus = false;
+    private String sysMsgNoticeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -314,6 +315,11 @@ public class NewExternalCheckActiviy extends BaseActivity implements View.OnClic
      */
     public void control() {
         String isNew = intent.getStringExtra("isNew");
+        try {
+            sysMsgNoticeId = intent.getStringExtra("sysMsgNoticeId");
+        } catch (Exception e) {
+            sysMsgNoticeId = null;
+        }
         if ("编辑".equals(isNew)) {
             checkid = intent.getStringExtra("id");
             comButton.setVisibility(View.VISIBLE);

@@ -390,11 +390,17 @@ public class ChagedreplyUtils {
      * @param id       整改验证单id
      * @param callBack
      */
-    public static void getReplyFormMainInfo(String id, String noticeId, final ListCallback callBack) {
+    public static void getReplyFormMainInfo(String id, String noticeId, String authority, String sysMsgNoticeId, final ListCallback callBack) {
         GetRequest string = OkGo.get(Requests.GETREPLYFORMMAININFO)
                 .params("id", id);
         if (!TextUtils.isEmpty(noticeId)) {
             string.params("noticeDelId", noticeId);
+        }
+        if (authority != null) {
+            string.params("authority", authority);
+        }
+        if (sysMsgNoticeId != null) {
+            string.params("sysMsgNoticeId", sysMsgNoticeId);
         }
         string.execute(new StringCallback() {
             @Override

@@ -13,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,11 +58,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     /**
      * 状态图片
      */
-    private ImageView img;
-    /**
-     * 判断用户是否记住密码
-     */
-    private boolean status = true;
+    private CheckBox checkBox;
+
     //用户名密码1
     private ClearEditText username, password;
     private Context mContext;
@@ -81,13 +79,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 hintKeyBoard();
             }
         });
-        findViewById(R.id.login_pass_lean).setOnClickListener(this);
+
         findViewById(R.id.forget_password).setOnClickListener(this);
         login = (Button) findViewById(R.id.login);
         login.setOnClickListener(this);
         password = (ClearEditText) findViewById(R.id.login_password);
         username = (ClearEditText) findViewById(R.id.login_username);
-        img = (ImageView) findViewById(R.id.login_pass_img);
+        checkBox = findViewById(R.id.login_pass_img);
         username.setText(SPUtils.getString(mContext, "user", ""));
         password.setText(SPUtils.getString(mContext, "password", ""));
 
@@ -97,17 +95,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.login_pass_lean:
-                if (status) {
-                    //记住密码
-                    img.setBackgroundResource(R.mipmap.login_pass_false);
-                    status = false;
-                } else {
-                    //不记住密码
-                    img.setBackgroundResource(R.mipmap.login_pass_true);
-                    status = true;
-                }
-                break;
             case R.id.forget_password:
                 ToastUtils.showLongToast("请联系管理员");
                 break;
@@ -251,14 +238,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                     for (int i = 0; i < qclist.length(); i++) {
                                         JSONObject jsonOb = qclist.getJSONObject(i);
                                         if ("1".equals(jsonOb.getString("type"))) {
-                                            SPUtils.putString(mContext, "androidimg", Requests.networks+ Utils.isNull(jsonOb.getString("qrcodeUrl")));
+                                            SPUtils.putString(mContext, "androidimg", Requests.networks + Utils.isNull(jsonOb.getString("qrcodeUrl")));
                                         } else if ("2".equals(jsonOb.getString("type"))) {
-                                            SPUtils.putString(mContext, "iosimg",Requests.networks+  Utils.isNull(jsonOb.getString("qrcodeUrl")));
+                                            SPUtils.putString(mContext, "iosimg", Requests.networks + Utils.isNull(jsonOb.getString("qrcodeUrl")));
                                         }
                                     }
                                 }
                                 //是否保存数据
-                                if (status) {
+                                if (checkBox.isChecked()) {
                                     SPUtils.putString(mContext, "user", user);
                                     SPUtils.putString(mContext, "password", password);
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));

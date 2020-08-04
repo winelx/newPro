@@ -15,6 +15,7 @@ import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.baselibrary.utils.network.NetWork;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.request.PostRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -134,10 +135,13 @@ public class CheckUtils {
     }
 
     /*检查项列表*/
-    public void getcheckitemlist(String id, final NetworkCallback callback) {
-        OkGo.post(Requests.SIMPLE_DETAILS_LIST_BY_APP)
-                .params("id", id)
-                .tag(this)
+    public void getcheckitemlist(String id, String sysMsgNoticeId, final NetworkCallback callback) {
+        PostRequest str = OkGo.post(Requests.SIMPLE_DETAILS_LIST_BY_APP);
+        str.params("id", id);
+        if (sysMsgNoticeId != null) {
+            str.params("sysMsgNoticeId", sysMsgNoticeId);
+        }
+        str.tag(this)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -339,66 +343,67 @@ public class CheckUtils {
     }
 
 
-    public static void getCategory(String id, final NetworkCallback callback) {
-        OkGo.post(Requests.CHECKGET_BY_ID)
-                .params("Id", id)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
+    public static void getCategory(String id, String sysMsgNoticeId, final NetworkCallback callback) {
+        PostRequest str = OkGo.post(Requests.CHECKGET_BY_ID);
+        str.params("Id", id);
+        str.params("sysMsgNoticeId", sysMsgNoticeId);
+        str.execute(new StringCallback() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int ret = jsonObject.getInt("ret");
+                    if (ret == 0) {
+                        Map<String, Object> map = new HashMap<>();
+                        JSONObject json = jsonObject.getJSONObject("data");
+                        //具体时间
+                        map.put("checkDate", json.getString("checkDate"));
+                        //检查标准类别
+                        map.put("wbsTaskTypeName", json.getString("wbsTaskTypeName"));
+                        //检查组织
+                        map.put("checkOrgName", json.getString("checkOrgName"));
+                        map.put("status", json.getInt("status"));
+                        //检查部位wbs
+                        map.put("wbsMainName", json.getString("wbsMainName"));
+                        //判断内业还是外业
+                        map.put("iwork", json.getString("iwork"));
+                        map.put("wbsMainName", json.getString("wbsMainName"));
+                        //检查人
+                        map.put("realname", json.getString("realname"));
+                        //检查标题
+                        map.put("name", json.getString("name"));
+                        //所属标段
+                        map.put("orgName", json.getString("orgName"));
+                        //检查部位
+                        map.put("partDetails", json.getString("partDetails"));
+                        String score;
                         try {
-                            JSONObject jsonObject = new JSONObject(s);
-                            int ret = jsonObject.getInt("ret");
-                            if (ret == 0) {
-                                Map<String, Object> map = new HashMap<>();
-                                JSONObject json = jsonObject.getJSONObject("data");
-                                //具体时间
-                                map.put("checkDate", json.getString("checkDate"));
-                                //检查标准类别
-                                map.put("wbsTaskTypeName", json.getString("wbsTaskTypeName"));
-                                //检查组织
-                                map.put("checkOrgName", json.getString("checkOrgName"));
-                                map.put("status", json.getInt("status"));
-                                //检查部位wbs
-                                map.put("wbsMainName", json.getString("wbsMainName"));
-                                //判断内业还是外业
-                                map.put("iwork", json.getString("iwork"));
-                                map.put("wbsMainName", json.getString("wbsMainName"));
-                                //检查人
-                                map.put("realname", json.getString("realname"));
-                                //检查标题
-                                map.put("name", json.getString("name"));
-                                //所属标段
-                                map.put("orgName", json.getString("orgName"));
-                                //检查部位
-                                map.put("partDetails", json.getString("partDetails"));
-                                String score;
-                                try {
-                                    score = json.getString("score");
-                                    if (score.equals("0.0")) {
-                                        map.put("score", "0");
-                                    } else {
-                                        map.put("score", score);
-                                    }
-                                } catch (JSONException e) {
-                                    score = "";
-                                }
-                                map.put("id", json.getString("id"));
-                                callback.onsuccess(map);
+                            score = json.getString("score");
+                            if (score.equals("0.0")) {
+                                map.put("score", "0");
                             } else {
-                                ToastUtils.showShortToast(jsonObject.getString("msg"));
+                                map.put("score", score);
                             }
-
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            score = "";
                         }
+                        map.put("id", json.getString("id"));
+                        callback.onsuccess(map);
+                    } else {
+                        ToastUtils.showShortToast(jsonObject.getString("msg"));
                     }
 
-                    @Override
-                    public void onError(Call call, Response response, Exception e) {
-                        super.onError(call, response, e);
-                        callback.onerror(Enums.REQUEST_ERROR);
-                    }
-                });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                super.onError(call, response, e);
+                callback.onerror(Enums.REQUEST_ERROR);
+            }
+        });
     }
 
 

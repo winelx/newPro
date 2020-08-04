@@ -66,7 +66,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
     private Button checkNewButton;
     private DKDragView dkDragView;
     //参数
-    private String type, Id, taskId;
+    private String type, Id, taskId,sysMsgNoticeId;
     private CheckNewAdapter adapter, adapters;
     private ArrayList<chekitemList> mData, Preposition, Routine;
     private static CheckListDetailsActivity mContext;
@@ -90,6 +90,11 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
         Intent intent = getIntent();
         Id = intent.getStringExtra("id");
         type = intent.getStringExtra("type");
+        try {
+            sysMsgNoticeId = intent.getStringExtra("sysMsgNoticeId");
+        } catch (Exception e) {
+            sysMsgNoticeId = null;
+        }
         findbyid();
         initData();
         getCategory();
@@ -331,7 +336,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
     }
 
     public void getCategory() {
-        CheckUtils.getCategory(Id, new NetworkCallback() {
+        CheckUtils.getCategory(Id,sysMsgNoticeId, new NetworkCallback() {
             @Override
             public void onsuccess(Map<String, Object> map) {
                 //具体时间
@@ -392,7 +397,7 @@ public class CheckListDetailsActivity extends BaseActivity implements View.OnCli
      * 生成检查后的检查项列表
      */
     private void checkItem() {
-        checkUtils.getcheckitemlist(taskId, new NetworkCallback() {
+        checkUtils.getcheckitemlist(taskId,sysMsgNoticeId, new NetworkCallback() {
             @Override
             public void onsuccess(Map<String, Object> map) {
                 mData.clear();

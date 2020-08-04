@@ -12,7 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="3dp"
-        android:text="12121212112"
         android:textColor="#a6a6a6"
         android:textSize="15sp" />
 
@@ -34,16 +33,32 @@
             android:orientation="vertical"
             android:paddingTop="@dimen/dp10">
 
-            <TextView
-                android:id="@+id/noticed_title"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/dp10"
                 android:paddingTop="@dimen/dp10"
-                android:text="整改通知"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:paddingRight="@dimen/dp_10">
 
+                <TextView
+                    android:id="@+id/noticed_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dp10"
+                    android:text="整改通知"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/isread"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/home_item_red" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/noticed_content"
@@ -51,7 +66,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:paddingLeft="@dimen/dp10"
-                android:text="测试文字测试文字字测试文字"
                 android:textColor="#757575"
                 android:textSize="15sp" />
 

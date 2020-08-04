@@ -1,6 +1,5 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity.record.utils;
 
-import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.utils.ExternalApi;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.record.bean.RecordDetailBean;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.record.bean.RecordUerListBean;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.record.bean.RecordlistBean;

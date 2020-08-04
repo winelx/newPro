@@ -15,14 +15,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.activity.ExternalCheckDetailActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.CheckType;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.Enum;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.record.bean.RecordDetailBean;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.record.utils.RecodModel;
 import com.example.administrator.newsdf.pzgc.adapter.AddFileAdapter;
-import com.example.administrator.newsdf.pzgc.adapter.FiletypeAdapter;
-import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
 import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;
@@ -30,8 +26,6 @@ import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.bean.FileTypeBean;
-import com.example.baselibrary.bean.bean;
-import com.example.baselibrary.bean.photoBean;
 import com.example.baselibrary.inface.Onclicklitener;
 import com.example.baselibrary.utils.Requests;
 import com.example.baselibrary.utils.dialog.BaseDialogUtils;
@@ -410,6 +404,7 @@ public class NewRecordCheckActiviy extends BaseActivity implements View.OnClickL
                         LiveDataBus.get().with("ex_list").setValue("刷新");
                     }
                     RecordDetailBean bean = (RecordDetailBean) object;
+                    id=bean.getId();
                     setContent(bean);
                 }
 
@@ -513,6 +508,8 @@ public class NewRecordCheckActiviy extends BaseActivity implements View.OnClickL
             @Override
             public void onsuccess() {
                 super.onsuccess();
+                LiveDataBus.get().with("ex_list").setValue("刷新");
+                finish();
             }
 
             @Override

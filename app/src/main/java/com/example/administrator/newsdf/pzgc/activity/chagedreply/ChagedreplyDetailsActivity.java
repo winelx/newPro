@@ -45,12 +45,11 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
     private RecyclerView recyclerView;
     private LinearLayout deviceDetailsFunction;
     private TextView titleView;
-    private TextView deviceDetailsProving, deviceDetailsUp,
-            deviceDetailsResult, deviceDetailsEdit;
+    private TextView deviceDetailsProving, deviceDetailsUp, deviceDetailsResult, deviceDetailsEdit;
 
     private int status;
     private boolean taskstatus = true, onclickstatus = true;
-    private String id, orgName, noticeId;
+    private String id, orgName, noticeId, authority, sysMsgNoticeId;
 
     private Utils utils;
     private Context mContext;
@@ -77,11 +76,22 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
         mContext = this;
         final Intent intent = getIntent();
         id = intent.getStringExtra("id");
+        try {
+            sysMsgNoticeId = intent.getStringExtra("sysMsgNoticeId");
+        } catch (Exception e) {
+            sysMsgNoticeId = null;
+        }
         //整改单Id
         try {
             noticeId = intent.getStringExtra("noticeId");
+
         } catch (Exception e) {
             noticeId = "";
+        }
+        try {
+            authority = intent.getStringExtra("authority");
+        } catch (Exception e) {
+            authority = null;
         }
         orgName = intent.getStringExtra("orgName");
         //false 能操作，，true只能看
@@ -224,7 +234,7 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
 
             @Override
             public void onerror(String string) {
-                if (Enums.MYAUTOGRAPH.equals(string)){
+                if (Enums.MYAUTOGRAPH.equals(string)) {
                     BaseDialog.confirmmessagedialog(mContext,
                             "确认签字失败",
                             "您当前还未设置我的签名",
@@ -239,7 +249,7 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
 
                                 }
                             });
-                }else {
+                } else {
                     Snackbar.make(titleView, string, Snackbar.LENGTH_SHORT).show();
                 }
 
@@ -250,7 +260,7 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
 
     /*网络请求*/
     public void request() {
-        ChagedreplyUtils.getReplyFormMainInfo(id, noticeId, new ChagedreplyUtils.ListCallback() {
+        ChagedreplyUtils.getReplyFormMainInfo(id, noticeId, authority, sysMsgNoticeId, new ChagedreplyUtils.ListCallback() {
             @Override
             public void onsuccess(ArrayList<Object> data) {
                 bean = (ReplyDetailsContent) data.get(0);
@@ -285,6 +295,7 @@ public class ChagedreplyDetailsActivity extends BaseActivity implements View.OnC
                     utils.setMargins(recyclerView, 0, 0, 0, 0);
                 }
             }
+
             @Override
             public void onerror(String string) {
                 ToastUtils.showsnackbar(titleView, string);

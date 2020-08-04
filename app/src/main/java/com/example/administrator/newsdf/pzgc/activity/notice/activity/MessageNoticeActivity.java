@@ -1,19 +1,15 @@
 package com.example.administrator.newsdf.pzgc.activity.notice.activity;
 
-import android.annotation.SuppressLint;
-import android.arch.lifecycle.Observer;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;;
-import com.example.administrator.newsdf.R;
-import com.example.baselibrary.base.BaseActivity;
-import com.example.baselibrary.utils.rx.RxBus;
+import android.support.v4.app.Fragment;
 
 import androidx.navigation.fragment.NavHostFragment;
-import io.reactivex.functions.Consumer;
+
+import com.example.administrator.newsdf.R;
+import com.example.baselibrary.base.BaseActivity;
+
+;
 
 /**
  * author： lx

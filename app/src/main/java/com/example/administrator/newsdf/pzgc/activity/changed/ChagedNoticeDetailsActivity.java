@@ -48,7 +48,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
     private TextView deviceDetailsAssign, checklistmeuntext;
     private TextView titleView, deviceDetailsResult;
     private ChagedUtils chagedUtils;
-    private String billsId, dealId, motionNode, orgId;
+    private String billsId, dealId, motionNode, orgId, authority, sysMsgNoticeId;
     private Utils utils;
     // (1：下发、添加问题项、导入问题项；2:指派；3：指派、我回复；)
     private int permission;
@@ -68,6 +68,16 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
         //通知单id
         billsId = intent.getStringExtra("id");
         orgId = intent.getStringExtra("orgId");
+        try {
+            sysMsgNoticeId = intent.getStringExtra("sysMsgNoticeId");
+        } catch (Exception e) {
+            sysMsgNoticeId = null;
+        }
+        try {
+            authority = intent.getStringExtra("authority");
+        } catch (Exception e) {
+            authority = null;
+        }
         status = intent.getBooleanExtra("status", true);
         titleView = (TextView) findViewById(R.id.titleView);
         titleView.setText(intent.getStringExtra("orgName"));
@@ -235,7 +245,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
 
     /*网络请求*/
     private void request() {
-        chagedUtils.getNoticeFormMainInfo(billsId, new CallBack() {
+        chagedUtils.getNoticeFormMainInfo(billsId, authority, sysMsgNoticeId, new CallBack() {
             @Override
             public void onsuccess(Map<String, Object> map) {
                 ChagedNoticeDetails item = (ChagedNoticeDetails) map.get("bean");
@@ -283,23 +293,23 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
             }
         });
     }
-        
-        /**
-         *           .----.
-         *        _.'__    `.
-         *    .--(Q)(OK)---/$\
-         *  .' @          /$$\
-         *  :         ,   $$$
-         *   `-..__.-' _.-\$$/
-         *         `;_:    `"'
-         *       .'"""""`.
-         *      /,  FLY  ,\
-         *     //         \\
-         *     `-._______.-'
-         *     ___`. | .'___
-         *    (______|______)
-         * </pre>
-         */
+
+    /**
+     * .----.
+     * _.'__    `.
+     * .--(Q)(OK)---/$\
+     * .' @          /$$\
+     * :         ,   $$$
+     * `-..__.-' _.-\$$/
+     * `;_:    `"'
+     * .'"""""`.
+     * /,  FLY  ,\
+     * //         \\
+     * `-._______.-'
+     * ___`. | .'___
+     * (______|______)
+     * </pre>
+     */
 
 
 

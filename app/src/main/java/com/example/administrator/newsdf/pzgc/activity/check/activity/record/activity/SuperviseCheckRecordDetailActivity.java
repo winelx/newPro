@@ -36,13 +36,15 @@ public class SuperviseCheckRecordDetailActivity extends BaseActivity implements 
     private FiletypeAdapter fileAdapter;
     private Intent intent;
     private TextView code, checkProject, checkTime, checkBid, checkOrg, responsibilityPart, becheckpersion, checkUser;
-    private TextView problem, explanation;
+    private TextView problem, explanation, com_title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_detail);
         findViewById(R.id.com_back).setOnClickListener(this);
+        com_title = findViewById(R.id.com_title);
+        com_title.setText("详情");
         recodModel = new RecodModel();
         intent = getIntent();
         intent.getStringExtra("id");
@@ -56,7 +58,6 @@ public class SuperviseCheckRecordDetailActivity extends BaseActivity implements 
         checkUser = findViewById(R.id.check_user);
         problem = findViewById(R.id.problem);
         explanation = findViewById(R.id.explanation);
-
         recyclerview = findViewById(R.id.recyclerview);
         recyclerview.setLayoutManager(new GridLayoutManager(mContext, 4));
         fileAdapter = new FiletypeAdapter(mContext, new ArrayList<>());

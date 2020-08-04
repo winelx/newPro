@@ -351,7 +351,7 @@ public class ChangedNewActivity extends BaseActivity implements View.OnClickList
     }
 
     private void request() {
-        chagedUtils.getNoticeFormMainInfo(id, new ChagedUtils.CallBack() {
+        chagedUtils.getNoticeFormMainInfo(id,null,null, new ChagedUtils.CallBack() {
             @Override
             public void onsuccess(Map<String, Object> map) {
                 ChagedNoticeDetails item = (ChagedNoticeDetails) map.get("bean");

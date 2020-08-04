@@ -330,6 +330,8 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             notice.putExtra("status", false);
             notice.putExtra("orgId", bean.getBeNoticeOrgId());
             notice.putExtra("orgName", bean.getBeNoticeOrgName());
+            notice.putExtra("authority", bean.getAuthority());
+            notice.putExtra("sysMsgNoticeId", bean.getSysMsgNoticeId());
             startActivity(notice);
         } else if (modelname == 2) {
             //回复验证单操作
@@ -337,10 +339,13 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             reply.putExtra("id", bean.getModelId());
             reply.putExtra("status", false);
             reply.putExtra("orgName", bean.getBeNoticeOrgName());
+            reply.putExtra("sysMsgNoticeId", bean.getSysMsgNoticeId());
+            reply.putExtra("authority", bean.getAuthority());
             startActivity(reply);
         } else if (modelname == 3) {
             //监督检查
             Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
+            intent.putExtra("sysMsgNoticeId", bean.getSysMsgNoticeId());
             intent.putExtra("id", bean.getModelId());
             intent.putExtra("type", "3");
             startActivity(intent);
@@ -348,6 +353,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             int iwork = bean.getIwork();
             if (iwork == 1) {
                 Intent intent = new Intent(mContext, CheckNewAddActivity.class);
+                intent.putExtra("sysMsgNoticeId", bean.getSysMsgNoticeId());
                 intent.putExtra("orgId", bean.getBeNoticeOrgId());
                 intent.putExtra("name", bean.getBeNoticeOrgName());
                 intent.putExtra("type", iwork + "");
@@ -355,6 +361,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(mContext, CheckNewAddsActivity.class);
+                intent.putExtra("sysMsgNoticeId", bean.getSysMsgNoticeId());
                 intent.putExtra("orgId", bean.getBeNoticeOrgId());
                 intent.putExtra("name", bean.getBeNoticeOrgName());
                 intent.putExtra("taskId", bean.getModelId());
@@ -364,12 +371,14 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         } else if (modelname == 4) {
             //台账
             Intent intent = new Intent(mContext, LoedgerRecordDetailActivity.class);
+            intent.putExtra("sysMsgNoticeId", bean.getSysMsgNoticeId());
             intent.putExtra("id", bean.getModelId());
             startActivity(intent);
 
-        }else if (modelname==81){
+        } else if (modelname == 81) {
             //外业检查
             Intent intent = new Intent(mContext, NewExternalCheckActiviy.class);
+            intent.putExtra("sysMsgNoticeId", bean.getSysMsgNoticeId());
             intent.putExtra("isNew", "编辑");
             intent.putExtra("id", bean.getModelId());
             startActivity(intent);
@@ -467,7 +476,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             intent.putExtra("taskid", "");
             intent.putExtra("orgid", bean.getModelCode());
             startActivity(intent);
-        }else if (modelType == 81) {
+        } else if (modelType == 81) {
             //外业检查
             Intent intent = new Intent(mContext, NewExternalCheckActiviy.class);
             intent.putExtra("isNew", "编辑");

@@ -214,7 +214,7 @@ public class SuperviseCheckRecordListActivity extends BaseActivity implements Vi
                 list.addAll((List<RecordlistBean>) object);
                 checkListAdapter.setNewData(list);
                 if (list.size() == 0) {
-                    emptyUtils.noData("暂无数据，切换选项试试");
+                    emptyUtils.noData("暂无数据");
                 }
             }
 

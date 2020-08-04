@@ -618,13 +618,12 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                 if (status.isEmpty()) {
                     count++;
                 }
-            }else if("3".equals(type)){
+            } else if ("3".equals(type)) {
                 String status = chekItem.get(i).getStatus();
                 if (status.isEmpty()) {
                     count++;
                 }
-            }
-            else {
+            } else {
                 String score = chekItem.get(i).getResultscore();
                 if (score.isEmpty()) {
                     count++;
@@ -783,7 +782,7 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
      * 检查项列表
      */
     public void getcheckitemList() {
-        checkUtils.getcheckitemlist(taskId, new NetworkCallback() {
+        checkUtils.getcheckitemlist(taskId, null, new NetworkCallback() {
             @Override
             public void onsuccess(Map<String, Object> map) {
                 mData.clear();
@@ -808,8 +807,8 @@ public class CheckitemActivity extends BaseActivity implements View.OnClickListe
                         checkContent.setVisibility(View.GONE);
                     }
                 }
-                if (mData.size() >0) {
-                    if ("3".equals(mData.get(pos-1).getS_type())) {
+                if (mData.size() > 0) {
+                    if ("3".equals(mData.get(pos - 1).getS_type())) {
                         scoreLin.setVisibility(View.GONE);
                         switchLin.setVisibility(View.GONE);
                     } else {

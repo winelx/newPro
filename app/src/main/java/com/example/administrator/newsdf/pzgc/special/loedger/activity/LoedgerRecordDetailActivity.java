@@ -37,6 +37,7 @@ public class LoedgerRecordDetailActivity extends BaseActivity implements View.On
 
     private LoedgerRecordDetailModel model;
     private Observer<List<LoedgerRecordDetailBean>> Observer;
+    private String sysMsgNoticeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,12 @@ public class LoedgerRecordDetailActivity extends BaseActivity implements View.On
                 madapter.setNewData(strings);
             }
         };
-        model.getData(intent.getStringExtra("id")).observe(this, Observer);
+        try {
+            sysMsgNoticeId = intent.getStringExtra("id");
+        } catch (Exception e) {
+            sysMsgNoticeId = null;
+        }
+        model.getData(intent.getStringExtra("id"), sysMsgNoticeId).observe(this, Observer);
         model.setRequestError(new LoedgerRecordDetailModel.Modelinface() {
             @Override
             public void onerror() {
