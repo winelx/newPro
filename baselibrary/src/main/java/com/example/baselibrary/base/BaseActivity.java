@@ -76,7 +76,6 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         appManager.addActivity(this);
-
         mContext = this;
         //是否允许屏幕旋转
         if (!isAllowScreenRoate) {

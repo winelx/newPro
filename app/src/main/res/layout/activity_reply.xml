@@ -11,9 +11,9 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentTop="true">
 
 
         <RelativeLayout
@@ -25,8 +25,8 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_gravity="center"
                 android:background="@color/colorPrimaryDark">
@@ -81,10 +81,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
                 android:layout_below="@+id/toolbar"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
                 android:layout_marginTop="50dp"
                 android:orientation="vertical">
 
@@ -106,9 +106,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginBottom="10dp"
                             android:layout_marginLeft="15dp"
                             android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
                             android:background="@mipmap/mession_add" />
 
                         <TextView
@@ -116,8 +116,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginBottom="10dp"
                             android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
                             android:layout_weight="8"
                             android:paddingLeft="10dp"
                             android:textColor="@color/black"
@@ -127,10 +127,10 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center|end"
-                            android:layout_marginBottom="10dp"
                             android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
                             android:layout_marginTop="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="10dp"
                             android:layout_weight="1"
                             android:gravity="end"
                             android:text="{fa-angle-right}"
@@ -149,6 +149,7 @@
                         android:layout_height="40dp"
                         android:background="@color/writer"
                         android:orientation="horizontal">
+                        
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -212,8 +213,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="2dp"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15sp"
-                        android:layout_marginTop="5dp" />
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="15sp" />
                 </LinearLayout>
 
                 <RelativeLayout
@@ -246,8 +247,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/reply_text"
-                        android:layout_marginBottom="10dp"
                         android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -283,14 +284,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/text"
-                        android:layout_marginBottom="10dp"
                         android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
                         android:layout_marginRight="20dp"
-                        android:layout_marginTop="5dp" />
+                        android:layout_marginBottom="10dp" />
 
 
                 </RelativeLayout>
             </LinearLayout>
+
             <include layout="@layout/floating_meun_button" />
 
         </RelativeLayout>
@@ -311,9 +313,9 @@
                 android:textColor="@color/colorAccent" />
 
             <View
-                android:background="@color/back"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"/>
+                android:layout_height="1dp"
+                android:background="@color/back" />
 
             <com.scwang.smartrefresh.layout.SmartRefreshLayout
                 android:id="@+id/SmartRefreshLayout"

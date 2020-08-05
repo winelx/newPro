@@ -60,7 +60,9 @@ public class CheckQuarteradapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else {
             holder.listRanking.setBackgroundResource(R.drawable.check_item_green);
         }
-        holder.score.setText(mData.get(position).getRankingSorce());
+        if (!mData.get(position).getRankingSorce().equals("0")){
+            holder.score.setText(mData.get(position).getRankingSorce());
+        }
         holder.checkReportItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

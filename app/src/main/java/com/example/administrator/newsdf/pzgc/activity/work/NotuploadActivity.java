@@ -50,7 +50,6 @@ public class NotuploadActivity extends BaseActivity implements TaskCallback {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notupload);
-
         toolbar_add = (LinearLayout) findViewById(R.id.toolbar_add);
         toolbar_add.setOnClickListener(new View.OnClickListener() {
             @Override

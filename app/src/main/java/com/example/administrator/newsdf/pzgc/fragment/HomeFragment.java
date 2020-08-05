@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.home.OrgrankingActivity;
 import com.example.administrator.newsdf.pzgc.activity.notice.activity.MessageNoticeActivity;
+import com.example.administrator.newsdf.pzgc.activity.notice.fragment.MessageNoticeFragment;
 import com.example.administrator.newsdf.pzgc.bean.Audio;
 import com.example.administrator.newsdf.pzgc.bean.Proclamation;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
@@ -199,7 +200,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.propaganda_lin:
                 //通知公告
-                Intent messagenotice = new Intent(mContext, MessageNoticeActivity.class);
+                Intent messagenotice = new Intent(mContext, MessageNoticeFragment.class);
                 startActivity(messagenotice);
                 break;
             default:

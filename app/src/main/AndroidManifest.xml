@@ -35,6 +35,16 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <!-- Optional for location -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /><!-- Android Q后台定位权限-->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <!--华为角标-->
+    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -155,12 +165,18 @@
             android:value="f050fc1f161dd2f848ac1f58" />
 
         <!-- ————————————————————百度—————————————————— -->
+
+        <!-- //百度地图 -->
         <!-- 声明service组件 -->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote" />
-        <!-- //百度地图 -->
+            android:process=":remote" >
+            <intent-filter>
+                <action android:name="com.baidu.location.service_v2.2" >
+                </action>
+            </intent-filter>
+        </service>
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="ieMDqdQxs6ktFU9d8exOmUF9A25Bc70N" />
@@ -446,6 +462,8 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name=".pzgc.activity.device.GradeActivity" />
+        <activity android:name=".pzgc.activity.notice.fragment.MessageNoticeFragment" />
+        <activity android:name=".pzgc.activity.notice.fragment.NoticeDetailsFragment" />
         <activity android:name=".pzgc.activity.changed.ChangedNewActivity" />
         <activity android:name=".pzgc.activity.changed.ChagedListActivity" />
         <activity android:name=".pzgc.activity.changed.ChagedProblemitemActivity" />
@@ -500,9 +518,9 @@
         <activity android:name=".pzgc.activity.check.activity.record.activity.SuperviseCheckRecordActivity" />
         <activity android:name=".pzgc.activity.check.activity.record.activity.SuperviseCheckRecordListActivity" />
         <activity android:name=".pzgc.activity.check.activity.record.activity.SuperviseCheckRecordDetailActivity" />
-        <activity android:name=".pzgc.activity.check.activity.record.activity.NewRecordCheckActiviy"
-            android:windowSoftInputMode="adjustPan"
-            />
+        <activity
+            android:name=".pzgc.activity.check.activity.record.activity.NewRecordCheckActiviy"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".pzgc.activity.check.activity.record.activity.SuperviseCheckRecordUerListActivity" />
     </application>
 

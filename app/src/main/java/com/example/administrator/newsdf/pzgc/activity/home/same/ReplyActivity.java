@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.home.same;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -33,27 +34,28 @@ import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
-import com.example.administrator.newsdf.pzgc.adapter.PhotoAdapter;
-import com.example.administrator.newsdf.pzgc.adapter.TaskPhotoAdapter;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeUtils;
-import com.example.administrator.newsdf.pzgc.activity.work.MmissPushActivity;
-import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
-
 import com.example.administrator.newsdf.camera.CropImageUtils;
 import com.example.administrator.newsdf.camera.ImageUtil;
-import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.Enum;
+import com.example.administrator.newsdf.pzgc.activity.home.utils.HomeUtils;
+import com.example.administrator.newsdf.pzgc.activity.work.MmissPushActivity;
+import com.example.administrator.newsdf.pzgc.adapter.PhotoAdapter;
+import com.example.administrator.newsdf.pzgc.adapter.TaskPhotoAdapter;
+import com.example.administrator.newsdf.pzgc.bean.PhotoBean;
 import com.example.administrator.newsdf.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.newsdf.pzgc.service.LocationService;
-import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.FloatMeunAnims;
-import com.example.baselibrary.view.PermissionListener;
-import com.example.baselibrary.utils.Requests;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.WbsDialog;
+import com.example.baselibrary.base.BaseActivity;
+import com.example.baselibrary.utils.Requests;
+import com.example.baselibrary.utils.dialog.BaseDialogUtils;
+import com.example.baselibrary.view.PermissionListener;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -182,9 +184,10 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
         replyText.setText(content);
         Save.setVisibility(View.VISIBLE);
         Save.setImageResource(R.mipmap.reply_baocun);
-        loaction();//定位
+        permisssion();
         initDate();//recycclerView
     }
+
 
     /**
      * 定位
@@ -666,7 +669,6 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
      */
     private String Bai_address = "";
     private BDAbstractLocationListener mListener = new BDAbstractLocationListener() {
-
         @Override
         public void onReceiveLocation(BDLocation location) {
             if (null != location && location.getLocType() != BDLocation.TypeServerError) {
@@ -736,9 +738,34 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
         });
     }
 
+    /**
+     * 说明：权限申请
+     * 创建时间： 2020/3/6 0006 9:56
+     * author  winelx
+     */
+    public void permisssion() {
+        requestRunPermisssion(new String[]{Enum.LOCATION}, new PermissionListener() {
+            @SuppressLint("HandlerLeak")
+            @Override
+            public void onGranted() {
+                loaction();//定位
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermission) {
+                for (String permission : deniedPermission) {
+                    if (permission.equals(Enum.LOCATION)) {
+                        BaseDialogUtils.openAppDetails(mContext, "请求位置需要定位权限,请到权限管理中心打开");
+                    }
+                }
+            }
+        });
+    }
+
+
     @Override
     protected void onDestroy() {
+        locationService.stop();
         super.onDestroy();
-
     }
 }

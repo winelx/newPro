@@ -18,6 +18,7 @@ import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckNewAddActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckNewAddsActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.activity.NewExternalCheckActiviy;
+import com.example.administrator.newsdf.pzgc.activity.notice.fragment.NoticeDetailsFragment;
 import com.example.administrator.newsdf.pzgc.special.loedger.activity.LoedgerDetailsActivity;
 import com.example.administrator.newsdf.pzgc.special.loedger.activity.LoedgerRecordDetailActivity;
 import com.example.administrator.newsdf.pzgc.special.programme.activity.ProgrammeDetailsActivity;
@@ -342,7 +343,14 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             reply.putExtra("sysMsgNoticeId", bean.getSysMsgNoticeId());
             reply.putExtra("authority", bean.getAuthority());
             startActivity(reply);
-        } else if (modelname == 3) {
+        } else if (modelname == 128) {
+            //回复验证单操作
+            Intent reply = new Intent(mContext, NoticeDetailsFragment.class);
+            reply.putExtra("ids", bean.getModelId());
+            startActivity(reply);
+        }
+
+        else if (modelname == 3) {
             //监督检查
             Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
             intent.putExtra("sysMsgNoticeId", bean.getSysMsgNoticeId());

@@ -238,6 +238,7 @@ public class SuperviseCheckRecordListActivity extends BaseActivity implements Vi
                 super.onsuccess();
                 list.remove(pos);
                 checkListAdapter.setNewData(list);
+                ToastUtils.showShortToast("删除成功");
             }
 
             @Override

@@ -3,9 +3,11 @@ package com.example.administrator.newsdf.pzgc.activity.notice.fragment;
 import android.annotation.SuppressLint;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,7 @@ import com.example.administrator.newsdf.pzgc.adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.FileTypeBean;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
+import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Api;
 import com.example.baselibrary.utils.Requests;
 import com.example.baselibrary.utils.network.NetWork;
@@ -56,36 +59,32 @@ import okhttp3.Response;
  * @创建时间： 2019/5/29 0029 10:24
  * @说明： 通知公告详情
  **/
-public class NoticeDetailsFragment extends LazyloadFragment implements View.OnClickListener {
+public class NoticeDetailsFragment extends BaseActivity implements View.OnClickListener {
     private LinearLayout titlel;
     private TextView comTitle;
     private TextView text;
     private WebView mWebView;
     private RelativeLayout linProbar, nonet;
-    private List<Cookie> cookies;
     boolean lean = true;
     private String ids, url;
     private ImageView com_img;
     private Context mContext;
     private ArrayList<FileTypeBean> list;
 
+
     @Override
-    protected int setContentView() {
-        return R.layout.activity_check_task_web;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_check_task_web);
+        init();
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
-    @Override
     protected void init() {
-        mContext = getActivity();
+        mContext = this;
         list = new ArrayList<>();
-        ids = getArguments().getString("ids") + "";
+        Intent intent = getIntent();
+        ids = intent.getStringExtra("ids") + "";
         url = Requests.networks + "admin/sys/sysproclamation/publicdelByApp?id=" + ids;
-        //url =  "http://192.168.20.35:8088/generic/web/viewer.html";
-        //获取cookie
-        CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
-        HttpUrl httpUrl = HttpUrl.parse(Requests.networks);
-        cookies = cookieStore.getCookie(httpUrl);
         //设置标题
         comTitle = (TextView) findViewById(R.id.com_title);
         comTitle.setText("公告详情");
@@ -97,8 +96,8 @@ public class NoticeDetailsFragment extends LazyloadFragment implements View.OnCl
         nonet = (RelativeLayout) findViewById(R.id.nonet);
         nonet.setOnClickListener(this);
         linProbar = (RelativeLayout) findViewById(R.id.lin_probar);
-        rootView.findViewById(R.id.com_back).setOnClickListener(this);
-        mWebView = rootView.findViewById(R.id.check);
+        findViewById(R.id.com_back).setOnClickListener(this);
+        mWebView = findViewById(R.id.check);
         sycCook();
         WebSettings webSettings = mWebView.getSettings();
         // 设置与Js交互的权限
@@ -171,17 +170,13 @@ public class NoticeDetailsFragment extends LazyloadFragment implements View.OnCl
         request(ids);
     }
 
-    @Override
-    protected void lazyLoad() {
-
-    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.com_back:
                 //返回
-                Navigation.findNavController(v).navigateUp();
+                    finish();
                 break;
             case R.id.nonet:
                 linProbar.setVisibility(View.VISIBLE);

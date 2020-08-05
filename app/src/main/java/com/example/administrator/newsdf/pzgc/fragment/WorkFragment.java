@@ -239,13 +239,12 @@ public class WorkFragment extends Fragment {
                                     if ("true".equals(json.getString("特种设备"))) {
                                         checklist.add(new bean("特种设备", R.mipmap.specialdevices));
                                     }
-//                                    if ("true".equals(json.getString("外业检查"))) {
-//                                        checklist.add(new bean("外业检查", R.mipmap.reply_external));
-//                                    }
+                                    if ("true".equals(json.getString("外业检查"))) {
+                                        checklist.add(new bean("外业检查", R.mipmap.reply_external));
+                                    }
                                     if ("true".equals(json.getString("台账管理"))) {
                                         special.add(new bean("台账管理", R.mipmap.loedger));
                                     }
-
                                     if ("true".equals(json.getString("方案管理"))) {
                                         special.add(new bean("方案管理", R.mipmap.programme));
                                     }
