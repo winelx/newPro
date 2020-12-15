@@ -16,13 +16,24 @@
             android:background="@mipmap/mine_toolbar_bg"
             android:orientation="vertical">
 
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/scancode"
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="14dp"
+                android:layout_marginRight="50dp"
+                android:src="@mipmap/scancode" />
+
             <RelativeLayout
                 android:id="@+id/mine_setting"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true">
+                android:layout_alignParentRight="true">
+
 
                 <android.support.v7.widget.AppCompatImageView
                     android:layout_width="wrap_content"
@@ -100,8 +111,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_alignBottom="@+id/mine_img"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toEndOf="@+id/mine_img"
                 android:layout_toRightOf="@+id/mine_img"
                 android:text="@string/switchorganization"
@@ -110,9 +121,9 @@
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/mine_text"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/mine_text"
                 android:layout_marginRight="15dp"
                 android:text="{fa-angle-right}"
                 android:textColor="@color/inconfy"
@@ -134,11 +145,11 @@
                 android:id="@+id/mine_img2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
                 android:background="@mipmap/projectmember" />
 
             <TextView
@@ -146,8 +157,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_alignBottom="@+id/mine_img2"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toEndOf="@+id/mine_img2"
                 android:layout_toRightOf="@+id/mine_img2"
                 android:text="@string/ProjectMembers"
@@ -156,9 +167,9 @@
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/mine_text2"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/mine_text2"
                 android:layout_marginRight="15dp"
                 android:text="{fa-angle-right}"
                 android:textColor="@color/inconfy"
@@ -180,11 +191,11 @@
                 android:id="@+id/mine_img3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="21dp"
                 android:layout_marginStart="21dp"
+                android:layout_marginLeft="21dp"
                 android:background="@mipmap/changepassword" />
 
             <TextView
@@ -192,8 +203,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_alignBottom="@+id/mine_img3"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toEndOf="@+id/mine_img3"
                 android:layout_toRightOf="@+id/mine_img3"
                 android:text="@string/Modifypass"
@@ -202,14 +213,15 @@
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/mine_text3"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/mine_text3"
                 android:layout_marginRight="15dp"
                 android:text="{fa-angle-right}"
                 android:textColor="@color/inconfy"
                 android:textSize="25sp" />
         </RelativeLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -225,11 +237,11 @@
                 android:id="@+id/mine_autograph_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="21dp"
                 android:layout_marginStart="21dp"
+                android:layout_marginLeft="21dp"
                 android:background="@mipmap/mine_autograph" />
 
             <TextView
@@ -237,8 +249,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_alignBottom="@+id/mine_autograph_img"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toEndOf="@+id/mine_autograph_img"
                 android:layout_toRightOf="@+id/mine_autograph_img"
                 android:text="我的签名"
@@ -247,9 +259,9 @@
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/mine_autograph_text"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/mine_autograph_text"
                 android:layout_marginRight="15dp"
                 android:text="{fa-angle-right}"
                 android:textColor="@color/inconfy"
@@ -281,8 +293,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_alignBottom="@+id/mine_img4"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toEndOf="@+id/mine_img4"
                 android:layout_toRightOf="@+id/mine_img4"
                 android:text="系统设置"
@@ -291,9 +303,9 @@
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/mine_text4"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/mine_text4"
                 android:layout_marginRight="15dp"
                 android:text="{fa-angle-right}"
                 android:textColor="@color/inconfy"
@@ -315,8 +327,8 @@
                 android:id="@+id/mine_img5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:background="@mipmap/aboutus" />
@@ -326,8 +338,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_alignBottom="@+id/mine_img5"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toEndOf="@+id/mine_img5"
                 android:layout_toRightOf="@+id/mine_img5"
                 android:text="@string/aboutme"
@@ -336,9 +348,9 @@
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/mine_text5"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/mine_text5"
                 android:layout_marginRight="15dp"
                 android:text="{fa-angle-right}"
                 android:textColor="@color/inconfy"
@@ -369,8 +381,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_alignBottom="@+id/mine_img6"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toEndOf="@+id/mine_img6"
                 android:layout_toRightOf="@+id/mine_img6"
                 android:text="@string/Clearcache"
@@ -379,9 +391,9 @@
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/mine_text6"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/mine_text6"
                 android:layout_marginRight="15dp"
                 android:text="{fa-angle-right}"
                 android:textColor="@color/inconfy"
@@ -412,8 +424,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_alignBottom="@+id/version_img7"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toEndOf="@+id/version_img7"
                 android:layout_toRightOf="@+id/version_img7"
                 android:text="@string/Checkupdate"
@@ -434,9 +446,9 @@
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/version_text"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/version_text"
                 android:layout_marginRight="15dp"
                 android:text="@string/fa_angle_right"
                 android:textColor="@color/inconfy"
@@ -467,8 +479,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_alignBottom="@+id/mine_img7"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toEndOf="@+id/mine_img7"
                 android:layout_toRightOf="@+id/mine_img7"
                 android:text="@string/logout"
@@ -477,9 +489,9 @@
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/mine_text7"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/mine_text7"
                 android:layout_marginRight="15dp"
                 android:text="{fa-angle-right}"
                 android:textColor="@color/inconfy"

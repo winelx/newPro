@@ -1,7 +1,6 @@
 package com.example.baselibrary.base;
 
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,29 +14,18 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
-
 import android.view.Window;
-import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.example.baselibrary.R;
 import com.example.baselibrary.utils.dialog.DownLogindUtils;
 import com.example.baselibrary.utils.manager.AppManager;
 import com.example.baselibrary.view.NumberProgressBar;
 import com.example.baselibrary.view.PermissionListener;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.FileCallback;
-
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-
 import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Response;
 
 
 /**
@@ -127,9 +115,13 @@ public class BaseActivity extends AppCompatActivity {
                     }
                     if (deniedPermissions.isEmpty()) {
                         //说明都授权了
-                        mListener.onGranted();
+                        if (mListener != null) {
+                            mListener.onGranted();
+                        }
                     } else {
-                        mListener.onDenied(deniedPermissions);
+                        if (mListener != null) {
+                            mListener.onDenied(deniedPermissions);
+                        }
                     }
                 }
                 break;

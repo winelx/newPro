@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.pzgc.bean;
 
 /**
- *
  * @author Administrator
  * @date 2017/12/26 0026
  */
@@ -13,11 +12,17 @@ public class PhotoBean {
     String drawingName;//	图纸名称
     String drawingGroupName;    //图册名称
 
-    public PhotoBean(String id, String filePath, String drawingNumber, String drawingName, String drawingGroupName ) {
+    public PhotoBean(String id, String filePath, String drawingNumber, String drawingName, String drawingGroupName) {
         this.id = id;
         this.filePath = filePath;
         this.drawingNumber = drawingNumber;
         this.drawingName = drawingName;
+        this.drawingGroupName = drawingGroupName;
+
+    }
+
+    public PhotoBean(String filePath, String drawingGroupName) {
+        this.filePath = filePath;
         this.drawingGroupName = drawingGroupName;
 
     }

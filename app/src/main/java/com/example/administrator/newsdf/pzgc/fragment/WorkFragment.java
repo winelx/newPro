@@ -248,7 +248,9 @@ public class WorkFragment extends Fragment {
                                     if ("true".equals(json.getString("方案管理"))) {
                                         special.add(new bean("方案管理", R.mipmap.programme));
                                     }
-                                    special.add(new bean("监督检查记录", R.mipmap.work_check_record));
+                                    if ("true".equals(json.getString("监督检查记录"))){
+                                        special.add(new bean("监督检查记录", R.mipmap.work_check_record));
+                                    }
                                 }
                                 if (tasklist.size() > 0) {
                                     list.add(new ItemBean(tasklist, "任务管理"));

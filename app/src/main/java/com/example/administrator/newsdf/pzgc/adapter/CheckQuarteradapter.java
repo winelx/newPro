@@ -62,6 +62,9 @@ public class CheckQuarteradapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         if (!mData.get(position).getRankingSorce().equals("0")){
             holder.score.setText(mData.get(position).getRankingSorce());
+            holder.score.setVisibility(View.VISIBLE);
+        }else {
+            holder.score.setVisibility(View.GONE);
         }
         holder.checkReportItem.setOnClickListener(new View.OnClickListener() {
             @Override
