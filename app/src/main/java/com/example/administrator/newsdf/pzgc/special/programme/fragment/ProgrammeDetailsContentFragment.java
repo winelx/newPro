@@ -6,6 +6,7 @@ import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -65,7 +66,6 @@ public class ProgrammeDetailsContentFragment extends LazyloadFragment implements
         activity = (ProgrammeDetailsActivity) getContext();
         approval = (Button) findViewById(R.id.approval);
         approval.setOnClickListener(this);
-
         LiveDataBus.get().with("prodetails_content", ProDetails.class)
                 .observe(this, new Observer<ProDetails>() {
                     @SuppressLint("SetTextI18n")
@@ -135,16 +135,13 @@ public class ProgrammeDetailsContentFragment extends LazyloadFragment implements
         describe = (TextView) findViewById(R.id.describe);
         //附件
         proRecycler = (RecyclerView) findViewById(R.id.pro_recycler);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        proRecycler.setLayoutManager(linearLayoutManager);
+        proRecycler.setLayoutManager(new GridLayoutManager(mContext,4));
         filetypeAdapter = new FiletypeAdapter(getContext(), new ArrayList<>());
         proRecycler.setAdapter(filetypeAdapter);
         filetypeAdapter.setitemOnClickListener(new FiletypeAdapter.ItemOnClickListener() {
             @Override
             public void onclick(FileTypeBean bean) {
                 downloadcad(bean.getUrl(), bean.getName());
-
             }
         });
     }

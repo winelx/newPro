@@ -1,7 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.notice.fragment;
 
 import android.annotation.SuppressLint;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,25 +10,16 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
-import android.webkit.SslErrorHandler;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.adapter.SettingAdapter;
 import com.example.administrator.newsdf.pzgc.bean.FileTypeBean;
-import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Api;
@@ -37,6 +27,15 @@ import com.example.baselibrary.utils.Requests;
 import com.example.baselibrary.utils.network.NetWork;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cookie.store.CookieStore;
+import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
+import com.tencent.smtt.export.external.interfaces.WebResourceError;
+import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
+import com.tencent.smtt.sdk.CookieManager;
+import com.tencent.smtt.sdk.CookieSyncManager;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,13 +43,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import androidx.navigation.Navigation;
-
 import okhttp3.Call;
-import okhttp3.Cookie;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
 
@@ -127,12 +122,6 @@ public class NoticeDetailsFragment extends BaseActivity implements View.OnClickL
         //如果不设置WebViewClient，请求会跳转系统浏览器
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                //Android使用WebView加载https地址打不开的问题  小米
-                handler.proceed();
-            }
-
-            @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 //    加载完成
@@ -176,7 +165,7 @@ public class NoticeDetailsFragment extends BaseActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.com_back:
                 //返回
-                    finish();
+                finish();
                 break;
             case R.id.nonet:
                 linProbar.setVisibility(View.VISIBLE);

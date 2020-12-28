@@ -15,7 +15,7 @@ android {
     }
     defaultConfig {
         applicationId "com.example.administrator.newsdf"
-        minSdkVersion 14
+        minSdkVersion 15
         //noinspection OldTargetApi
         targetSdkVersion 26
         versionCode 1
@@ -125,5 +125,6 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$lifecycle"
     implementation project(':baselibrary')
     implementation project(':timepickter')
+    api 'com.tencent.tbs.tbssdk:sdk:43903'
 
 }
