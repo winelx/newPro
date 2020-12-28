@@ -54,7 +54,8 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context mContext;
 
     private ArrayList<FileTypeBean> mData;
-    private String[]  filetype= {"xls","xlsx","pdf","doc","docx","dwg"};
+    private String[] filetype = {"xls", "xlsx", "pdf", "doc", "docx", "dwg"};
+
     public FiletypeAdapter(Context mContext, ArrayList<FileTypeBean> data) {
         this.mContext = mContext;
         this.mData = data;
@@ -76,8 +77,8 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private void bindView(final FiletypeAdapter.TypeHolder holder, final int position) {
         //截取doc+1后面的字符串，包括doc+1；
-        FileTypeBean bean=mData.get(position);
-        if (bean.getUrl().contains(".pdf")||bean.getUrl().contains(".PDF")) {
+        FileTypeBean bean = mData.get(position);
+        if (bean.getUrl().contains(".pdf") || bean.getUrl().contains(".PDF")) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
             //背景色
@@ -87,7 +88,7 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             //字体背景色
             holder.audio_relat_icon.setBackgroundColor(Color.parseColor("#e98e90"));
             holder.audio_relat_icon.setTextColor(Color.parseColor("#FFFFFF"));
-        } else if (bean.getUrl().contains(".doc")|| bean.getUrl().contains(".docx")) {
+        } else if (bean.getUrl().contains(".doc") || bean.getUrl().contains(".docx")) {
             holder.img.setVisibility(View.GONE);
             holder.audio_relat.setVisibility(View.VISIBLE);
             holder.audio_relat_name.setText(mData.get(position).getName());
@@ -147,8 +148,7 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 for (int i = 0; i < mData.size(); i++) {
                     String strs = mData.get(position).getType();
                     //图片可能为jpg 也可能是png
-                    if ("xls".equals(strs) || "xlsx".equals(strs) || "pdf".equals(strs) || "PNG".equals(strs) || "doc".equals(strs) || "docx".equals(strs)||"dwg".equals(strs)) {
-                    } else {
+                    if ("jpg".equals(strs) || "png".equals(strs) || "jpeg".equals(strs)) {
                         path.add(mData.get(i).getUrl());
                     }
                 }
@@ -177,7 +177,9 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     //cad文件
                     onClickListener.onclick(mData.get(position));
                 } else {
-                    Toast.makeText(mContext, "请到pc端查看详情", Toast.LENGTH_SHORT).show();
+                    FileTypeBean beans = mData.get(position);
+                    File file = new File(Environment.getExternalStorageDirectory() + "/GCGL/" + beans.getName());
+
                 }
 
             }

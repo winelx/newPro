@@ -7,41 +7,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.camera.CropImageUtils;
-import com.example.administrator.newsdf.pzgc.activity.home.same.ReplysActivity;
 import com.example.administrator.newsdf.pzgc.special.programme.bean.ProDetails;
 import com.example.administrator.newsdf.pzgc.special.programme.fragment.ProgrammeDetailScircuitFragment;
 import com.example.administrator.newsdf.pzgc.special.programme.fragment.ProgrammeDetailsContentFragment;
 import com.example.administrator.newsdf.pzgc.special.programme.model.ProgrammeDetailsModel;
-import com.example.administrator.newsdf.pzgc.utils.Dates;
-import com.example.administrator.newsdf.pzgc.utils.DialogUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.adapter.PshooseFragAdapte;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.base.BaseViewModel;
-import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.utils.rx.LiveDataBus;
 import com.example.baselibrary.view.PermissionListener;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.FileCallback;
 
-import java.io.File;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  * @Author lx

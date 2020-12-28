@@ -12,7 +12,7 @@ public class LoedgerRecordDetailBean {
     String specialItemDelSort;//施工方案序号
     String specialItemBaseId;        //所属类型Id
     String specialItemBaseName;        //所属类型名称
-    String specialItemDelConstruction;    //专项施工方案管理台账条件
+    String specialItemDelConstruction;    //台账条件
     String orgId;        //所属组织Id
     String id;        //台帐细明Id
     String specialItemDelName;        //专项施工方案管理台账名称

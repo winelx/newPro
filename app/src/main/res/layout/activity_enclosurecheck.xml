@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/toolbar_icon" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:background="@color/bg_white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.tencent.smtt.sdk.WebView
+            android:id="@+id/x5webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none" />
+    </FrameLayout>
+
+</LinearLayout>

@@ -522,6 +522,15 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".pzgc.activity.check.activity.record.activity.SuperviseCheckRecordUerListActivity" />
         <activity android:name=".pzgc.activity.AddFrileUpdataActivity" />
+        <activity android:name=".pzgc.utils.EnclosurecheckActivity" />
+
+
+        <!--——————————————腾讯X5————————————————————————-->
+        <service
+            android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
+            android:label="dexopt"
+            android:process=":dexopt" >
+        </service>
     </application>
 
 </manifest>

@@ -24,6 +24,7 @@ import com.example.administrator.newsdf.pzgc.special.programme.activity.Programm
 import com.example.administrator.newsdf.pzgc.special.programme.bean.ProDetails;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.DialogUtils;
+import com.example.administrator.newsdf.pzgc.utils.EnclosurecheckActivity;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.utils.Requests;
@@ -135,7 +136,7 @@ public class ProgrammeDetailsContentFragment extends LazyloadFragment implements
         describe = (TextView) findViewById(R.id.describe);
         //附件
         proRecycler = (RecyclerView) findViewById(R.id.pro_recycler);
-        proRecycler.setLayoutManager(new GridLayoutManager(mContext,4));
+        proRecycler.setLayoutManager(new GridLayoutManager(mContext, 4));
         filetypeAdapter = new FiletypeAdapter(getContext(), new ArrayList<>());
         proRecycler.setAdapter(filetypeAdapter);
         filetypeAdapter.setitemOnClickListener(new FiletypeAdapter.ItemOnClickListener() {
@@ -214,9 +215,9 @@ public class ProgrammeDetailsContentFragment extends LazyloadFragment implements
 
                 }
             });
-
         } else {
             ToastUtils.showLongToast("文件已下载，保存路径为：" + file.getPath());
+            startActivity(new Intent(mContext, EnclosurecheckActivity.class).putExtra("url", file.getPath()));
         }
 
     }
