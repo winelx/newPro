@@ -177,9 +177,7 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     //cad文件
                     onClickListener.onclick(mData.get(position));
                 } else {
-                    FileTypeBean beans = mData.get(position);
-                    File file = new File(Environment.getExternalStorageDirectory() + "/GCGL/" + beans.getName());
-
+                    ToastUtils.showShortToast("请到pc端查看");
                 }
 
             }

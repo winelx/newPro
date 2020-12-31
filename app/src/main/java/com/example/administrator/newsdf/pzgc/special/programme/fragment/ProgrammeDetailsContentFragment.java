@@ -24,7 +24,6 @@ import com.example.administrator.newsdf.pzgc.special.programme.activity.Programm
 import com.example.administrator.newsdf.pzgc.special.programme.bean.ProDetails;
 import com.example.administrator.newsdf.pzgc.utils.Dates;
 import com.example.administrator.newsdf.pzgc.utils.DialogUtils;
-import com.example.administrator.newsdf.pzgc.utils.EnclosurecheckActivity;
 import com.example.administrator.newsdf.pzgc.utils.LazyloadFragment;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.utils.Requests;
@@ -217,7 +216,6 @@ public class ProgrammeDetailsContentFragment extends LazyloadFragment implements
             });
         } else {
             ToastUtils.showLongToast("文件已下载，保存路径为：" + file.getPath());
-            startActivity(new Intent(mContext, EnclosurecheckActivity.class).putExtra("url", file.getPath()));
         }
 
     }

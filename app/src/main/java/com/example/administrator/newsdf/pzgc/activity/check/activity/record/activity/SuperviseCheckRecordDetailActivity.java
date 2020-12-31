@@ -11,13 +11,10 @@ import android.widget.TextView;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.record.bean.RecordDetailBean;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.record.utils.RecodModel;
-import com.example.administrator.newsdf.pzgc.adapter.BasePhotoAdapter;
 import com.example.administrator.newsdf.pzgc.adapter.FiletypeAdapter;
 import com.example.administrator.newsdf.pzgc.bean.FileTypeBean;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
-import com.example.baselibrary.adapter.BaseDisplayFileAdapter;
 import com.example.baselibrary.base.BaseActivity;
-import com.example.baselibrary.bean.photoBean;
 import com.example.baselibrary.utils.Requests;
 import com.example.baselibrary.utils.network.NetworkAdapter;
 

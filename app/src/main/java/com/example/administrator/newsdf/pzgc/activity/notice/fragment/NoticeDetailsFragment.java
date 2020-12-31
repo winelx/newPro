@@ -97,7 +97,7 @@ public class NoticeDetailsFragment extends BaseActivity implements View.OnClickL
         WebSettings webSettings = mWebView.getSettings();
         // 设置与Js交互的权限
         //允许js
-        webSettings.setJavaScriptEnabled(false);
+        webSettings.setJavaScriptEnabled(true);
         //设置可以访问文件
         webSettings.setAllowFileAccess(false);
         //将图片调整到适合webview的大小

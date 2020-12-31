@@ -129,7 +129,6 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 //查看图片
                 ArrayList<String> imagepath = new ArrayList<String>();
                 ArrayList<String> path = new ArrayList<String>();
-
                 for (int i = 0; i < mData.size(); i++) {
                     String urlpath = mData.get(i);
                     int doc = urlpath.lastIndexOf(".");
@@ -154,7 +153,6 @@ public class RectifierAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 String imgUrl = mData.get(position);
                 if (imgUrl.contains(".pdf")||imgUrl.contains(".PDF")) {
                     PdfPreview.builder().setPdfUrl(mData.get(position)).start((Activity) mContext);
-
                 } else {
                     ToastUtils.showLongToast("请到pc端查看详情");
                 }
