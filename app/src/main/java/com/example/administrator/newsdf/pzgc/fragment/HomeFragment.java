@@ -142,7 +142,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         propagandaData = rootView.findViewById(R.id.propaganda_data);
         propagandaContent = rootView.findViewById(R.id.propaganda_content);
         propagandaNumber = rootView.findViewById(R.id.propaganda_number);
-        /*标段排名*/
+        /**/
         thirdRanking = rootView.findViewById(R.id.third_ranking);
         thirdRankingSocrd = rootView.findViewById(R.id.third_ranking_socrd);
         fristRanking = rootView.findViewById(R.id.frist_ranking);

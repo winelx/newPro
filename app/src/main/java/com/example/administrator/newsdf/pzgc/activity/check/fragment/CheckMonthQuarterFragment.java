@@ -225,9 +225,9 @@ public class CheckMonthQuarterFragment extends Fragment implements CheckCallback
                 //组织Id
                 .params("orgId", orgId)
                 //查询年份
-                .params("year", yeare)
+                .params("year", dataTime.getText().toString().split("-")[0])
                 //查询
-                .params("mqnum", mqnum)
+                .params("mqnum",  dataTime.getText().toString().split("-")[1])
                 .params("isCheck",checkstatus)
                 //查询类型：
                 .params("selectType", "M")

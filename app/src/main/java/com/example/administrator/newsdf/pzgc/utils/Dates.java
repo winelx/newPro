@@ -855,8 +855,14 @@ public class Dates {
         } else {
             m = month + "";
         }
-        return now.get(Calendar.YEAR) + "-" + m;
-    }
+        if ("00".equals(m)) {
+            m = "12";
+            String str = now.get(Calendar.YEAR) - 1 + "";
+            return str + "-" + m;
+        }else {
+           return now.get(Calendar.YEAR)+"-" + m;
+        }
 
+    }
 
 }
