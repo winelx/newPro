@@ -103,7 +103,7 @@
                 android:textColor="@color/inter_text"
                 android:textSize="13sp" />
 
-            <com.example.administrator.newsdf.pzgc.utils.SlantedTextView
+            <com.example.administrator.fengji.pzgc.utils.SlantedTextView
                 android:id="@+id/home_item_message"
                 android:layout_width="48dp"
                 android:layout_height="48dp"

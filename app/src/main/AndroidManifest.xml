@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.administrator.newsdf">
+    package="com.example.administrator.fengji">
 
     <!-- Required -->
     <permission
@@ -46,7 +46,7 @@
     <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
 
     <application
-        android:name=".App"
+        android:name="com.example.administrator.fengji.App"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/launcher"
@@ -76,7 +76,7 @@
         <!-- since 3.0.9 Required SDK 核心功能 -->
         <provider
             android:name="cn.jpush.android.service.DataProvider"
-            android:authorities="com.example.administrator.newsdf.DataProvider"
+            android:authorities="com.example.administrator.fengji.DataProvider"
             android:exported="false" />
 
         <!-- since 1.8.0 option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
@@ -95,7 +95,7 @@
         <!-- since 3.1.0 Required SDK 核心功能 -->
         <provider
             android:name="cn.jpush.android.service.DownloadProvider"
-            android:authorities="com.example.administrator.newsdf.DownloadProvider"
+            android:authorities="com.example.administrator.fengji.DownloadProvider"
             android:exported="true" />
         <!-- Required SDK核心功能 -->
         <receiver
@@ -138,7 +138,7 @@
 
         <!-- User defined.极光代码 用户自定义的广播接收器 -->
         <receiver
-            android:name=".pzgc.service.PushReceiver"
+            android:name="com.example.administrator.fengji.pzgc.service.PushReceiver"
             android:enabled="true">
             <intent-filter>
                 <!-- Required 用户注册SDK的intent -->
@@ -182,7 +182,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.example.administrator.newsdf"
+            android:authorities="com.example.administrator.fengji"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -191,7 +191,7 @@
         </provider>
 
         <activity
-            android:name=".pzgc.activity.BootupActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.BootupActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/StartTheme"
@@ -205,116 +205,116 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".pzgc.activity.mine.SettingActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.mine.SettingActivity"
             android:screenOrientation="portrait" />
         <!-- //设置 -->
         <activity
-            android:name=".pzgc.activity.mine.AboutmeActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.mine.AboutmeActivity"
             android:screenOrientation="portrait" />
         <!-- //关于我们 -->
         <activity
-            android:name=".pzgc.activity.work.PhotoadmActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.work.PhotoadmActivity"
             android:screenOrientation="portrait" />
         <!-- //图册浏览 -->
         <activity
-            android:name=".pzgc.activity.mine.OrganizationaActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.mine.OrganizationaActivity"
             android:screenOrientation="portrait" />
         <!-- //我的组织界面 -->
         <activity
-            android:name=".pzgc.activity.mine.ProjectmemberActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.mine.ProjectmemberActivity"
             android:screenOrientation="portrait" />
         <!-- //项目成员 -->
         <activity
-            android:name=".pzgc.activity.mine.PersonalActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.mine.PersonalActivity"
             android:screenOrientation="portrait" />
         <!-- 个人信息 -->
         <activity
-            android:name=".pzgc.activity.mine.PasswordActvity"
+            android:name="com.example.administrator.fengji.pzgc.activity.mine.PasswordActvity"
             android:screenOrientation="portrait" />
         <!-- 修改密码 -->
         <activity
-            android:name=".pzgc.activity.home.MineListmessageActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.home.MineListmessageActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
-            android:name=".pzgc.activity.home.same.ReplyActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.home.same.ReplyActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".pzgc.activity.home.TaskdetailsActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.home.TaskdetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".pzgc.activity.work.TenanceviewActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.work.TenanceviewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.work.TabulationActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.work.TabulationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.work.MissionpushActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.work.MissionpushActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.home.AllListmessageActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.home.AllListmessageActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".pzgc.activity.work.OrganiwbsActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.work.OrganiwbsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.LoginActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.LoginActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".pzgc.activity.MainActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.MainActivity" />
         <activity
-            android:name=".pzgc.activity.work.MmissPushActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".pzgc.activity.work.NewpushActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.work.MmissPushActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.work.NotuploadActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.work.NewpushActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.home.same.DirectlyreplyActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.work.NotuploadActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.home.same.DirectlyreplysActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.home.same.DirectlyreplyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.administrator.fengji.pzgc.activity.home.same.DirectlyreplysActivity"
             android:screenOrientation="portrait" />
         <!-- //直接回复 -->
         <!-- //图片预览界面 -->
         <activity
-            android:name=".pzgc.photopicker.PhotoPagerActivity"
+            android:name="com.example.administrator.fengji.pzgc.photopicker.PhotoPagerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".pzgc.activity.work.ChoosecheckActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.work.ChoosecheckActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.work.PopwindActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.work.PopwindActivity"
             android:screenOrientation="portrait"
             android:theme="@style/myTransparent" />
         <activity
-            android:name=".pzgc.activity.home.same.Checkpoint"
+            android:name="com.example.administrator.fengji.pzgc.activity.home.same.Checkpoint"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.work.PushdialogActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.work.PushdialogActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.pchoose.activity.PchooseActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.pchoose.activity.PchooseActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.pchoose.activity.PhotoListActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.pchoose.activity.PhotoListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.work.ListPhActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.work.ListPhActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.work.PushCheckActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.work.PushCheckActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.work.NodedetailsActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.work.NodedetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.home.same.ReplysActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.home.same.ReplysActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -322,207 +322,207 @@
             android:screenOrientation="portrait"
             android:theme="@style/ImagePickerThemeFullScreen" />
         <activity
-            android:name=".pzgc.activity.work.ContactPeopleActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.work.ContactPeopleActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.work.UploadPhotoActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.work.UploadPhotoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.work.TaskWbsActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.work.TaskWbsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.mine.ProjectMembersTreeActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.mine.ProjectMembersTreeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.home.TaskRecordActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.home.TaskRecordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.home.MoretaskActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.home.MoretaskActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.pchoose.activity.StandardActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.pchoose.activity.StandardActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.fragment.homepage.CommentmessageActivity"
+            android:name="com.example.administrator.fengji.pzgc.fragment.homepage.CommentmessageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.fragment.homepage.CollectionlistActivity"
+            android:name="com.example.administrator.fengji.pzgc.fragment.homepage.CollectionlistActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.audit.AuditActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.audit.AuditActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.audit.ReportActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.audit.ReportActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.audit.AuditdetailsActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.audit.AuditdetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.audit.AuditrecordActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.audit.AuditrecordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.home.same.WorkareaActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.home.same.WorkareaActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.audit.RecordsActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.audit.RecordsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.check.activity.CheckmanagementActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckmanagementActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.check.activity.CheckTasklistActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckTasklistActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.check.activity.CheckNewAddActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckNewAddActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".pzgc.activity.check.activity.CheckTaskCategoryActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckTaskCategoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.check.activity.CheckTreeActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckTreeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.check.activity.CheckitemActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckitemActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".pzgc.activity.check.activity.CheckmassageActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckmassageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.check.activity.CheckuserActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckuserActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.check.activity.CheckdownMessageActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckdownMessageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.check.activity.IssuedTaskDetailsActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.IssuedTaskDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.check.activity.ChecknoticeMessagelistActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.ChecknoticeMessagelistActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.check.activity.CheckRectificationActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckRectificationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".pzgc.activity.check.activity.CheckReplyActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckReplyActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.check.activity.CheckValidationActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckValidationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.check.activity.CheckstandardListActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckstandardListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.check.activity.CheckReportActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckReportActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.check.activity.CheckNewAddsActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckNewAddsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".pzgc.activity.check.activity.ChecknoticeMessagelistAllActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.ChecknoticeMessagelistAllActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.check.activity.CheckHistoryActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".pzgc.activity.check.activity.CheckListDetailsActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckListDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".pzgc.activity.check.activity.CheckReportOrgDetailsActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckReportOrgDetailsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".pzgc.activity.check.activity.CheckRectificationWebActivity" />
-        <activity android:name=".pzgc.activity.check.activity.CheckTaskWebActivity" />
-        <activity android:name=".pzgc.activity.device.DeviceActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckRectificationWebActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.check.activity.CheckTaskWebActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.device.DeviceActivity" />
         <activity
-            android:name=".pzgc.activity.device.NewDeviceActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.device.NewDeviceActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".pzgc.activity.device.DeviceMessageListActivity" />
-        <activity android:name=".pzgc.activity.device.DeviceDetailsActivity" />
-        <activity android:name=".pzgc.activity.device.SeeDetailsActivity" />
-        <activity android:name=".pzgc.activity.device.CorrectReplyActivity" />
-        <activity android:name=".pzgc.activity.device.DeviceMessageAllActivity" />
-        <activity android:name=".pzgc.activity.device.ViolatedetailsActivity" />
-        <activity android:name=".pzgc.activity.device.FacilitynameActivity" />
-        <activity android:name=".pzgc.activity.device.SelectaccpectuserActivity" />
-        <activity android:name=".pzgc.activity.device.DeviceRecordActivity" />
-        <activity android:name=".pzgc.activity.device.SourceDictActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.device.DeviceMessageListActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.device.DeviceDetailsActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.device.SeeDetailsActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.device.CorrectReplyActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.device.DeviceMessageAllActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.device.ViolatedetailsActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.device.FacilitynameActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.device.SelectaccpectuserActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.device.DeviceRecordActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.device.SourceDictActivity" />
         <activity
-            android:name=".pzgc.activity.device.ProblemItemActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.device.ProblemItemActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".pzgc.activity.device.DeviceViolatestandardActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.device.DeviceViolatestandardActivity" />
         <activity
-            android:name=".pzgc.activity.device.VerificationActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.device.VerificationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".pzgc.activity.device.GradeActivity" />
-        <activity android:name=".pzgc.activity.notice.fragment.MessageNoticeFragment" />
-        <activity android:name=".pzgc.activity.notice.fragment.NoticeDetailsFragment" />
-        <activity android:name=".pzgc.activity.changed.ChangedNewActivity" />
-        <activity android:name=".pzgc.activity.changed.ChagedListActivity" />
-        <activity android:name=".pzgc.activity.changed.ChagedProblemitemActivity" />
-        <activity android:name=".pzgc.activity.changed.ChagedImportitemActivity" />
-        <activity android:name=".pzgc.activity.changed.ChagedNoticeDetailsActivity" />
-        <activity android:name=".pzgc.activity.changed.ChagedNoticeItemDetailsActivity" />
-        <activity android:name=".pzgc.activity.changed.CheckitemActivity" />
-        <activity android:name=".pzgc.activity.changed.ChagedContactsActivity" />
-        <activity android:name=".pzgc.activity.changed.ChagedListAllActivity" />
-        <activity android:name=".pzgc.activity.chagedreply.ChagedreplyActivity" />
-        <activity android:name=".pzgc.activity.chagedreply.ChagedreplyListActivity" />
-        <activity android:name=".pzgc.activity.chagedreply.ChagedreplyListAllActivity" />
-        <activity android:name=".pzgc.activity.chagedreply.ChagedReplyNewActivity" />
-        <activity android:name=".pzgc.activity.chagedreply.ChagedReplyRelationActivity" />
-        <activity android:name=".pzgc.activity.chagedreply.ChagedReplyImportActivity" />
-        <activity android:name=".pzgc.activity.chagedreply.ChagedReplyBillActivity" />
-        <activity android:name=".pzgc.activity.chagedreply.ChagedReplyBillsActivity" />
-        <activity android:name=".pzgc.activity.chagedreply.ChagedreplyDetailsActivity" />
-        <activity android:name=".pzgc.activity.chagedreply.ChagedReplyVerificationActivity" />
-        <activity android:name=".pzgc.activity.home.NoticeActivity" />
-        <activity android:name=".pzgc.activity.home.HometaskActivity" />
-        <activity android:name=".pzgc.activity.home.OrgrankingActivity" />
-        <activity android:name=".pzgc.activity.home.HomeTaskDetailsActivity" />
-        <activity android:name=".pzgc.activity.notice.activity.MessageNoticeActivity" />
-        <activity android:name=".pzgc.special.loedger.activity.LoedgerActivity" />
-        <activity android:name=".pzgc.special.loedger.activity.LoedgerlistActivity" />
-        <activity android:name=".pzgc.special.loedger.activity.LoedgerDetailsActivity" />
-        <activity android:name=".pzgc.special.loedger.activity.LoedgerRecordDetailActivity" />
-        <activity android:name=".pzgc.special.loedger.activity.LoedgerApprovalActivity" />
-        <activity android:name=".pzgc.special.programme.activity.ProgrammeActivity" />
-        <activity android:name=".pzgc.special.programme.activity.ProgrammeListActivity" />
-        <activity android:name=".pzgc.special.programme.activity.ProgrammeDetailsActivity" />
-        <activity android:name=".pzgc.special.programme.activity.ProgrammeApprovalActivity" />
-        <activity android:name=".pzgc.special.programme.activity.ProgrammeAuditorActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.device.GradeActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.notice.fragment.MessageNoticeFragment" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.notice.fragment.NoticeDetailsFragment" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.changed.ChangedNewActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.changed.ChagedListActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.changed.ChagedProblemitemActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.changed.ChagedImportitemActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.changed.ChagedNoticeDetailsActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.changed.ChagedNoticeItemDetailsActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.changed.CheckitemActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.changed.ChagedContactsActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.changed.ChagedListAllActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.chagedreply.ChagedreplyActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.chagedreply.ChagedreplyListActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.chagedreply.ChagedreplyListAllActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.chagedreply.ChagedReplyNewActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.chagedreply.ChagedReplyRelationActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.chagedreply.ChagedReplyImportActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.chagedreply.ChagedReplyBillActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.chagedreply.ChagedReplyBillsActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.chagedreply.ChagedreplyDetailsActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.chagedreply.ChagedReplyVerificationActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.home.NoticeActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.home.HometaskActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.home.OrgrankingActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.home.HomeTaskDetailsActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.notice.activity.MessageNoticeActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.special.loedger.activity.LoedgerActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.special.loedger.activity.LoedgerlistActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.special.loedger.activity.LoedgerDetailsActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.special.loedger.activity.LoedgerRecordDetailActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.special.loedger.activity.LoedgerApprovalActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.special.programme.activity.ProgrammeActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.special.programme.activity.ProgrammeListActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.special.programme.activity.ProgrammeDetailsActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.special.programme.activity.ProgrammeApprovalActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.special.programme.activity.ProgrammeAuditorActivity" />
         <!-- 外业检查-->
-        <activity android:name=".pzgc.activity.check.activity.newcheck.activity.ExternalCheckActiviy" />
-        <activity android:name=".pzgc.activity.check.activity.newcheck.activity.ExternalCheckListActiviy" />
-        <activity android:name=".pzgc.activity.check.activity.newcheck.activity.ExternalCheckTypeActivity" />
-        <activity android:name=".pzgc.activity.check.activity.newcheck.activity.ExternalProjectTypeActivity" />
-        <activity android:name=".pzgc.activity.check.activity.newcheck.activity.ImprotExternalActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.check.activity.newcheck.activity.ExternalCheckActiviy" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.check.activity.newcheck.activity.ExternalCheckListActiviy" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.check.activity.newcheck.activity.ExternalCheckTypeActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.check.activity.newcheck.activity.ExternalProjectTypeActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.check.activity.newcheck.activity.ImprotExternalActivity" />
         <activity
-            android:name=".pzgc.activity.check.activity.newcheck.activity.ExternalTreeActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.newcheck.activity.ExternalTreeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".pzgc.activity.check.activity.newcheck.activity.ExternalCheckDetailActivity"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.newcheck.activity.ExternalCheckDetailActivity"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".pzgc.activity.check.activity.newcheck.activity.NewExternalCheckActiviy"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.newcheck.activity.NewExternalCheckActiviy"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <!--监督检查记录-->
-        <activity android:name=".pzgc.activity.check.activity.record.activity.SuperviseCheckRecordActivity" />
-        <activity android:name=".pzgc.activity.check.activity.record.activity.SuperviseCheckRecordListActivity" />
-        <activity android:name=".pzgc.activity.check.activity.record.activity.SuperviseCheckRecordDetailActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.check.activity.record.activity.SuperviseCheckRecordActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.check.activity.record.activity.SuperviseCheckRecordListActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.check.activity.record.activity.SuperviseCheckRecordDetailActivity" />
         <activity
-            android:name=".pzgc.activity.check.activity.record.activity.NewRecordCheckActiviy"
+            android:name="com.example.administrator.fengji.pzgc.activity.check.activity.record.activity.NewRecordCheckActiviy"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".pzgc.activity.check.activity.record.activity.SuperviseCheckRecordUerListActivity" />
-        <activity android:name=".pzgc.activity.AddFrileUpdataActivity" />
-        <activity android:name=".pzgc.utils.EnclosurecheckActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.check.activity.record.activity.SuperviseCheckRecordUerListActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.activity.AddFrileUpdataActivity" />
+        <activity android:name="com.example.administrator.fengji.pzgc.utils.EnclosurecheckActivity" />
 
 
         <!--——————————————腾讯X5————————————————————————-->

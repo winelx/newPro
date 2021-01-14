@@ -47,7 +47,7 @@
             android:textSize="8sp" />
     </RelativeLayout>
 
-    <com.example.administrator.newsdf.pzgc.utils.RoundImageView
+    <com.example.administrator.fengji.pzgc.utils.RoundImageView
         android:id="@+id/imgage"
         android:layout_width="75dp"
         android:layout_height="75dp"

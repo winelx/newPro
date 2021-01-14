@@ -40,7 +40,7 @@
             </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 
-            <com.example.administrator.newsdf.pzgc.view.DKDragView
+            <com.example.administrator.fengji.pzgc.view.DKDragView
                 android:id="@+id/suspension"
                 android:layout_width="60dp"
                 android:layout_height="60dp"

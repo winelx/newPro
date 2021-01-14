@@ -5,21 +5,13 @@ android {
     compileSdkVersion 26
     buildToolsVersion '28.0.3'
     useLibrary 'org.apache.http.legacy'
-    signingConfigs {// 自动化打包配置
-        release {// 线上环境
-            keyAlias 'key0'
-            keyPassword 'JJXX@2018'
-            storeFile file('F:/android/newsdf.jks')
-            storePassword 'JJXX@123'
-        }
-    }
     defaultConfig {
-        applicationId "com.example.administrator.newsdf"
+        applicationId "com.example.administrator.fengji"
         minSdkVersion 15
         //noinspection OldTargetApi
         targetSdkVersion 26
         versionCode 1
-        versionName "3.6.1"
+        versionName "1.0"
         resConfigs "zh-rCN"
         multiDexEnabled true
         ndk {
@@ -97,9 +89,9 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.all {
             if (variant.name.equalsIgnoreCase('release')) {
-                outputFileName = "品质工程正式版.apk"
+                outputFileName = "平安奉建正式版.apk"
             } else {
-                outputFileName = "品质工程测试版.apk"
+                outputFileName = "平安奉建测试版.apk"
             }
         }
     }

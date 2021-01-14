@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.administrator.newsdf.pzgc.utils.SquareItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.administrator.fengji.pzgc.utils.SquareItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.administrator.newsdf.pzgc.utils.RoundImageView
+    <com.example.administrator.fengji.pzgc.utils.RoundImageView
         android:id="@+id/iv_photo"
         android:layout_width="78dp"
         android:layout_height="75dp"
@@ -70,4 +70,4 @@
         android:src="@mipmap/rec_error"
         android:transitionName="shareNames" />
 
-</com.example.administrator.newsdf.pzgc.utils.SquareItemLayout>
+</com.example.administrator.fengji.pzgc.utils.SquareItemLayout>
