@@ -8,9 +8,12 @@ package com.example.baselibrary.utils;
 public class Requests {
     // public static final String networks = "http://192.168.20.38:8082/pzgc/";
     //    public static final String networks = "http://192.168.20.120:8086/pzgc/";
-    // public static final String networks = "http://139.9.234.213:8085/pzgc/";
+    //测试
+    public static final String networks = "http://192.168.20.120:8087/pzgc/";
+    //
     //  public static final String networks = "http://192.168.20.81:8080/pzgc/";
-    public static final String networks = "http://120.79.142.15/pzgc/";
+    //正式
+    //  public static final String networks = "http://120.79.142.15/pzgc/";
     /**
      * VirtualBox
      * 登录
