@@ -1,5 +1,6 @@
 package com.example.baselibrary.view.signature;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -113,6 +114,7 @@ public class SignatureView extends View {
     }
 
     //保存
+    @SuppressLint("WrongThread")
     public boolean save(String path, boolean clearBlank, int blank) throws IOException {
         if (!TextUtils.isEmpty(path)) {
             this.mSavePath = path;

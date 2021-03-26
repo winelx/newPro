@@ -19,7 +19,7 @@ android {
         //noinspection OldTargetApi
         targetSdkVersion 26
         versionCode 1
-        versionName "3.6.1"
+        versionName "3.6.2"
         resConfigs "zh-rCN"
         multiDexEnabled true
         ndk {

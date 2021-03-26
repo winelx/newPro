@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     android:background="@mipmap/login_bg">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:gravity="center"
+        android:text="品质工程管理平台"
+        android:textColor="@color/bg_white"
+        android:textSize="20sp" />
+
 
     <LinearLayout
         android:id="@+id/login_name"

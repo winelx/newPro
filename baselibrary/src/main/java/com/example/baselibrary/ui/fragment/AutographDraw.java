@@ -70,7 +70,8 @@ public class AutographDraw extends Fragment {
                         ArrayList<File> files = new ArrayList<>();
                         files.add(file);
                         //请求地址，请求参数，上传文件，表单提交，回调
-                        NetWork.postHttp(Requests.UPLOADPERSONSIGNATURE, new HashMap<String, String>(), files, false, new NetWork.networkCallBack() {
+                        NetWork.postHttp(Requests.UPLOADPERSONSIGNATURE, new HashMap<String, String>(), files,
+                                false, new NetWork.networkCallBack() {
                             @Override
                             public void onSuccess(String s, Call call, Response response) {
                                 try {

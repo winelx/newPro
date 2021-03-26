@@ -164,6 +164,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     @SuppressLint("HandlerLeak")
     @Override
     public void onClick(View v) {
+
         switch (v.getId()) {
             //切换组织
             case R.id.organizationa:
