@@ -5,14 +5,6 @@ android {
     compileSdkVersion 26
     buildToolsVersion '28.0.3'
     useLibrary 'org.apache.http.legacy'
-    signingConfigs {// 自动化打包配置
-        release {// 线上环境
-            keyAlias 'key0'
-            keyPassword 'JJXX@2018'
-            storeFile file('F:/android/newsdf.jks')
-            storePassword 'JJXX@123'
-        }
-    }
     defaultConfig {
         applicationId "com.example.administrator.newsdf"
         minSdkVersion 15
