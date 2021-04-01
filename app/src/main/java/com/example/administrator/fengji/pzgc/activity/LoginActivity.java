@@ -91,8 +91,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.forget_password:
-     /*           ToastUtils.showLongToast("请联系管理员");*/
-                startActivity(new Intent(mContext, AddFrileUpdataActivity.class));
+                ToastUtils.showLongToast("请联系管理员");
                 break;
             case R.id.login:
                 if (TextUtils.isEmpty(username.getText().toString())) {
