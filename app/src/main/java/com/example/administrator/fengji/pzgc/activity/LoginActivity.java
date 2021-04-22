@@ -43,12 +43,6 @@ import okhttp3.HttpUrl;
 import okhttp3.Response;
 
 
-/**
- * @author lx
- * <p>
- * 登录
- */
-
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 状态图片

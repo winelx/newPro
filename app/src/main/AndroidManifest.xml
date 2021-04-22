@@ -76,7 +76,7 @@
         <!-- since 3.0.9 Required SDK 核心功能 -->
         <provider
             android:name="cn.jpush.android.service.DataProvider"
-            android:authorities="com.example.administrator.fengji.DataProvider"
+            android:authorities="${applicationId}.DataProvider"
             android:exported="false" />
 
         <!-- since 1.8.0 option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
@@ -95,7 +95,7 @@
         <!-- since 3.1.0 Required SDK 核心功能 -->
         <provider
             android:name="cn.jpush.android.service.DownloadProvider"
-            android:authorities="com.example.administrator.fengji.DownloadProvider"
+            android:authorities="${applicationId}.DownloadProvider"
             android:exported="true" />
         <!-- Required SDK核心功能 -->
         <receiver
@@ -182,7 +182,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.example.administrator.fengji"
+            android:authorities="${applicationId}"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
