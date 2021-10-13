@@ -43,7 +43,7 @@
                 android:text="开始"
                 android:textColor="@color/writer" />
 
-            <com.example.administrator.newsdf.pzgc.view.DKDragView
+            <com.example.administrator.yanghu.pzgc.view.DKDragView
                 android:id="@+id/float_suspension"
                 android:layout_width="60dp"
                 android:layout_height="60dp"

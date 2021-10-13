@@ -254,7 +254,7 @@
 
             </RelativeLayout>
 
-            <com.example.administrator.newsdf.pzgc.utils.SlantedTextView
+            <com.example.administrator.yanghu.pzgc.utils.SlantedTextView
                 android:id="@+id/inface_item_message"
                 android:layout_width="48dp"
                 android:layout_height="48dp"

@@ -1,5 +1,5 @@
 <!--item布局，自定义View-->
-<com.example.administrator.newsdf.pzgc.utils.LeftSlideView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.administrator.yanghu.pzgc.utils.LeftSlideView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:background="@android:color/white"
@@ -143,4 +143,4 @@
         </RelativeLayout>
     </RelativeLayout>
 
-</com.example.administrator.newsdf.pzgc.utils.LeftSlideView>
+</com.example.administrator.yanghu.pzgc.utils.LeftSlideView>

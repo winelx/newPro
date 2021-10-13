@@ -13,7 +13,7 @@ public class Requests {
     //
     //  public static final String networks = "http://192.168.20.81:8080/pzgc/";
     //正式
- public static final String networks = "http://120.79.142.15/pzgc/";
+    public static final String networks = "http://117.135.213.87/pzgc/";
     /**
      * VirtualBox
      * 登录

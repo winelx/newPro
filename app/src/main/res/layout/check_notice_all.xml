@@ -18,7 +18,7 @@
         android:orientation="vertical"
         android:paddingLeft="10dp">
 
-        <com.example.administrator.newsdf.pzgc.utils.SlantedTextView
+        <com.example.administrator.yanghu.pzgc.utils.SlantedTextView
             android:id="@+id/inface_item_message"
             app:slantedLength="28dp"
             app:slantedMode="right_triangle"

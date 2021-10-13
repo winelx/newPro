@@ -6,12 +6,12 @@ android {
     buildToolsVersion '28.0.3'
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
-        applicationId "com.example.administrator.newsdf"
+        applicationId "com.example.administrator.yanghu"
         minSdkVersion 15
         //noinspection OldTargetApi
         targetSdkVersion 26
         versionCode 1
-        versionName "3.6.2"
+        versionName "3.6.5"
         resConfigs "zh-rCN"
         multiDexEnabled true
         ndk {
@@ -115,6 +115,5 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$lifecycle"
     implementation project(':baselibrary')
     implementation project(':timepickter')
-    api 'com.tencent.tbs.tbssdk:sdk:43903'
 
 }

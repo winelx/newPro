@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/messageNoticeFragment"
-        android:name="com.example.administrator.newsdf.pzgc.activity.notice.fragment.MessageNoticeFragment"
+        android:name="com.example.administrator.yanghu.pzgc.activity.notice.fragment.MessageNoticeFragment"
         android:label="MessageNoticeFragment"
         tools:layout="@layout/activity_audit">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/noticeDetailsFragment"
-        android:name="com.example.administrator.newsdf.pzgc.activity.notice.fragment.NoticeDetailsFragment"
+        android:name="com.example.administrator.yanghu.pzgc.activity.notice.fragment.NoticeDetailsFragment"
         android:label="NoticeDetailsFragment"
         tools:layout="@layout/activity_check_task_web" />
 </navigation>

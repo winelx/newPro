@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/back"
     android:orientation="vertical"
-    tools:context="com.example.administrator.newsdf.pzgc.activity.check.activity.CheckReportActivity">
+    tools:context="com.example.administrator.yanghu.pzgc.activity.check.activity.CheckReportActivity">
 
     <include layout="@layout/toolbar_wbs" />
 

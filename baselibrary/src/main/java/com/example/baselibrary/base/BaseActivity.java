@@ -202,7 +202,7 @@ public class BaseActivity extends AppCompatActivity {
         //Android 7.0及以上
         if (Build.VERSION.SDK_INT >= 24) {
             // 参数2 清单文件中provider节点里面的authorities ; 参数3  共享的文件,即apk包的file类
-            Uri apkUri = FileProvider.getUriForFile(mContext, "com.example.administrator.newsdf", file);
+            Uri apkUri = FileProvider.getUriForFile(mContext, "com.example.administrator.yanghu", file);
             //对目标应用临时授权该Uri所代表的文件
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.setDataAndType(apkUri, "application/vnd.android.package-archive");

@@ -1,0 +1,246 @@
+package com.example.administrator.yanghu.pzgc.activity.check.fragment;
+
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+import com.example.administrator.yanghu.R;
+import com.example.administrator.yanghu.pzgc.activity.check.activity.newcheck.activity.NewExternalCheckActiviy;
+import com.example.administrator.yanghu.pzgc.utils.ToastUtils;
+import com.example.administrator.yanghu.pzgc.adapter.CheckReportOrgDetailsAdapter;
+import com.example.administrator.yanghu.pzgc.activity.check.activity.CheckListDetailsActivity;
+import com.example.administrator.yanghu.pzgc.activity.check.activity.CheckReportOrgDetailsActivity;
+import com.example.administrator.yanghu.pzgc.bean.OrgDetailsTBean;
+import com.example.baselibrary.utils.Requests;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Response;
+
+/**
+ * @author lx
+ * @data :2019/4/15 0015
+ * @描述 : 统计报表得分页
+ * @see
+ */
+public class CheckReportOrgDetailsT extends Fragment {
+    private View view;
+    private RecyclerView categoryList;
+    private CheckReportOrgDetailsAdapter mAdapter;
+    private Context mContext;
+    private Map<String, Object> map;
+    private CheckReportOrgDetailsActivity activity;
+    private ArrayList<Object> list;
+    private LinearLayout checkQueater, layout_loading;
+    private SmartRefreshLayout recycler_att;
+
+    private int page = 1;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_checkreportdetails, container, false);
+        categoryList = view.findViewById(R.id.category_list);
+        checkQueater = view.findViewById(R.id.check_queater);
+        layout_loading = view.findViewById(R.id.layout_loading);
+        recycler_att = view.findViewById(R.id.recycler_att);
+        recycler_att.setEnableRefresh(false);//是否启用下拉刷新功能
+        recycler_att.setEnableOverScrollBounce(true);//是否启用越界回弹
+        recycler_att.setDisableContentWhenLoading(true);//加载时禁止操作界面
+        recycler_att.setEnableLoadmoreWhenContentNotFull(false);//不满一页启动上拉加载
+        mContext = CheckReportOrgDetailsActivity.getInstance();
+        activity = (CheckReportOrgDetailsActivity) mContext;
+        list = new ArrayList<>();
+        map = activity.getOrgId();
+        categoryList.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+        categoryList.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
+        mAdapter = new CheckReportOrgDetailsAdapter(list, mContext);
+        categoryList.setAdapter(mAdapter);
+        getdata();
+        //上拉加载
+        recycler_att.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @TargetApi(Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                page++;
+                getdata();
+                recycler_att.finishLoadmore(3000);
+            }
+        });
+
+        mAdapter.setOnItemClickListener(new CheckReportOrgDetailsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Object obj = list.get(position);
+                OrgDetailsTBean tBean = (OrgDetailsTBean) obj;
+                int iworkd = tBean.getIwork();
+                if (iworkd == 1) {
+                    Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
+                    //外业标识
+                    intent.putExtra("type", "1");
+                    intent.putExtra("id", tBean.getId());
+                    startActivity(intent);
+                } else if (iworkd == 8 || iworkd == 9) {
+                    Intent intent = new Intent(mContext, NewExternalCheckActiviy.class);
+                    //外业标识
+                    intent.putExtra("isNew", "编辑");
+                    intent.putExtra("id", tBean.getId());
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
+                    //内业标识
+                    intent.putExtra("type", "0");
+                    intent.putExtra("id", tBean.getId());
+                    startActivity(intent);
+                }
+
+            }
+        });
+        return view;
+    }
+
+    public void getdata() {
+        String mqnum;
+        try {
+            mqnum = map.get("mqnum") + "";
+        } catch (Exception e) {
+            mqnum = "";
+        }
+        OkGo.post(Requests.getOrgScoreDetail)
+                .params("orgId", map.get("Id") + "")
+                //统计年份
+                .params("year", map.get("year") + "")
+                //统计类型
+                .params("selectType", map.get("type") + "")
+                //统计时间数值 季/月
+                .params("mqnum", mqnum)
+                .params("row", 20)
+                .params("page", page)
+                //查询类别
+                .params("modeType", "JC")
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        layout_loading.setVisibility(View.GONE);
+                        try {
+                            JSONObject jsonObject = new JSONObject(s);
+                            if (jsonObject.getInt("ret") == 0) {
+                                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                if (jsonArray.length() > 0) {
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject json = jsonArray.getJSONObject(i);
+                                        String checkdate;
+                                        try {
+                                            checkdate = json.getString("check_date");
+                                        } catch (Exception e) {
+                                            checkdate = "";
+
+                                        }
+                                        String checkorgname;
+                                        try {
+                                            checkorgname = json.getString("check_org_name");
+                                        } catch (Exception e) {
+                                            checkorgname = "";
+                                        }
+                                        String checkplanname;
+                                        try {
+                                            checkplanname = json.getString("check_plan_name");
+                                        } catch (Exception e) {
+                                            checkplanname = "";
+                                        }
+                                        String checkusername;
+                                        try {
+                                            checkusername = json.getString("check_user_name");
+                                        } catch (Exception e) {
+                                            checkusername = "";
+                                        }
+                                        String id = json.getString("id");
+                                        String partDetail;
+                                        try {
+                                            partDetail = json.getString("part_details");
+                                        } catch (JSONException e) {
+                                            partDetail = "";
+                                        }
+                                        String score;
+                                        try {
+                                            score = json.getString("score");
+
+                                        } catch (Exception e) {
+                                            score = "";
+                                        }
+                                        String wbsname;
+                                        try {
+                                            wbsname = json.getString("wbs_name");
+                                        } catch (JSONException e) {
+                                            wbsname = "";
+                                        }
+                                        int iwork;
+                                        try {
+                                            iwork = json.getInt("iwork");
+                                        } catch (JSONException e) {
+                                            iwork = 1;
+                                        }
+                                        String wbsTypeName;
+                                        try {
+                                            wbsTypeName = json.getString("wbs_type_name");
+                                        } catch (Exception e) {
+                                            wbsTypeName = "";
+                                        }
+
+                                        list.add(new OrgDetailsTBean(checkdate, checkorgname, checkplanname, checkusername, id, partDetail, score, wbsname, wbsTypeName, iwork));
+                                    }
+                                    if (list.size() > 0) {
+                                        mAdapter.getmData(list);
+                                        checkQueater.setVisibility(View.GONE);
+                                    } else {
+                                        checkQueater.setVisibility(View.VISIBLE);
+                                    }
+                                } else {
+                                    if (list.size() > 0) {
+                                        checkQueater.setVisibility(View.GONE);
+                                    } else {
+                                        checkQueater.setVisibility(View.VISIBLE);
+                                    }
+                                    mAdapter.getmData(list);
+                                }
+
+                            } else {
+                                ToastUtils.showLongToast(jsonObject.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            ToastUtils.showLongToast("数据解析失败");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        layout_loading.setVisibility(View.GONE);
+                        checkQueater.setVisibility(View.VISIBLE);
+                    }
+                });
+    }
+}

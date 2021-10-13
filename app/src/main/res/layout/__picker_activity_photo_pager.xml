@@ -26,7 +26,7 @@
 
         <fragment
             android:id="@+id/photoPagerFragment"
-            android:name="com.example.administrator.newsdf.pzgc.photopicker.fragment.ImagePagerFragment"
+            android:name="com.example.administrator.yanghu.pzgc.photopicker.fragment.ImagePagerFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

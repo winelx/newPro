@@ -6,7 +6,7 @@
     android:background="@color/writer"
     android:orientation="vertical">
 
-    <com.example.administrator.newsdf.pzgc.utils.SlantedTextView
+    <com.example.administrator.yanghu.pzgc.utils.SlantedTextView
         android:id="@+id/daily_message"
         android:layout_width="48dp"
         android:layout_height="48dp"

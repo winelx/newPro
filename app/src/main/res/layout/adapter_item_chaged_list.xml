@@ -11,7 +11,7 @@
     app:cardElevation="1dp">
 
 
-    <com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout
+    <com.example.administrator.yanghu.pzgc.view.SwipeMenuLayout
         android:id="@+id/swipmenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.example.administrator.newsdf.pzgc.utils.SlantedTextView
+            <com.example.administrator.yanghu.pzgc.utils.SlantedTextView
                 android:id="@+id/inface_item_message"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
@@ -154,7 +154,7 @@
             android:background="@color/red"
             android:text="删除"
             android:textColor="@android:color/white" />
-    </com.example.administrator.newsdf.pzgc.view.SwipeMenuLayout>
+    </com.example.administrator.yanghu.pzgc.view.SwipeMenuLayout>
 
 
 </android.support.v7.widget.CardView>

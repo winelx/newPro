@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--item布局，自定义View-->
-<com.example.administrator.newsdf.pzgc.utils.LeftSlideView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.administrator.yanghu.pzgc.utils.LeftSlideView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="160dp"
@@ -59,7 +59,7 @@
                 android:orientation="vertical"
                 android:paddingLeft="10dp">
 
-                <com.example.administrator.newsdf.pzgc.utils.SlantedTextView
+                <com.example.administrator.yanghu.pzgc.utils.SlantedTextView
                     android:id="@+id/inface_item_message"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
@@ -163,4 +163,4 @@
         </RelativeLayout>
 
     </RelativeLayout>
-</com.example.administrator.newsdf.pzgc.utils.LeftSlideView>
+</com.example.administrator.yanghu.pzgc.utils.LeftSlideView>

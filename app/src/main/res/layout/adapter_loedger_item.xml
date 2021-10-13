@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.example.administrator.newsdf.pzgc.utils.SlantedTextView
+        <com.example.administrator.yanghu.pzgc.utils.SlantedTextView
             android:id="@+id/inface_item_message"
             android:layout_width="48dp"
             android:layout_height="48dp"
