@@ -74,10 +74,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/lin"
         android:layout_margin="25dp"
+        android:lineSpacingExtra="3dp"
+        android:lineSpacingMultiplier="1.2"
         android:text="@string/about_us"
         android:textColor="@color/textViwe"
-        android:textSize="15sp"
-        android:lineSpacingExtra="3dp"
-        android:lineSpacingMultiplier="1.2" />
+        android:textSize="15sp" />
 
 </RelativeLayout>
