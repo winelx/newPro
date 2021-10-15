@@ -176,7 +176,7 @@
             android:enabled="true"
             android:process=":remote">
             <intent-filter>
-                <action android:name="com.baidu.location.service_v2.2"></action>
+                <action android:name="com.baidu.location.service_v2.2" />
             </intent-filter>
         </service>
         <meta-data
@@ -203,8 +203,23 @@
                 <action
                     android:name="android.intent.action.MAIN"
                     android:launchMode="singleTop" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!--注册scheme-->
+            <intent-filter>
+                <!--必有项-->
+                <action android:name="android.intent.action.VIEW" />
+                <!--表示该页面可以被隐式调用，必须加上该项-->
+                <category android:name="android.intent.category.DEFAULT" />
+                <!--BROWSABLE指定该Activity能被浏览器安全调用-->
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!--协议部分-->
+                <!--声明自定义scheme，类似于http, https-->
+                <!--<a href="jjxx://pzgc/user>打开app</a>-->
+                <data
+                    android:host="pzgc"
+                    android:pathPrefix="/user"
+                    android:scheme="jjxx" />
             </intent-filter>
         </activity>
         <activity
@@ -527,13 +542,6 @@
         <activity android:name=".pzgc.activity.AddFrileUpdataActivity" />
         <activity android:name=".pzgc.utils.EnclosurecheckActivity" />
 
-
-        <!--——————————————腾讯X5————————————————————————-->
-        <service
-            android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
-            android:label="dexopt"
-            android:process=":dexopt" >
-        </service>
     </application>
 
 </manifest>
