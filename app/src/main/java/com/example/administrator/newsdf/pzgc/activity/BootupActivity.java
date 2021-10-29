@@ -2,6 +2,7 @@ package com.example.administrator.newsdf.pzgc.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -31,6 +32,7 @@ import okhttp3.Response;
 
 /**
  * description: 启动页
+ *
  * @author lx
  * date: 2018/3/9 0009 下午 2:15
  * update: 2018/3/9 0009
@@ -38,6 +40,7 @@ import okhttp3.Response;
  */
 public class BootupActivity extends BaseActivity {
     private Context mContext;
+    private Uri uri = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,9 @@ public class BootupActivity extends BaseActivity {
                 && getIntent().getAction().equals(Intent.ACTION_MAIN)) {
             finish();
             return;
+        }
+        if (getIntent().getData() != null) {
+            Uri uri = getIntent().getData();
         }
         mContext = BootupActivity.this;
         //清除cooking
@@ -77,7 +83,7 @@ public class BootupActivity extends BaseActivity {
                 } else {
                     //如果已经存在，
                     // 先调用退出，然后又再进行登录，不然在cooking失效后。将无法进行数据请求
-                    BackTo(user, password);
+                    backTo(user, password);
                 }
                 return false;
             }
@@ -178,14 +184,14 @@ public class BootupActivity extends BaseActivity {
                                     for (int i = 0; i < qclist.length(); i++) {
                                         JSONObject jsonOb = qclist.getJSONObject(i);
                                         if ("1".equals(jsonOb.getString("type"))) {
-                                            SPUtils.putString(mContext, "androidimg", Requests.networks+Utils.isNull(jsonOb.getString("qrcodeUrl")));
+                                            SPUtils.putString(mContext, "androidimg", Requests.networks + Utils.isNull(jsonOb.getString("qrcodeUrl")));
                                         } else if ("2".equals(jsonOb.getString("type"))) {
-                                            SPUtils.putString(mContext, "iosimg", Requests.networks+Utils.isNull(jsonOb.getString("qrcodeUrl")));
+                                            SPUtils.putString(mContext, "iosimg", Requests.networks + Utils.isNull(jsonOb.getString("qrcodeUrl")));
                                         }
                                     }
                                 }
-                                startActivity(new Intent(BootupActivity.this, MainActivity.class));
-                                finish();
+                                startactivity();
+
                             } else {
                                 ToastUtils.showLongToast(message);
                                 startActivity(new Intent(BootupActivity.this, LoginActivity.class));
@@ -201,7 +207,7 @@ public class BootupActivity extends BaseActivity {
     /**
      * 退出登录
      */
-    private void BackTo(final String user, final String password) {
+    private void backTo(final String user, final String password) {
         OkGo.post(Requests.BackTo)
                 .execute(new StringCallback() {
                     @Override
@@ -219,5 +225,22 @@ public class BootupActivity extends BaseActivity {
                 });
     }
 
+    public void startactivity() {
+        if (uri == null) {
+            startActivity(new Intent(BootupActivity.this, MainActivity.class));
+            finish();
+        } else {
+            String activity = uri.getQueryParameter("id");
+            Class clazz = null;
+            try {
+                clazz = Class.forName(activity);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            if (clazz != null) {
+                startActivity(new Intent(BootupActivity.this, clazz).putExtra("id", ""));
+            }
+        }
+    }
 
 }

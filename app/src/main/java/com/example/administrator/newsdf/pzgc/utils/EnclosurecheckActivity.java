@@ -4,13 +4,13 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.provider.SyncStateContract;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
 import com.example.administrator.newsdf.R;
 import com.example.baselibrary.base.BaseActivity;
-import com.tencent.smtt.sdk.TbsReaderView;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
+
 
 /**
  * 说明：查看附件
@@ -42,7 +42,7 @@ public class EnclosurecheckActivity extends BaseActivity {
             }
         });
         /*  webView.loadUrl(getIntent().getStringExtra("url"));*/
-        openFile(getIntent().getStringExtra("url"));
+       // openFile(getIntent().getStringExtra("url"));
     }
 
 
@@ -77,7 +77,7 @@ public class EnclosurecheckActivity extends BaseActivity {
     }
 
     private void openFile(String path) {
-        //通过bundle把文件传给x5,打开的事情交由x5处理
+     /*   //通过bundle把文件传给x5,打开的事情交由x5处理
         Bundle bundle = new Bundle();
         //传递文件路径
         bundle.putString("filePath", path);
@@ -88,6 +88,6 @@ public class EnclosurecheckActivity extends BaseActivity {
         //加载文件前的初始化工作,加载支持不同格式的插件
         readerView.openFile(bundle);
         // 往容器里添加TbsReaderView控件
-        frameLayout.addView(readerView);
+        frameLayout.addView(readerView);*/
     }
 }

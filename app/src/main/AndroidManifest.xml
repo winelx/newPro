@@ -218,7 +218,7 @@
                 <!--<a href="jjxx://pzgc/user>打开app</a>-->
                 <data
                     android:host="pzgc"
-                    android:pathPrefix="/user"
+                    android:pathPrefix="/bootup"
                     android:scheme="jjxx" />
             </intent-filter>
         </activity>
