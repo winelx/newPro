@@ -11,9 +11,9 @@ public class Requests {
     // public static final String networks = "http://139.9.234.213:8085/pzgc/";
     //  public static final String networks = "http://192.168.20.81:8080/pzgc/";
     //测试
-    //  public static final String networks = "http://192.168.20.235:8091/pzgc/";
+     public static final String networks = "http://172.17.5.103:8091/pzgc/";
     //杨伟
-    public static final String networks = "http://192.168.20.23:8806/pzgc/";
+    // public static final String networks = "http://192.168.20.23:8806/pzgc/";
     //   public static final String networks = "http://192.168.20.235:8091/fjpzgc/";
     /**
      * VirtualBox

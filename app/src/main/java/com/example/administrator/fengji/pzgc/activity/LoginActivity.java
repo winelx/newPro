@@ -127,7 +127,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         super.onError(call, response, e);
                         progressDialog.dismiss();
                         progressDialog = null;
-                        ToastUtils.showLongToast("网络无法连接到internet");
+                        ToastUtils.showLongToast("网络异常");
                         login.setVisibility(View.VISIBLE);
                     }
                 });
@@ -253,6 +253,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            progressDialog.dismiss();
+                            progressDialog = null;
                         }
 
                     }
