@@ -49,7 +49,7 @@
     <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
 
     <application
-        android:name=".App"
+        android:name=".Application"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/launcher"
@@ -121,18 +121,6 @@
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
-        <!-- since 1.8.0 option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
-        <!-- 若不启用该功能可删除该组件，将不拉起其他应用也不能被其他应用拉起 -->
-        <service
-            android:name="cn.jpush.android.service.DaemonService"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.DaemonService" />
-
-                <category android:name="com.example.administrator.newsdf" />
-            </intent-filter>
-        </service>
 
         <!-- Required SDK核心功能 -->
         <receiver
@@ -541,6 +529,18 @@
         <activity android:name=".pzgc.activity.check.activity.record.activity.SuperviseCheckRecordUerListActivity" />
         <activity android:name=".pzgc.activity.AddFrileUpdataActivity" />
         <activity android:name=".pzgc.utils.EnclosurecheckActivity" />
+
+        <!--阿里热修复-->
+        <meta-data
+            android:name="com.taobao.android.hotfix.IDSECRET"
+            android:value="24944375-1" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.APPSECRET"
+            android:value="c49220bf28b3602bc4c2e8c2f390fd45" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.RSASECRET"
+            android:value="MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCmQXFq/6kPCH94HWor39IEd05hnvrYeOCLfRf6oqSkkUiuWZ8hpiNuRqEWENeuG4uw6rBiLkdc6duGZ+l9D5Ejq92UKiUzSlEtnPz5cOK4WxDQYxNVBs0HiwklMl2BWsz2/EFzK+LbMpssirBzuHNHTSFVOt3CWEF2Ky9BLTlFIL4zGdtiVMXc5WFQ9n0Lgr5o83ansVtaaHtGLr62cKEIRtEEM8seko00LZpzkYJyWupvMX8ZoLglYRQneTyEDY0kpjC/JvWWaji3AB4gcHQt1TNigACrrHKO96UVo177Ign/R03XTMzwrFPv+x1gi4wJYTJr2Vtkm8xl0qVj7GrbAgMBAAECggEANuguGPROVRStZHHyeoL0zVzJmhvzJELnhanOnYvRbDg/FLWshGRmFylkUfFGCc43GDqp/gLitqDVS1JOHmtht7Iu/5vbpVDJ9pJ+SbMqbVBGAUx3OgGA/RjB8HLtxqbCQl+VDgBUb6gK727uT4l/KPEkLQ2/50tWczxX4uKYo2dfkgwNh0jnl47Je4yI3j2poMqzPiETEFCY4aSdGWSKT2zrFhVBcK1xJ3n6uenA6U8+9q7K8mfvhjeedyc9w5ojLXJwNb5L8zLdGV5+Y5bwUI01DAOX+MDOEWdSecZgYVrEseLV3dfPGM/BgHMBrDbAuCir1/59WIPbSij9A2rnwQKBgQDp3V4NTY+PSLxoj1TLYNhRSrzPqma5ekavM1r6EdnAS1iUfcd10nxDXBN9Et89BwON8byqznxZX54Ge8QaYwxcf62BM1ltfJMj6tRRSaQXFF0Em0g0tP1cfuNHjuezz8H402UleBr6kEZEAy05B8LWGtkQInKmCqSm4Tyva89rKQKBgQC1/eGoqnsjLP5tQX1OkIUljgFtTrXHF8YYH4lEpJHp6rCDXIyCpUgV1qVHG3mDB4NbeUWwLlfGQ3o70EJAU7kmVeVEw1D9LZU4g74i02xrA9SP8Mv5nVn80eV7RZ9+OiV4xlwIqloeonVdFj4izn0k13mP5gU7WRl/JgH7T39qYwKBgFMIsw0cHb2tAKBLS7sOPp/WXmWJRgHS5WftXv7s+Zhp6CCI7BnsSwyLk6vT2IlNhTiPvQIUYFhHN89rgDwyMMBi4NK/zZ+vHHsjNJFMCUPcig5JqAB2xoJh1wagOapBOMjFHeOI2mNeeGRLkHHwTIBCdhFheb10h/Nsg2RxberJAoGAdrMtkK4I/ItnMumJCkoWncT+R0YUJ9Pov2kqRdw002XgVP1zI+8bkirayAMygPTQh0QU4PGJDGaMfiC6ZWx2EXvquqvN0iP99MtwoxRU3YO1C2EaGSe5Pr3EOF/TxCe2swxlkL1TZDG/7MQKKPeXBgWIYwO7G9dkWtr2ZeyXBVMCgYBb86A0JSGYqk8gNh4XbMWC0G0gyw77puoqGwkp6cLZZrpKqQe03KGybR1CWXglOC/oMVh0Oquz5VtI/fjaDKRy1KWX8CSBZG2DjYtQCbCAmZue+oUUsgkfiUqU3fsQxjbml7DibfNrmdL6QIsTg6FoJZfpRYzmBTEX2ZKfX/e3JA==" />
+
 
     </application>
 

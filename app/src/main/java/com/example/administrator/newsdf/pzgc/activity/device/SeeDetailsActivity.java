@@ -32,6 +32,7 @@ public class SeeDetailsActivity extends BaseActivity {
     private DeviceDetailsUtils detailsUtils;
     private String id;
     private SeeDetailsAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +58,7 @@ public class SeeDetailsActivity extends BaseActivity {
                 finish();
             }
         });
-        mRecyclerView.setAdapter(adapter=new SeeDetailsAdapter(mContext, list));
+        mRecyclerView.setAdapter(adapter = new SeeDetailsAdapter(mContext, list));
         detailsUtils.seedetails(id, new DeviceDetailsUtils.SeeDetailslitener() {
             @Override
             public void onsuccess(ArrayList<Object> lists) {

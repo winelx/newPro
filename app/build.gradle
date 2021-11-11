@@ -7,11 +7,11 @@ android {
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.example.administrator.newsdf"
-        minSdkVersion 15
+        minSdkVersion 16
         //noinspection OldTargetApi
         targetSdkVersion 26
         versionCode 1
-        versionName "3.6.5"
+        versionName "3.6.6"
         resConfigs "zh-rCN"
         multiDexEnabled true
         ndk {
@@ -116,5 +116,6 @@ dependencies {
     implementation project(':baselibrary')
     implementation project(':timepickter')
     api 'com.tencent.tbs.tbssdk:sdk:43903'
-
+    //阿里热修复
+    implementation 'com.aliyun.ams:alicloud-android-hotfix:3.2.18'
 }

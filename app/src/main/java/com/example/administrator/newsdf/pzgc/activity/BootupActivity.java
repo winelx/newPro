@@ -89,6 +89,7 @@ public class BootupActivity extends BaseActivity {
             }
             //表示发送任务
         }).sendEmptyMessageDelayed(0, 1000);
+
     }
 
     //假登录

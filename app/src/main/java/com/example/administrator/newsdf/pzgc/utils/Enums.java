@@ -14,7 +14,7 @@ public class Enums {
     public static final String ANALYSIS_ERROR="数据解析失败";
 
 //    public static final String ="整改通知单"
-//    public static final String ="回复验证"
+//    public static final String =""
 
     public static final String MYAUTOGRAPH="我的签名";
 }

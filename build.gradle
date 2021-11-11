@@ -7,6 +7,9 @@ buildscript {
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven {
+            url "http://repo.baichuan-android.taobao.com/content/groups/Baichua?nRepositories"
+        }
         mavenCentral()
         google()
     }
@@ -27,6 +30,9 @@ allprojects {
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven {
+            url "http://repo.baichuan-android.taobao.com/content/groups/BaichuanRepositories"
+        }
     }
 }
 

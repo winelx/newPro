@@ -516,7 +516,7 @@ public class ChagedreplyUtils {
                                         JSONObject object = afterFiles.getJSONObject(i);
                                         String path = Requests.networks + object.getString("filepath");
                                         String name = object.getString("filename");
-                                        String type = object.getString("id");
+                                        String type = object.getString("fileext");
                                         afterFileslist.add(new photoBean(path, name, type));
                                     }
                                 }
@@ -533,7 +533,7 @@ public class ChagedreplyUtils {
                                         JSONObject object = beforeFiles.getJSONObject(i);
                                         String path = Requests.networks + object.getString("filepath");
                                         String name = object.getString("filename");
-                                        String type = object.getString("id");
+                                        String type = object.getString("fileext");
                                         beforeFileslist.add(new photoBean(path, name, type));
                                     }
                                 }
