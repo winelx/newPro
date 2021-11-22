@@ -6,7 +6,7 @@
     <string name="home">首页</string>
     <string name="check">亮点</string>
 
-    <string name="about_us">工程管理系统主要是路桥公司为了能对施工过程进行严格管控，对进度、技术、质量、安全、文明施工等一系列的施工过程做到实时监控而开发的一个平台。同时更好地保障工地员工实时的进行举证证明施工过程的规范性、安全性、按时性等。整个过程充分体现了”谁负责，谁举证“这一原则。</string>
+    <string name="about_us">工程管理系统主要是贵州公路建设养护集团有限公司为了能对施工过程进行严格管控，对进度、技术、质量、安全、文明施工等一系列的施工过程做到实时监控而开发的一个平台。同时更好地保障工地员工实时的进行举证证明施工过程的规范性、安全性、按时性等。整个过程充分体现了”谁负责，谁举证“这一原则。</string>
     <string name="sdcard_no_exist">SD卡不存在</string>
     <string name="camera_not_prepared">摄像头尚未准备好</string>
     <string name="cancel_value">取消</string>
