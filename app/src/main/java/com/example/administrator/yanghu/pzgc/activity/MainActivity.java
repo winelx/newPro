@@ -31,11 +31,11 @@ import com.example.administrator.yanghu.pzgc.fragment.IndexFrament;
 import com.example.administrator.yanghu.pzgc.fragment.MineFragment;
 import com.example.administrator.yanghu.pzgc.fragment.WorkFragment;
 import com.example.administrator.yanghu.pzgc.utils.AppUtils;
-import com.example.baselibrary.base.BaseActivity;
-import com.example.baselibrary.view.PermissionListener;
-import com.example.baselibrary.utils.Requests;
 import com.example.administrator.yanghu.pzgc.utils.SPUtils;
 import com.example.administrator.yanghu.pzgc.utils.Utils;
+import com.example.baselibrary.base.BaseActivity;
+import com.example.baselibrary.utils.Requests;
+import com.example.baselibrary.view.PermissionListener;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -49,7 +49,6 @@ import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
-
 import okhttp3.Call;
 import okhttp3.Response;
 
