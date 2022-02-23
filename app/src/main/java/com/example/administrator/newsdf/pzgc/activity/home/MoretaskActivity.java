@@ -62,7 +62,7 @@ public class MoretaskActivity extends BaseActivity implements View.OnClickListen
     private ArrayList<MoretasklistBean> Dats;
     public String id, wbsid, status, taskID;
     private DrawerLayout drawerLayout;
-    private String DATA = "data", userId;
+    private String userId;
     private LinearLayout newmoretask;
     private TaskPhotoAdapter taskPhotoAdapter;
     private ListView drawerLayoutList;
@@ -133,7 +133,6 @@ public class MoretaskActivity extends BaseActivity implements View.OnClickListen
             }
         });
     }
-
 
 
     @Override
@@ -272,7 +271,7 @@ public class MoretaskActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.taskManagemented:
                 if ("true".equals(status)) {
-                    Dates.getDialogs((Activity) mContext,"请求数据中..");
+                    Dates.getDialogs((Activity) mContext, "请求数据中..");
                     HomeUtils.getOko(wbsid, null, false, null, false, null, MoretaskActivity.this);
                 }
                 break;

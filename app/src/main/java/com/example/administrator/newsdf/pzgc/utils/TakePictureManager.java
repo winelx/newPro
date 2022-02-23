@@ -222,7 +222,9 @@ public class TakePictureManager {
 
     }
 
-
+    public String getImgPath() {
+        return imgPath;
+    }
     /**
      * 获取到的相片回调方法，
      * 必须要在当前的Activity或Fragment中的onActivityResult下调用！
@@ -535,7 +537,7 @@ public class TakePictureManager {
 
     //裁剪根据文件路径获取uri
 
-    private static Uri getImageContentUri(Context context, File imageFile) {
+    public static Uri getImageContentUri(Context context, File imageFile) {
         String filePath = imageFile.getAbsolutePath();
         Cursor cursor = context.getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -559,7 +561,6 @@ public class TakePictureManager {
             }
         }
     }
-
 
     /**
      * 根据uri返回bitmap

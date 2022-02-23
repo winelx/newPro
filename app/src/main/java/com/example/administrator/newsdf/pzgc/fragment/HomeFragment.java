@@ -106,7 +106,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         rootView.findViewById(R.id.complete_lin).setOnClickListener(this);
         rootView.findViewById(R.id.propaganda_lin).setOnClickListener(this);
         mRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.mRefreshLayout);
-// 下拉刷新颜色控制
+        // 下拉刷新颜色控制
         mRefreshLayout.setColorSchemeResources(R.color.colorAccent,
                 R.color.finish_green, R.color.Orange,
                 R.color.yellow);

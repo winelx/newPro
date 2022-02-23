@@ -56,7 +56,7 @@ public class PopCameraUtils {
         int width = activity.getResources().getDisplayMetrics().widthPixels;
         int height = activity.getResources().getDisplayMetrics().heightPixels;
         PopupWindow popWindow = new PopupWindow(popView, WindowManager.LayoutParams.FILL_PARENT, WindowManager.LayoutParams.FILL_PARENT, true);
-    //    final PopupWindow popWindow = new PopupWindow(popView, width, height);
+        //    final PopupWindow popWindow = new PopupWindow(popView, width, height);
         popWindow.setAnimationStyle(R.style.AnimBottom);
         popWindow.setClippingEnabled(false);
         popWindow.setFocusable(true);
@@ -79,6 +79,7 @@ public class PopCameraUtils {
                         //关闭pop
                     case R.id.btn_pop_add:
                     default:
+
                         popWindow.dismiss();
                         break;
                 }
@@ -125,6 +126,7 @@ public class PopCameraUtils {
         void oncamera();
 
         void onalbum();
+
 
     }
 

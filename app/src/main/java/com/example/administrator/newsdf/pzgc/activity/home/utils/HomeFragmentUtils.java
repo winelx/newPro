@@ -14,6 +14,7 @@ import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.administrator.newsdf.pzgc.utils.HomeApi;
 import com.example.administrator.newsdf.pzgc.utils.ListJsonUtils;
 
+import com.example.baselibrary.utils.log.LogUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.GetRequest;
@@ -47,6 +48,7 @@ public class HomeFragmentUtils {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        LogUtil.d("asdf",s);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");

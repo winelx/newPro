@@ -3,6 +3,8 @@ package com.example.administrator.newsdf.pzgc.activity.check.activity;
 import android.content.Context;
 import android.webkit.JavascriptInterface;
 
+import com.example.baselibrary.utils.log.LogUtil;
+
 /**
  * @author lx
  * @Created by: 2018/9/17 0017.
@@ -28,6 +30,22 @@ public class AndroidtoJs {
             CheckRectificationWebActivity activity = (CheckRectificationWebActivity) mContext;
             activity.finsh();
         }
+    }
 
+    // 定义JS需要调用的方法
+    // 被JS调用的方法必须加入@JavascriptInterface注解
+    @JavascriptInterface
+    public void back() {
+        LogUtil.i("fdsf");
+        CheckRectificationWebActivity activity = (CheckRectificationWebActivity) mContext;
+        activity.finsh();
+    }
+
+    // 定义JS需要调用的方法
+    // 被JS调用的方法必须加入@JavascriptInterface注解
+    @JavascriptInterface
+    public void finsh() {
+        CheckRectificationWebActivity activity = (CheckRectificationWebActivity) mContext;
+        activity.finsh();
     }
 }

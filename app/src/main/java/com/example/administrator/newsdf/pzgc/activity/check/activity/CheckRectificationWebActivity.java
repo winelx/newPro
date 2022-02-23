@@ -1,12 +1,18 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -19,6 +25,7 @@ import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.SslErrorHandler;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -29,22 +36,39 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.activity.ExternalCheckDetailActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.Enum;
+import com.example.administrator.newsdf.pzgc.bean.Audio;
+import com.example.administrator.newsdf.pzgc.utils.Dates;
+import com.example.administrator.newsdf.pzgc.utils.PopCameraFragment;
+import com.example.administrator.newsdf.pzgc.utils.PopCameraUtils;
+import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;
+import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.baselibrary.base.BaseActivity;
+import com.example.baselibrary.bean.photoBean;
 import com.example.baselibrary.utils.Requests;
+import com.example.baselibrary.utils.dialog.BaseDialogUtils;
+import com.example.baselibrary.utils.network.NetworkAdapter;
+import com.example.baselibrary.view.PermissionListener;
+import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cookie.store.CookieStore;
+import com.zxy.tiny.Tiny;
+import com.zxy.tiny.callback.FileCallback;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
 
 /**
-* @author lx
-* @data :2019/3/26 0026
-* @描述 : 整改报表
-*@see
-*/
+ * @author lx
+ * @data :2019/3/26 0026
+ * @描述 : 整改报表
+ * @see
+ */
 public class CheckRectificationWebActivity extends BaseActivity {
     boolean lean = true;
     private TextView text;
@@ -52,9 +76,19 @@ public class CheckRectificationWebActivity extends BaseActivity {
     private Context mContext;
     private TextView reloadTv;
     private RelativeLayout linProbar, nonet;
-  // private String url = "http://192.168.20.25:8080/m/";
+    // private String url = "http://192.168.20.25:8080/m/";
     private String url = "http://120.79.142.15/m/";
     private List<Cookie> cookies;
+    private TakePictureManager takePictureManager;
+    private Uri[] results;
+    //相机回调结果
+    private final static int PHOTO_REQUEST = 101;
+    // 表单的数据信息
+    private ValueCallback<Uri> mUploadMessage;
+    private ValueCallback<Uri[]> mUploadCallbackAboveL;
+    // 表单的结果回调
+    private final static int FILECHOOSER_RESULTCODE = 1;
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
@@ -62,6 +96,8 @@ public class CheckRectificationWebActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_task_web);
         mContext = this;
+        takePictureManager = new TakePictureManager(this);
+        url = getIntent().getStringExtra("url");
         CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
         HttpUrl httpUrl = HttpUrl.parse(Requests.networks);
         cookies = cookieStore.getCookie(httpUrl);
@@ -71,12 +107,31 @@ public class CheckRectificationWebActivity extends BaseActivity {
         text = (TextView) findViewById(R.id.text);
         reloadTv = (TextView) findViewById(R.id.reload_tv);
         textclick();
-        WebSettings webSettings = mWebView.getSettings();
+        WebSettings settings = mWebView.getSettings();
         // 设置与Js交互的权限
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setAllowFileAccess(false);
-        webSettings.setUseWideViewPort(true);
-        mWebView.getSettings().setDomStorageEnabled(true);
+        //是否允许js脚本
+        settings.setJavaScriptEnabled(true);
+        //开启本地DOM存储
+        settings.setDomStorageEnabled(true);
+        //是否显示缩放按钮，默认false
+        settings.setBuiltInZoomControls(false);
+        ////设置js可以直接打开窗口
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);
+        //播放音频，多媒体需要用户手动？设置为false为可自动播放
+        settings.setMediaPlaybackRequiresUserGesture(false);
+        settings.setPluginState(WebSettings.PluginState.ON);
+        //是否使用缓存
+        settings.setAppCacheEnabled(false);
+        settings.setAllowFileAccess(false);
+        //下面两个解决网页自适应问题
+        settings.setLoadWithOverviewMode(true);
+        settings.setUseWideViewPort(true);
+        /* 提高网页渲染的优先级 */
+        settings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        settings.setTextZoom(100);
+        //设置编码
+        settings.setDefaultTextEncodingName("utf-8");
         //AndroidtoJS类对象映射到js的view对象
         mWebView.addJavascriptInterface(new AndroidtoJs(mContext, "str"), "view");
         sycCook();
@@ -84,6 +139,13 @@ public class CheckRectificationWebActivity extends BaseActivity {
         mWebView.loadUrl(url);
         //加载进度
         mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+                mUploadCallbackAboveL = filePathCallback;
+                take();
+                return true;
+            }
+
             @SuppressLint("SetTextI18n")
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
@@ -138,6 +200,138 @@ public class CheckRectificationWebActivity extends BaseActivity {
         });
     }
 
+
+    @SuppressLint({"CheckResult", "HandlerLeak"})
+    private void take() {
+        requestRunPermisssion(new String[]{Enum.CAMERA, Enum.FILEWRITE, Enum.FILEREAD}, new PermissionListener() {
+            @SuppressLint("HandlerLeak")
+            @Override
+            public void onGranted() {
+                new PopCameraFragment(new NetworkAdapter() {
+                    @Override
+                    public void onsuccess(String string) {
+                        super.onsuccess(string);
+                        if ("相机".equals(string)) {
+                            takePictureManager.startTakeWayByCarema();
+                        } else {
+                            //相册多选
+                            Intent intent = new Intent(Intent.ACTION_PICK);
+                            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                            startActivityForResult(intent, FILECHOOSER_RESULTCODE);
+                        }
+                    }
+
+                    @Override
+                    public void onerror() {
+                        super.onerror();
+                        mUploadCallbackAboveL.onReceiveValue(null);
+                        mUploadCallbackAboveL = null;
+                    }
+                }).show(getSupportFragmentManager(), "dialog");
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermission) {
+                for (String permission : deniedPermission) {
+                    if (permission.equals(Enum.CAMERA)) {
+                        BaseDialogUtils.openAppDetails(mContext, "上传图片需要相机,请到权限管理中心打开");
+                    } else {
+                        BaseDialogUtils.openAppDetails(mContext, "APP需要手机存储权限,请到权限管理中心打开");
+                    }
+                }
+            }
+        });
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FILECHOOSER_RESULTCODE) {
+            //接受相册返回数据
+            if (null == mUploadMessage && null == mUploadCallbackAboveL) {
+                return;
+            }
+            if (data != null) {
+                if (mUploadCallbackAboveL != null) {
+                    //return the compressed file path
+                    onActivityResultAboveL(requestCode, resultCode, data);
+                }
+            } else {
+                mUploadCallbackAboveL.onReceiveValue(null);
+                mUploadCallbackAboveL = null;
+            }
+
+        } else if (requestCode == PHOTO_REQUEST) {
+            //接收相机返回数据
+            if (null == mUploadMessage && null == mUploadCallbackAboveL) {
+                return;
+            }
+            Uri result = data == null || resultCode != RESULT_OK ? null : data.getData();
+            if (mUploadCallbackAboveL != null) {
+                onActivityResultAboveL(requestCode, resultCode, data);
+            } else if (mUploadMessage != null) {
+                mUploadMessage.onReceiveValue(result);
+                mUploadMessage = null;
+            }
+        }
+    }
+
+    /**
+     * 回调图片上传给webview
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @SuppressLint("HandlerLeak")
+    @SuppressWarnings("null")
+    private void onActivityResultAboveL(int requestCode, int resultCode, Intent data) {
+        if (requestCode == FILECHOOSER_RESULTCODE) {
+            if (mUploadCallbackAboveL != null) {
+                if (resultCode == Activity.RESULT_OK) {
+                    if (data == null) {
+                        results = null;
+                    } else {
+                        String dataString = data.getDataString();
+                        ClipData clipData = data.getClipData();
+                        if (clipData != null) {
+                            results = new Uri[clipData.getItemCount()];
+                            for (int i = 0; i < clipData.getItemCount(); i++) {
+                                ClipData.Item item = clipData.getItemAt(i);
+                                results[i] = item.getUri();
+                            }
+                        }
+                        if (dataString != null) {
+                            results = new Uri[]{Uri.parse(dataString)};
+                        }
+                    }
+                }
+            }
+        } else if (requestCode == PHOTO_REQUEST) {
+            Uri imageContentUri = TakePictureManager.getImageContentUri(mContext, new File(takePictureManager.getImgPath()));
+            if (imageContentUri != null) {
+                results = new Uri[1];
+                results[0] = imageContentUri;
+            } else {
+                results = null;
+            }
+        } else {
+            mUploadCallbackAboveL.onReceiveValue(null);
+            mUploadCallbackAboveL = null;
+        }
+        if (results != null) {
+            mUploadCallbackAboveL.onReceiveValue(results);
+            mUploadCallbackAboveL = null;
+        } else {
+            mUploadCallbackAboveL.onReceiveValue(null);
+            mUploadCallbackAboveL = null;
+        }
+
+    }
+
     private void textclick() {
         final SpannableStringBuilder style = new SpannableStringBuilder();
         //设置文字
@@ -181,12 +375,10 @@ public class CheckRectificationWebActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-
         //缓存
         if (mWebView != null) {
             mWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
             mWebView.clearHistory();
-
             ((ViewGroup) mWebView.getParent()).removeView(mWebView);
             mWebView.destroy();
             mWebView = null;
