@@ -76,8 +76,7 @@ public class CheckRectificationWebActivity extends BaseActivity {
     private Context mContext;
     private TextView reloadTv;
     private RelativeLayout linProbar, nonet;
-    // private String url = "http://192.168.20.25:8080/m/";
-    private String url = "http://120.79.142.15/m/";
+    private String url;
     private List<Cookie> cookies;
     private TakePictureManager takePictureManager;
     private Uri[] results;
@@ -96,6 +95,7 @@ public class CheckRectificationWebActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_task_web);
         mContext = this;
+        hideBottomUIMenu();
         takePictureManager = new TakePictureManager(this);
         url = getIntent().getStringExtra("url");
         CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
@@ -107,8 +107,17 @@ public class CheckRectificationWebActivity extends BaseActivity {
         text = (TextView) findViewById(R.id.text);
         reloadTv = (TextView) findViewById(R.id.reload_tv);
         textclick();
+        initWebView();
+        sycCook();
+        //加载url
+        mWebView.loadUrl(url);
+
+    }
+
+    @SuppressLint("JavascriptInterface")
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void initWebView() {
         WebSettings settings = mWebView.getSettings();
-        // 设置与Js交互的权限
         //是否允许js脚本
         settings.setJavaScriptEnabled(true);
         //开启本地DOM存储
@@ -121,8 +130,8 @@ public class CheckRectificationWebActivity extends BaseActivity {
         settings.setMediaPlaybackRequiresUserGesture(false);
         settings.setPluginState(WebSettings.PluginState.ON);
         //是否使用缓存
-        settings.setAppCacheEnabled(false);
-        settings.setAllowFileAccess(false);
+        settings.setAppCacheEnabled(true);
+        settings.setAllowFileAccess(true);
         //下面两个解决网页自适应问题
         settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
@@ -132,11 +141,11 @@ public class CheckRectificationWebActivity extends BaseActivity {
         settings.setTextZoom(100);
         //设置编码
         settings.setDefaultTextEncodingName("utf-8");
+        /* 设置显示水平滚动条,就是网页右边的滚动条.我这里设置的不显示 */
+        mWebView.setHorizontalScrollBarEnabled(false);
+        mWebView.setVerticalScrollbarOverlay(true);
         //AndroidtoJS类对象映射到js的view对象
-        mWebView.addJavascriptInterface(new AndroidtoJs(mContext, "str"), "view");
-        sycCook();
-        //加载url
-        mWebView.loadUrl(url);
+        mWebView.addJavascriptInterface(new AndroidtoJs(mContext, "str"), "phone");
         //加载进度
         mWebView.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -199,7 +208,6 @@ public class CheckRectificationWebActivity extends BaseActivity {
             }
         });
     }
-
 
     @SuppressLint({"CheckResult", "HandlerLeak"})
     private void take() {
@@ -406,5 +414,18 @@ public class CheckRectificationWebActivity extends BaseActivity {
         }
     }
 
+    protected void hideBottomUIMenu() {
+        //隐藏虚拟按键，并且全屏
+        if (Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19) { // lower api
+            View v = this.getWindow().getDecorView();
+            v.setSystemUiVisibility(View.GONE);
+        } else if (Build.VERSION.SDK_INT >= 19) {
+            //for new api versions.
+            View decorView = getWindow().getDecorView();
+            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN;
+            decorView.setSystemUiVisibility(uiOptions);
 
+        }
+    }
 }

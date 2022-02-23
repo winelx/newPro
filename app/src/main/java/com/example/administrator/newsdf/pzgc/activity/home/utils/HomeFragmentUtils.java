@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity.home.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.example.administrator.newsdf.pzgc.adapter.CompleteBean;
 import com.example.administrator.newsdf.pzgc.adapter.NoticedBean;
 import com.example.administrator.newsdf.pzgc.bean.AgencyBean;
@@ -48,7 +49,7 @@ public class HomeFragmentUtils {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        LogUtil.d("asdf",s);
+                        LogUtil.d("asdf", s);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
@@ -143,7 +144,7 @@ public class HomeFragmentUtils {
                                 List<CompleteBean> list = new ArrayList<>();
                                 JSONObject data = jsonObject.getJSONObject("data");
                                 JSONArray array = data.getJSONArray("results");
-                                list = ListJsonUtils.getListByArray(CompleteBean.class, array.toString());
+                                list = JSON.parseArray(array.toString(), CompleteBean.class);
                                 Map<String, Object> map = new HashMap<>();
                                 map.put("complete", list);
                                 callBack.onsuccess(map);
