@@ -36,7 +36,6 @@ public class AndroidtoJs {
     // 被JS调用的方法必须加入@JavascriptInterface注解
     @JavascriptInterface
     public void back() {
-        LogUtil.i("fdsf");
         CheckRectificationWebActivity activity = (CheckRectificationWebActivity) mContext;
         activity.finsh();
     }

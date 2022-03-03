@@ -441,6 +441,7 @@
             android:name=".pzgc.activity.check.activity.CheckReportOrgDetailsActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".pzgc.activity.check.activity.CheckRectificationWebActivity" />
+        <activity android:name=".pzgc.activity.check.webview.CheckabfillWebActivity" />
         <activity android:name=".pzgc.activity.check.activity.CheckTaskWebActivity" />
         <activity android:name=".pzgc.activity.device.DeviceActivity" />
         <activity

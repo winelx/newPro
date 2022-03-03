@@ -21,6 +21,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.activity.Checkmanage
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckstandardListActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.activity.ExternalCheckActiviy;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.record.activity.SuperviseCheckRecordActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.webview.CheckabfillWebActivity;
 import com.example.administrator.newsdf.pzgc.activity.device.DeviceActivity;
 import com.example.administrator.newsdf.pzgc.activity.home.OrgrankingActivity;
 import com.example.administrator.newsdf.pzgc.activity.pchoose.activity.PchooseActivity;
@@ -180,11 +181,13 @@ public class WorkFragment extends Fragment {
                         startActivity(new Intent(mContext, SuperviseCheckRecordActivity.class));
                         break;
                     case "A类风险":
-                        startActivity(new Intent(mContext, CheckRectificationWebActivity.class)
+                        startActivity(new Intent(mContext, CheckabfillWebActivity.class)
                                 .putExtra("url", Requests.networks + "/h5/abfill/index.html#/atree?modelType=4"));
+//                        startActivity(new Intent(mContext, CheckRectificationWebActivity.class)
+//                                .putExtra("url", Requests.networks + "/h5/taskcheck/index.html#/"));
                         break;
                     case "B类风险":
-                        startActivity(new Intent(mContext, CheckRectificationWebActivity.class)
+                        startActivity(new Intent(mContext, CheckabfillWebActivity.class)
                                 .putExtra("url", Requests.networks + "/h5/abfill/index.html#/atree?modelType=3"));
 
 
@@ -266,10 +269,10 @@ public class WorkFragment extends Fragment {
                                         special.add(new bean("监督检查记录", R.mipmap.work_check_record));
                                     }
                                     if ("true".equals(json.getString("A类风险"))) {
-                                        abfill.add(new bean("A类风险", R.mipmap.work_check_record));
+                                        abfill.add(new bean("A类风险", R.mipmap.alei));
                                     }
                                     if ("true".equals(json.getString("B类风险"))) {
-                                        abfill.add(new bean("B类风险", R.mipmap.work_check_record));
+                                        abfill.add(new bean("B类风险", R.mipmap.blei));
                                     }
 
                                 }

@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.pzgc.activity.check.activity;
+package com.example.administrator.newsdf.pzgc.activity.check.webview;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -35,12 +36,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.AndroidtoJs;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationWebActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTaskWebActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.Enum;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraFragment;
 import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;
 import com.example.baselibrary.utils.dialog.BaseDialogUtils;
+import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.utils.network.NetworkAdapter;
 import com.example.baselibrary.view.PermissionListener;
 import com.lzy.okgo.OkGo;
@@ -53,12 +58,12 @@ import okhttp3.Cookie;
 import okhttp3.HttpUrl;
 
 /**
- * @author lx
- * @data :2019/3/26 0026
- * @描述 : 整改报表
- * @see
+ * 说明：AB类风险管控
+ * 创建时间： 2022/3/3 0003 9:39
+ *
+ * @author winelx
  */
-public class CheckRectificationWebActivity extends BaseActivity {
+public class CheckabfillWebActivity extends BaseActivity {
     boolean lean = true;
     private TextView text;
     private WebView mWebView;
@@ -134,7 +139,7 @@ public class CheckRectificationWebActivity extends BaseActivity {
         mWebView.setHorizontalScrollBarEnabled(false);
         mWebView.setVerticalScrollbarOverlay(true);
         //AndroidtoJS类对象映射到js的view对象
-        mWebView.addJavascriptInterface(new AndroidtoJs(mContext, "str"), "view");
+        mWebView.addJavascriptInterface(new AndroidtoJss(mContext, "str"), "phone");
         //加载进度
         mWebView.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -413,6 +418,32 @@ public class CheckRectificationWebActivity extends BaseActivity {
             int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
             decorView.setSystemUiVisibility(uiOptions);
+        }
+    }
+
+    public class AndroidtoJss {
+        private Context mContext;
+        private String str;
+
+        public AndroidtoJss(Context mContext, String str) {
+            this.mContext = mContext;
+            this.str = str;
+        }
+
+        // 定义JS需要调用的方法
+        // 被JS调用的方法必须加入@JavascriptInterface注解
+        @JavascriptInterface
+        public void back() {
+            CheckabfillWebActivity activity = (CheckabfillWebActivity) mContext;
+            activity.finsh();
+        }
+
+        // 定义JS需要调用的方法
+        // 被JS调用的方法必须加入@JavascriptInterface注解
+        @JavascriptInterface
+        public void finsh() {
+            CheckabfillWebActivity activity = (CheckabfillWebActivity) mContext;
+            activity.finsh();
         }
     }
 }

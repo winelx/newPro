@@ -426,7 +426,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             intent.putExtra("type", true);
             intent.putExtra("title", bean.getModelCode());
             startActivity(intent);
-        } else if ("5".equals(modelType)) {
+        } else if ("6".equals(modelType)) {
             //方案报批
             Intent intent = new Intent(mContext, ProgrammeDetailsActivity.class);
             intent.putExtra("id", bean.getModelId());
@@ -446,9 +446,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             startActivity(new Intent(mContext, CheckRectificationWebActivity.class)
                     .putExtra("url", Requests.networks + "/h5/check/index.html#/?id=" + bean.getModelId()));
         } else if ("activity".equals(modelType)) {
-
             ToastUtils.showShortToast("请前往pc端处理");
-
         }
     }
 
