@@ -146,9 +146,9 @@ public class FiletypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ArrayList<String> imagepath = new ArrayList<String>();
                 ArrayList<String> path = new ArrayList<String>();
                 for (int i = 0; i < mData.size(); i++) {
-                    String strs = mData.get(position).getType();
+                    String strs = mData.get(i).getUrl();
                     //图片可能为jpg 也可能是png
-                    if ("jpg".equals(strs) || "png".equals(strs) || "jpeg".equals(strs)) {
+                    if (strs.contains(".jpg") || strs.contains(".png") || strs.contains(".jpeg")) {
                         path.add(mData.get(i).getUrl());
                     }
                 }

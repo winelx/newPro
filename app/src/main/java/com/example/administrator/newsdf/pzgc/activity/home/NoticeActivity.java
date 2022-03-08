@@ -2,23 +2,27 @@ package com.example.administrator.newsdf.pzgc.activity.home;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.TextView;
 
+import com.alibaba.sdk.android.tbrest.utils.LogUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckNewAddActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckNewAddsActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationWebActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.activity.NewExternalCheckActiviy;
+import com.example.administrator.newsdf.pzgc.activity.check.webview.CheckabfillWebActivity;
 import com.example.administrator.newsdf.pzgc.activity.notice.fragment.NoticeDetailsFragment;
 import com.example.administrator.newsdf.pzgc.special.loedger.activity.LoedgerDetailsActivity;
 import com.example.administrator.newsdf.pzgc.special.loedger.activity.LoedgerRecordDetailActivity;
@@ -37,6 +41,7 @@ import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
 import com.example.administrator.newsdf.pzgc.utils.Enums;
 import com.example.baselibrary.utils.Requests;
+import com.example.baselibrary.utils.rx.LiveDataBus;
 import com.example.baselibrary.utils.rx.RxBus;
 import com.example.baselibrary.view.EmptyRecyclerView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -156,10 +161,18 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         if (Enums.NOTICE.equals(content)) {
             request();
         } else if (Enums.AGENCY.equals(content)) {
+            LiveDataBus.get().with("mynotast", String.class).observe(this, new Observer<String>() {
+                @Override
+                public void onChanged(@Nullable String string) {
+                    page = 1;
+                    mynotast();
+                }
+            });
             mynotast();
         } else if (Enums.COMPLETE.equals(content)) {
             myyestast();
         }
+
     }
 
     /**
@@ -390,6 +403,11 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             intent.putExtra("isNew", "编辑");
             intent.putExtra("id", bean.getModelId());
             startActivity(intent);
+        } else if (modelname == 999) {
+            startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                    .putExtra("url", Requests.networks + bean.getAppFormUrl() +
+                            "&id=" + bean.getTaskid() +
+                            "&modelId=" + bean.getModelId()));
         }
     }
 
@@ -446,8 +464,15 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             startActivity(new Intent(mContext, CheckRectificationWebActivity.class)
                     .putExtra("url", Requests.networks + "/h5/check/index.html#/?id=" + bean.getModelId()));
         } else if ("activity".equals(modelType)) {
+            startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                    .putExtra("url", Requests.networks + bean.getAppFormUrl() +
+                            "&id=" + bean.getId() +
+                            "&modelId=" + bean.getModelId()));
+
+        } else {
             ToastUtils.showShortToast("请前往pc端处理");
         }
+
     }
 
     /**
@@ -505,6 +530,11 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             startActivity(new Intent(mContext, CheckRectificationWebActivity.class)
                     .putExtra("url", Requests.networks + "/h5/check/index.html#/?id=" + bean.getModelId()));
         } else if ("activity".equals(modelType)) {
+            startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                    .putExtra("url", Requests.networks + bean.getAppFormUrl() +
+                            "&id=" + bean.getId() +
+                            "&modelId=" + bean.getModelId()));
+        } else {
             ToastUtils.showShortToast("请前往pc端处理");
         }
     }

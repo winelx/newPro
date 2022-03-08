@@ -47,6 +47,7 @@ import com.example.baselibrary.utils.Requests;
 import com.example.baselibrary.utils.dialog.BaseDialogUtils;
 import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.utils.network.NetworkAdapter;
+import com.example.baselibrary.utils.rx.LiveDataBus;
 import com.example.baselibrary.view.PermissionListener;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cookie.store.CookieStore;
@@ -436,6 +437,11 @@ public class CheckabfillWebActivity extends BaseActivity {
         public void back() {
             CheckabfillWebActivity activity = (CheckabfillWebActivity) mContext;
             activity.finsh();
+            try {
+                LiveDataBus.get().with("mynotast").postValue("刷新待办列表");
+            } catch (Exception e) {
+
+            }
         }
 
         // 定义JS需要调用的方法

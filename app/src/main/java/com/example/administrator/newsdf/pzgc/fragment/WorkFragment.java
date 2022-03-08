@@ -183,14 +183,10 @@ public class WorkFragment extends Fragment {
                     case "A类风险":
                         startActivity(new Intent(mContext, CheckabfillWebActivity.class)
                                 .putExtra("url", Requests.networks + "/h5/abfill/index.html#/atree?modelType=4"));
-//                        startActivity(new Intent(mContext, CheckRectificationWebActivity.class)
-//                                .putExtra("url", Requests.networks + "/h5/taskcheck/index.html#/"));
                         break;
                     case "B类风险":
                         startActivity(new Intent(mContext, CheckabfillWebActivity.class)
                                 .putExtra("url", Requests.networks + "/h5/abfill/index.html#/atree?modelType=3"));
-
-
                         break;
                     default:
                         break;

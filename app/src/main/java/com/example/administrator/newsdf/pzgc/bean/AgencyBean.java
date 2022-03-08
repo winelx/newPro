@@ -41,6 +41,24 @@ public class AgencyBean {
     private String sendOrgName;
     private String sendPerson;
     private String checkUrl;
+    private String appFormUrl;
+    private String showContent;
+
+    public String getShowContent() {
+        return showContent;
+    }
+
+    public void setShowContent(String showContent) {
+        this.showContent = showContent;
+    }
+
+    public String getAppFormUrl() {
+        return appFormUrl;
+    }
+
+    public void setAppFormUrl(String appFormUrl) {
+        this.appFormUrl = appFormUrl;
+    }
 
     public String getCheckUrl() {
         return checkUrl;

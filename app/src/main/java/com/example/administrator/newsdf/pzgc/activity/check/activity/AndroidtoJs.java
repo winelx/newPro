@@ -1,9 +1,11 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
 import android.content.Context;
+import android.util.Log;
 import android.webkit.JavascriptInterface;
 
 import com.example.baselibrary.utils.log.LogUtil;
+import com.example.baselibrary.utils.rx.LiveDataBus;
 
 /**
  * @author lx
@@ -38,6 +40,7 @@ public class AndroidtoJs {
     public void back() {
         CheckRectificationWebActivity activity = (CheckRectificationWebActivity) mContext;
         activity.finsh();
+
     }
 
     // 定义JS需要调用的方法

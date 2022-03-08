@@ -48,6 +48,15 @@ public class CompleteBean {
     private String sendOrgName;
     private String sendPerson;
     private String checkUrl;
+    private String appFormUrl;
+
+    public String getAppFormUrl() {
+        return appFormUrl;
+    }
+
+    public void setAppFormUrl(String appFormUrl) {
+        this.appFormUrl = appFormUrl;
+    }
 
     public String getCheckUrl() {
         return checkUrl;
