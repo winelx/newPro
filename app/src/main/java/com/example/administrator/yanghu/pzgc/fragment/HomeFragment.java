@@ -174,8 +174,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.layout_ranking:
                 //标段排名
-                Intent intents= new Intent(mContext, CheckReportActivity.class);
-                intents.putExtra("type","month");
+                Intent intents = new Intent(mContext, CheckReportActivity.class);
+                intents.putExtra("type", "month");
                 startActivity(intents);
                 break;
             case R.id.tasktotal:
@@ -302,11 +302,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     /*待办事项*/
     private void analysisAgency(AgencyBean bean) {
         agencyData.setText(bean.getSendDate().substring(0, 10));
-        if (bean.getReceiveOrgName() != null) {
-            agencyContent.setText(bean.getModelName() + "(" + bean.getModelCode() + ")" + "需要处理。");
-        } else {
-            agencyContent.setText("");
-        }
+        agencyContent.setText(bean.getShowContent());
         if (bean.getTotalCount() != 0) {
             if (bean.getTotalCount() > 99) {
                 agencyNumber.setText(99 + "+");
@@ -323,7 +319,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void analysisComplete(CompleteBean bean) {
         completeData.setText(bean.getSendDate().substring(0, 10));
         if (bean.getModelName() != null) {
-            completeContent.setText(bean.getReceiveOrgName() + bean.getModelName() + "(" + bean.getModelCode() + ")" + bean.getDealResult());
+            completeContent.setText(bean.getModelName() + "(" + bean.getModelCode() + ")" + bean.getDealResult());
         } else {
             completeContent.setText("");
         }
