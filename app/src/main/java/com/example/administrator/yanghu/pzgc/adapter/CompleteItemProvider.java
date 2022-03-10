@@ -27,6 +27,6 @@ public class CompleteItemProvider extends BaseItemProvider<CompleteBean, BaseVie
         helper.setText(R.id.complete_title, bean.getModelName());
         helper.setText(R.id.complete_result, "处理结果：" + bean.getDealResult());
         helper.setText(R.id.complete_data, "处理时间：" + bean.getDealDate());
-        helper.setText(R.id.complete_datatime, bean.getSendDate().substring(0, 10));
+        helper.setText(R.id.complete_datatime, bean.getSendDate().substring(0,10));
     }
 }

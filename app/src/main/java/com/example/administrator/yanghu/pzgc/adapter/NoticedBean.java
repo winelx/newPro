@@ -44,26 +44,8 @@ public class NoticedBean {
     private String sendPerson;
     private String showContent;
     private String authority;
-    private String appFormUrl;
-    private String taskid;
     private int totalCount;//任务数量
     private int iwork;
-
-    public String getTaskid() {
-        return taskid;
-    }
-
-    public void setTaskid(String taskid) {
-        this.taskid = taskid;
-    }
-
-    public String getAppFormUrl() {
-        return appFormUrl;
-    }
-
-    public void setAppFormUrl(String appFormUrl) {
-        this.appFormUrl = appFormUrl;
-    }
 
     public String getSysMsgNoticeId() {
         return sysMsgNoticeId;

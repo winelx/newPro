@@ -1,4 +1,4 @@
-package com.example.administrator.newsdf.pzgc.fragment;
+package com.example.administrator.yanghu.pzgc.fragment;
 
 
 import android.content.Context;
@@ -11,28 +11,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.audit.ReportActivity;
-import com.example.administrator.newsdf.pzgc.activity.chagedreply.ChagedreplyActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationWebActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTaskWebActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckdownMessageActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckmanagementActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckstandardListActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.activity.ExternalCheckActiviy;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.record.activity.SuperviseCheckRecordActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.webview.CheckabfillWebActivity;
-import com.example.administrator.newsdf.pzgc.activity.device.DeviceActivity;
-import com.example.administrator.newsdf.pzgc.activity.home.OrgrankingActivity;
-import com.example.administrator.newsdf.pzgc.activity.pchoose.activity.PchooseActivity;
-import com.example.administrator.newsdf.pzgc.activity.work.NotuploadActivity;
-import com.example.administrator.newsdf.pzgc.activity.work.OrganiwbsActivity;
-import com.example.administrator.newsdf.pzgc.activity.work.PushCheckActivity;
-import com.example.administrator.newsdf.pzgc.special.loedger.activity.LoedgerActivity;
-import com.example.administrator.newsdf.pzgc.special.programme.activity.ProgrammeActivity;
-import com.example.administrator.newsdf.pzgc.utils.EmptyUtils;
-import com.example.administrator.newsdf.pzgc.utils.SPUtils;
-import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
+import com.example.administrator.yanghu.R;
+import com.example.administrator.yanghu.pzgc.activity.audit.ReportActivity;
+import com.example.administrator.yanghu.pzgc.activity.chagedreply.ChagedreplyActivity;
+import com.example.administrator.yanghu.pzgc.activity.check.activity.CheckRectificationWebActivity;
+import com.example.administrator.yanghu.pzgc.activity.check.activity.CheckTaskWebActivity;
+import com.example.administrator.yanghu.pzgc.activity.check.activity.CheckdownMessageActivity;
+import com.example.administrator.yanghu.pzgc.activity.check.activity.CheckmanagementActivity;
+import com.example.administrator.yanghu.pzgc.activity.check.activity.CheckstandardListActivity;
+import com.example.administrator.yanghu.pzgc.activity.check.activity.newcheck.activity.ExternalCheckActiviy;
+import com.example.administrator.yanghu.pzgc.activity.check.activity.record.activity.SuperviseCheckRecordActivity;
+import com.example.administrator.yanghu.pzgc.activity.device.DeviceActivity;
+import com.example.administrator.yanghu.pzgc.activity.home.OrgrankingActivity;
+import com.example.administrator.yanghu.pzgc.activity.pchoose.activity.PchooseActivity;
+import com.example.administrator.yanghu.pzgc.activity.work.NotuploadActivity;
+import com.example.administrator.yanghu.pzgc.activity.work.OrganiwbsActivity;
+import com.example.administrator.yanghu.pzgc.activity.work.PushCheckActivity;
+import com.example.administrator.yanghu.pzgc.special.loedger.activity.LoedgerActivity;
+import com.example.administrator.yanghu.pzgc.special.programme.activity.ProgrammeActivity;
+import com.example.administrator.yanghu.pzgc.utils.EmptyUtils;
+import com.example.administrator.yanghu.pzgc.utils.SPUtils;
+import com.example.administrator.yanghu.pzgc.utils.ToastUtils;
 import com.example.baselibrary.adapter.MessageFragmentAdapter;
 import com.example.baselibrary.adapter.MessageFragmentItemAdapter;
 import com.example.baselibrary.bean.ItemBean;
@@ -63,7 +62,6 @@ public class WorkFragment extends Fragment {
     private ArrayList<bean> tasklist;
     private ArrayList<bean> checklist;
     private ArrayList<bean> reportlist;
-    private ArrayList<bean> abfill;
     private ArrayList<bean> special;
     private EmptyRecyclerView workRecycler;
     private ArrayList<ItemBean> list;
@@ -81,7 +79,6 @@ public class WorkFragment extends Fragment {
             tasklist = new ArrayList<>();
             checklist = new ArrayList<>();
             special = new ArrayList<>();
-            abfill = new ArrayList<>();
             list = new ArrayList<>();
             emptyUtils = new EmptyUtils(mContext);
             //初始化控件Id
@@ -162,8 +159,7 @@ public class WorkFragment extends Fragment {
                         startActivity(intent);
                         break;
                     case "整改统计":
-                        startActivity(new Intent(mContext, CheckRectificationWebActivity.class)
-                                .putExtra("url", "http://120.79.142.15/m/"));
+                        startActivity(new Intent(mContext, CheckRectificationWebActivity.class));
                         break;
                     case "标段排名":
                         startActivity(new Intent(mContext, OrgrankingActivity.class));
@@ -179,14 +175,6 @@ public class WorkFragment extends Fragment {
                         break;
                     case "监督检查记录":
                         startActivity(new Intent(mContext, SuperviseCheckRecordActivity.class));
-                        break;
-                    case "A类风险":
-                        startActivity(new Intent(mContext, CheckabfillWebActivity.class)
-                                .putExtra("url", Requests.networks + "/h5/abfill/index.html#/atree?modelType=4"));
-                        break;
-                    case "B类风险":
-                        startActivity(new Intent(mContext, CheckabfillWebActivity.class)
-                                .putExtra("url", Requests.networks + "/h5/abfill/index.html#/atree?modelType=3"));
                         break;
                     default:
                         break;
@@ -210,7 +198,6 @@ public class WorkFragment extends Fragment {
                                 tasklist.clear();
                                 checklist.clear();
                                 special.clear();
-                                abfill.clear();
                                 for (int i = 0; i < data.length(); i++) {
                                     JSONObject json = data.getJSONObject(i);
                                     if ("true".equals(json.getString("审核报表"))) {
@@ -261,18 +248,10 @@ public class WorkFragment extends Fragment {
                                     if ("true".equals(json.getString("方案管理"))) {
                                         special.add(new bean("方案管理", R.mipmap.programme));
                                     }
-                                    if ("true".equals(json.getString("监督检查记录"))) {
+                                    if ("true".equals(json.getString("监督检查记录"))){
                                         special.add(new bean("监督检查记录", R.mipmap.work_check_record));
                                     }
-                                    if ("true".equals(json.getString("A类风险"))) {
-                                        abfill.add(new bean("A类风险", R.mipmap.alei));
-                                    }
-                                    if ("true".equals(json.getString("B类风险"))) {
-                                        abfill.add(new bean("B类风险", R.mipmap.blei));
-                                    }
-
                                 }
-
                                 if (tasklist.size() > 0) {
                                     list.add(new ItemBean(tasklist, "任务管理"));
                                 }
@@ -284,9 +263,6 @@ public class WorkFragment extends Fragment {
                                 }
                                 if (special.size() > 0) {
                                     list.add(new ItemBean(special, "专项施工方案"));
-                                }
-                                if (abfill.size() > 0) {
-                                    list.add(new ItemBean(abfill, "风险管控清单记录"));
                                 }
                                 adapter.setNewData(list);
                             } else {

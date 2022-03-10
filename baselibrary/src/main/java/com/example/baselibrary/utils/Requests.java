@@ -7,13 +7,13 @@ package com.example.baselibrary.utils;
  */
 public class Requests {
     // public static final String networks = "http://192.168.20.38:8082/pzgc/";
-    //public static final String networks = "http://192.168.20.120:8086/pzgc/";
+    //    public static final String networks = "http://192.168.20.120:8086/pzgc/";
     //测试
-    //  public static final String networks = "http://172.16.0.26:8082/pzgc/";
+    //    public static final String networks = "http://192.168.20.120:8087/pzgc/";
     //
-    //  public static final String networks = "http://172.17.5.103:8090/pzgc/";
+    //  public static final String networks = "http://192.168.20.81:8080/pzgc/";
     //正式
-    public static final String networks = "http://120.79.142.15/pzgc/";
+    public static final String networks = "http://117.135.213.87:96/pzgc/";
     /**
      * VirtualBox
      * 登录

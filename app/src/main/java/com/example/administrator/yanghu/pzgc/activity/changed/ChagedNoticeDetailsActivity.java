@@ -99,9 +99,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
         adapter = new ChagedNoticeDetailsAdapter(mContext, list);
         recycler.setAdapter(adapter);
         utils.setMargins(recycler, 0, 0, 0, 0);
-
         request();
-
         adapter.setOnClickListener(new ChagedNoticeDetailsAdapter.OnClickListener() {
             @Override
             public void onClick(int position, String string) {
@@ -124,13 +122,9 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                 break;
             case R.id.device_details_assign:
                 /*指派*/
-                if (orgId != null) {
-                    Intent intent = new Intent(mContext, ChagedContactsActivity.class);
-                    intent.putExtra("orgId", orgId);
-                    startActivityForResult(intent, 3);
-                } else {
-                    ToastUtils.showShortToast("没有组织Id");
-                }
+                Intent intent = new Intent(mContext, ChagedContactsActivity.class);
+                intent.putExtra("orgId", orgId);
+                startActivityForResult(intent, 3);
                 break;
             case R.id.device_details_result:
                 if (onclickstatus) {
@@ -155,6 +149,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                             .create();
                     alertDialog2.show();
                 }
+
                 break;
             default:
                 break;

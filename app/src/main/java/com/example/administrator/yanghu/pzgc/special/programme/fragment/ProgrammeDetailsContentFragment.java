@@ -167,7 +167,7 @@ public class ProgrammeDetailsContentFragment extends LazyloadFragment implements
 
     public void downloadcad(String url, String name) {
         //创建下载路径
-        String paths = createsdcarddir("GCGL");
+        String paths = createSDCardDir("GCGL");
         //文件绝对路径
         File file = new File(Environment.getExternalStorageDirectory() + "/GCGL/" + name);
         //判断路径下是否有文件存在
@@ -219,7 +219,7 @@ public class ProgrammeDetailsContentFragment extends LazyloadFragment implements
 
     }
 
-    public String createsdcarddir(String dir) {
+    public String createSDCardDir(String dir) {
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             // 创建一个文件夹对象，赋值为外部存储器的目录
             File sdcardDir = Environment.getExternalStorageDirectory();

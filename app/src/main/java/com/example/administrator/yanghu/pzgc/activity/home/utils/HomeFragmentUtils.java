@@ -97,7 +97,7 @@ public class HomeFragmentUtils {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
                             if (ret == 0) {
-                                List<AgencyBean> list;
+                                List<AgencyBean> list = new ArrayList<>();
                                 Map<String, Object> map = new HashMap<>();
                                 JSONObject data;
                                 try {

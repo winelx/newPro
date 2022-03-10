@@ -1,6 +1,6 @@
-package com.example.administrator.newsdf.pzgc.bean;
+package com.example.administrator.yanghu.pzgc.bean;
 
-import com.example.administrator.newsdf.pzgc.activity.home.NoticeActivity;
+import com.example.administrator.yanghu.pzgc.activity.home.NoticeActivity;
 
 /**
  * @author lx
@@ -32,7 +32,7 @@ public class AgencyBean {
     private String modelCode;
     private String modelId;
     private String modelName;
-    private String modelType;
+    private int modelType;
     private String receiveOrgId;
     private String receiveOrgName;
     private String receivePerson;
@@ -40,33 +40,6 @@ public class AgencyBean {
     private String sendOrgId;
     private String sendOrgName;
     private String sendPerson;
-    private String checkUrl;
-    private String appFormUrl;
-    private String showContent;
-
-    public String getShowContent() {
-        return showContent;
-    }
-
-    public void setShowContent(String showContent) {
-        this.showContent = showContent;
-    }
-
-    public String getAppFormUrl() {
-        return appFormUrl;
-    }
-
-    public void setAppFormUrl(String appFormUrl) {
-        this.appFormUrl = appFormUrl;
-    }
-
-    public String getCheckUrl() {
-        return checkUrl;
-    }
-
-    public void setCheckUrl(String checkUrl) {
-        this.checkUrl = checkUrl;
-    }
 
     private int totalCount;//任务数量
     public String getId() {
@@ -109,11 +82,11 @@ public class AgencyBean {
         this.modelName = modelName;
     }
 
-    public String getModelType() {
+    public int getModelType() {
         return modelType;
     }
 
-    public void setModelType(String modelType) {
+    public void setModelType(int modelType) {
         this.modelType = modelType;
     }
 

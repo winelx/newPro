@@ -24,13 +24,8 @@ public class AgencyItemProvider extends BaseItemProvider<AgencyBean, BaseViewHol
 
     @Override
     public void convert(BaseViewHolder helper, AgencyBean bean, int position) {
-        if (bean.getShowContent() != null) {
-            helper.setText(R.id.agency_content, bean.getShowContent());
-        } else {
-            helper.setText(R.id.agency_content, "你有一条" + bean.getModelName() + "(" + bean.getModelCode() + ")" + "需要处理。");
-        }
-
-        helper.setText(R.id.agency_data, bean.getSendDate().substring(0, 10));
+        helper.setText(R.id.agency_content, "你有一条" + bean.getModelName() + "(" + bean.getModelCode() + ")" + "需要处理。");
+        helper.setText(R.id.agency_data, bean.getSendDate().substring(0,10));
         helper.setText(R.id.agency_title, bean.getModelName());
     }
 }

@@ -156,11 +156,6 @@ public class ChagedContactsActivity extends BaseActivity implements View.OnClick
                                         list.add(new MoretasklistBean(orgId, name, id, user_id));
                                     }
                                 }
-                            }else {
-                                ToastUtils.showShortToast(jsonObject.getString("msg"));
-                            }
-                            if (list==null){
-                                list = new ArrayList<MoretasklistBean>();
                             }
                             search.addAll(list);
                             mAdapter.getData(search);
