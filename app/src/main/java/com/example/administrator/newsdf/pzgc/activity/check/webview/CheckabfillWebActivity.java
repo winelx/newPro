@@ -100,6 +100,7 @@ public class CheckabfillWebActivity extends BaseActivity {
         nonet = (RelativeLayout) findViewById(R.id.nonet);
         mWebView = (WebView) findViewById(R.id.check);
         text = (TextView) findViewById(R.id.text);
+
         reloadTv = (TextView) findViewById(R.id.reload_tv);
         textclick();
         initWebView();
@@ -139,6 +140,7 @@ public class CheckabfillWebActivity extends BaseActivity {
         /* 设置显示水平滚动条,就是网页右边的滚动条.我这里设置的不显示 */
         mWebView.setHorizontalScrollBarEnabled(false);
         mWebView.setVerticalScrollbarOverlay(true);
+
         //AndroidtoJS类对象映射到js的view对象
         mWebView.addJavascriptInterface(new AndroidtoJss(mContext, "str"), "phone");
         //加载进度
@@ -195,11 +197,13 @@ public class CheckabfillWebActivity extends BaseActivity {
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
-                lean = false;
-                //6.0以上执行
-                linProbar.setVisibility(View.GONE);
-                nonet.setVisibility(View.VISIBLE);
-                mWebView.setVisibility(View.GONE);
+                if (!error.getDescription().toString().contains("ERR_FAILED")) {
+                    lean = false;
+                    //6.0以上执行
+                    linProbar.setVisibility(View.GONE);
+                    nonet.setVisibility(View.VISIBLE);
+                    mWebView.setVisibility(View.GONE);
+                }
             }
         });
     }

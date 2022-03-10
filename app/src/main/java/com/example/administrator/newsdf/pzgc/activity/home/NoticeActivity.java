@@ -461,7 +461,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
                 || "93".equals(modelType) || "94".equals(modelType)
                 || "95".equals(modelType) || "96".equals(modelType)
                 || "97".equals(modelType)) {
-            startActivity(new Intent(mContext, CheckRectificationWebActivity.class)
+            startActivity(new Intent(mContext, CheckabfillWebActivity.class)
                     .putExtra("url", Requests.networks + "/h5/check/index.html#/?id=" + bean.getModelId()));
         } else if ("activity".equals(modelType)) {
             startActivity(new Intent(mContext, CheckabfillWebActivity.class)
@@ -527,7 +527,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
                 || "93".equals(modelType) || "94".equals(modelType)
                 || "95".equals(modelType) || "96".equals(modelType)
                 || "97".equals(modelType)) {
-            startActivity(new Intent(mContext, CheckRectificationWebActivity.class)
+            startActivity(new Intent(mContext, CheckabfillWebActivity.class)
                     .putExtra("url", Requests.networks + "/h5/check/index.html#/?id=" + bean.getModelId()));
         } else if ("activity".equals(modelType)) {
             startActivity(new Intent(mContext, CheckabfillWebActivity.class)
