@@ -11,23 +11,6 @@ import com.example.administrator.yanghu.pzgc.activity.home.NoticeActivity;
  */
 public class NoticedBean {
 
-
-    /**
-     * beNoticeOrgId : ce1d81430d874fd28728135e9ecd5865
-     * beNoticeOrgName : 三独一标
-     * id : 3f6576af97e74ba89b41d31546aa7cca
-     * modelId : 1bf7dfdcb6814db8a068628574b081c4
-     * modelName : 整改通知单
-     * modelType : 1
-     * noticeCode : ZGTZ-20190307-30
-     * noticeDate : 2019-03-07 14:08:10
-     * noticeOrgId : 7347f225f97e431fb8acfc7927e8f285
-     * noticePerson : ae680484f74d4504be797c8d16fb62e6
-     * optionContent : 被下发
-     * sendPerson : 4028ea815a3d2a8c015a3d2f8d2a0002
-     * showContent : 三独一标【2019-03-07 14:08:10】被下发【整改通知单ZGTZ-20190307-30】
-     */
-
     private String beNoticeOrgId;
     private String beNoticeOrgName;
     private String id;
@@ -44,8 +27,26 @@ public class NoticedBean {
     private String sendPerson;
     private String showContent;
     private String authority;
+    private String appFormUrl;
+    private String taskid;
     private int totalCount;//任务数量
     private int iwork;
+
+    public String getTaskid() {
+        return taskid;
+    }
+
+    public void setTaskid(String taskid) {
+        this.taskid = taskid;
+    }
+
+    public String getAppFormUrl() {
+        return appFormUrl;
+    }
+
+    public void setAppFormUrl(String appFormUrl) {
+        this.appFormUrl = appFormUrl;
+    }
 
     public String getSysMsgNoticeId() {
         return sysMsgNoticeId;

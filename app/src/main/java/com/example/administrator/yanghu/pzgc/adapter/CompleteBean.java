@@ -38,7 +38,7 @@ public class CompleteBean {
     private String modelCode;
     private String modelId;
     private String modelName;
-    private int modelType;
+    private String modelType;
     private String receiveOrgId;
     private String receiveOrgName;
     private String receivePerson;
@@ -46,6 +46,24 @@ public class CompleteBean {
     private String sendOrgId;
     private String sendOrgName;
     private String sendPerson;
+    private String checkUrl;
+    private String appFormUrl;
+
+    public String getAppFormUrl() {
+        return appFormUrl;
+    }
+
+    public void setAppFormUrl(String appFormUrl) {
+        this.appFormUrl = appFormUrl;
+    }
+
+    public String getCheckUrl() {
+        return checkUrl;
+    }
+
+    public void setCheckUrl(String checkUrl) {
+        this.checkUrl = checkUrl;
+    }
 
     public String getDealDate() {
         return dealDate;
@@ -111,11 +129,11 @@ public class CompleteBean {
         this.modelName = modelName;
     }
 
-    public int getModelType() {
+    public String getModelType() {
         return modelType;
     }
 
-    public void setModelType(int modelType) {
+    public void setModelType(String modelType) {
         this.modelType = modelType;
     }
 

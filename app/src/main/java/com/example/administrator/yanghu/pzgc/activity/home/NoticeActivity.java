@@ -2,6 +2,7 @@ package com.example.administrator.yanghu.pzgc.activity.home;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -18,6 +19,7 @@ import com.example.administrator.yanghu.R;
 import com.example.administrator.yanghu.pzgc.activity.check.activity.CheckNewAddActivity;
 import com.example.administrator.yanghu.pzgc.activity.check.activity.CheckNewAddsActivity;
 import com.example.administrator.yanghu.pzgc.activity.check.activity.newcheck.activity.NewExternalCheckActiviy;
+import com.example.administrator.yanghu.pzgc.activity.check.webview.CheckabfillWebActivity;
 import com.example.administrator.yanghu.pzgc.activity.notice.fragment.NoticeDetailsFragment;
 import com.example.administrator.yanghu.pzgc.special.loedger.activity.LoedgerDetailsActivity;
 import com.example.administrator.yanghu.pzgc.special.loedger.activity.LoedgerRecordDetailActivity;
@@ -35,6 +37,9 @@ import com.example.administrator.yanghu.pzgc.fragment.HomeFragment;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.yanghu.pzgc.utils.EmptyUtils;
 import com.example.administrator.yanghu.pzgc.utils.Enums;
+import com.example.baselibrary.utils.Requests;
+import com.example.baselibrary.utils.log.LogUtil;
+import com.example.baselibrary.utils.rx.LiveDataBus;
 import com.example.baselibrary.utils.rx.RxBus;
 import com.example.baselibrary.view.EmptyRecyclerView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -45,6 +50,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.util.ArrayList;
 import java.util.Map;
 
+import io.reactivex.annotations.Nullable;
 import io.reactivex.functions.Consumer;
 
 
@@ -154,10 +160,18 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         if (Enums.NOTICE.equals(content)) {
             request();
         } else if (Enums.AGENCY.equals(content)) {
+            LiveDataBus.get().with("mynotast", String.class).observe(this, new Observer<String>() {
+                @Override
+                public void onChanged(@Nullable String string) {
+                    page = 1;
+                    mynotast();
+                }
+            });
             mynotast();
         } else if (Enums.COMPLETE.equals(content)) {
             myyestast();
         }
+
     }
 
     /**
@@ -348,9 +362,7 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             Intent reply = new Intent(mContext, NoticeDetailsFragment.class);
             reply.putExtra("ids", bean.getModelId());
             startActivity(reply);
-        }
-
-        else if (modelname == 3) {
+        } else if (modelname == 3) {
             //监督检查
             Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
             intent.putExtra("sysMsgNoticeId", bean.getSysMsgNoticeId());
@@ -390,6 +402,11 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             intent.putExtra("isNew", "编辑");
             intent.putExtra("id", bean.getModelId());
             startActivity(intent);
+        } else if (modelname == 999) {
+            startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                    .putExtra("url", Requests.networks + bean.getAppFormUrl() +
+                            "&id=" + bean.getTaskid() +
+                            "&modelId=" + bean.getModelId()));
         }
     }
 
@@ -398,27 +415,27 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
      */
     private void agencyOnclick(int position) {
         AgencyBean bean = (AgencyBean) list.get(position);
-        int modelType = bean.getModelType();
-        if (modelType == 1) {
+        String modelType = bean.getModelType();
+        if ("1".equals(modelType)) {
             //整改通知单
             Intent notice = new Intent(mContext, ChagedNoticeDetailsActivity.class);
             notice.putExtra("id", bean.getModelId());
             notice.putExtra("orgId", bean.getReceiveOrgId());
             notice.putExtra("orgName", bean.getReceiveOrgName());
             startActivity(notice);
-        } else if (modelType == 2) {
+        } else if ("2".equals(modelType)) {
             //回复验证单
             Intent reply = new Intent(mContext, ChagedreplyDetailsActivity.class);
             reply.putExtra("id", bean.getModelId());
             reply.putExtra("orgName", bean.getReceiveOrgName());
             startActivity(reply);
-        } else if (modelType == 3) {
+        } else if ("3".equals(modelType)) {
             //监督检查
             Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
             intent.putExtra("id", bean.getModelId());
             intent.putExtra("type", "3");
             startActivity(intent);
-        } else if (modelType == 4) {
+        } else if ("4".equals(modelType)) {
             //台账
             Intent intent = new Intent(mContext, LoedgerDetailsActivity.class);
             intent.putExtra("id", bean.getModelId());
@@ -426,20 +443,47 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             intent.putExtra("type", true);
             intent.putExtra("title", bean.getModelCode());
             startActivity(intent);
-        } else if (modelType == 6) {
+        } else if ("6".equals(modelType)) {
             //方案报批
             Intent intent = new Intent(mContext, ProgrammeDetailsActivity.class);
             intent.putExtra("id", bean.getModelId());
             intent.putExtra("taskid", bean.getId());
             intent.putExtra("orgid", bean.getModelName());
             startActivity(intent);
-        } else if (modelType == 81) {
+        } else if ("81".equals(modelType)) {
             //外业检查
             Intent intent = new Intent(mContext, NewExternalCheckActiviy.class);
             intent.putExtra("isNew", "编辑");
             intent.putExtra("id", bean.getModelId());
             startActivity(intent);
+        } else if ("91".equals(modelType) || "92".equals(modelType)
+                || "93".equals(modelType) || "94".equals(modelType)
+                || "95".equals(modelType) || "96".equals(modelType)
+                || "97".equals(modelType)) {
+            startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                    .putExtra("url", Requests.networks + "/h5/check/index.html#/?id=" + bean.getModelId()));
+        } else if ("activity".equals(modelType)) {
+            LogUtil.i(
+                    Requests.networks + bean.getAppCheckUrl() +
+                            "?modelName=" + bean.getModelName() +
+                            "&id=" + bean.getId() +
+                            "&modelId=" + bean.getModelId() +
+                            "&appurl=" + bean.getAppFormUrl()
+            );
+            startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                    .putExtra("url",
+                            Requests.networks + bean.getAppCheckUrl() +
+                                    "?modelName=" + bean.getModelName() +
+                                    "&id=" + bean.getId() +
+                                    "&modelId=" + bean.getModelId() +
+                                    "&apphost=" + bean.getAppFormUrl().split("#/")[0] +
+                                    "&appurl=" + bean.getAppFormUrl().split("#/")[1]
+                    ));
+
+        } else {
+            ToastUtils.showShortToast("请前往pc端处理");
         }
+
     }
 
     /**
@@ -447,8 +491,8 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
      */
     private void completeOnclick(int position) {
         CompleteBean bean = (CompleteBean) list.get(position);
-        int modelType = bean.getModelType();
-        if (modelType == 1) {
+        String modelType = bean.getModelType();
+        if ("1".equals(modelType)) {
             //整改通知单
             Intent notice = new Intent(mContext, ChagedNoticeDetailsActivity.class);
             notice.putExtra("id", bean.getModelId());
@@ -456,20 +500,20 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             notice.putExtra("orgId", bean.getReceiveOrgId());
             notice.putExtra("orgName", bean.getReceiveOrgName());
             startActivity(notice);
-        } else if (modelType == 2) {
+        } else if ("2".equals(modelType)) {
             //回复验证单
             Intent reply = new Intent(mContext, ChagedreplyDetailsActivity.class);
             reply.putExtra("id", bean.getModelId());
             reply.putExtra("status", false);
             reply.putExtra("orgName", bean.getReceiveOrgName());
             startActivity(reply);
-        } else if (modelType == 3) {
+        } else if ("3".equals(modelType)) {
             //监督检查
             Intent intent = new Intent(mContext, CheckListDetailsActivity.class);
             intent.putExtra("id", bean.getModelId());
             intent.putExtra("type", 3);
             startActivity(intent);
-        } else if (modelType == 4) {
+        } else if ("4".equals(modelType)) {
             //台账
             Intent intent = new Intent(mContext, LoedgerDetailsActivity.class);
             intent.putExtra("id", bean.getModelId());
@@ -477,19 +521,32 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             intent.putExtra("type", true);
             intent.putExtra("title", bean.getModelCode());
             startActivity(intent);
-        } else if (modelType == 6) {
+        } else if ("6".equals(modelType)) {
             //方案报批
             Intent intent = new Intent(mContext, ProgrammeDetailsActivity.class);
             intent.putExtra("id", bean.getModelId());
             intent.putExtra("taskid", "");
             intent.putExtra("orgid", bean.getModelCode());
             startActivity(intent);
-        } else if (modelType == 81) {
+        } else if ("81".equals(modelType)) {
             //外业检查
             Intent intent = new Intent(mContext, NewExternalCheckActiviy.class);
             intent.putExtra("isNew", "编辑");
             intent.putExtra("id", bean.getModelId());
             startActivity(intent);
+        } else if ("91".equals(modelType) || "92".equals(modelType)
+                || "93".equals(modelType) || "94".equals(modelType)
+                || "95".equals(modelType) || "96".equals(modelType)
+                || "97".equals(modelType)) {
+            startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                    .putExtra("url", Requests.networks + "/h5/check/index.html#/?id=" + bean.getModelId()));
+        } else if ("activity".equals(modelType)) {
+            startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                    .putExtra("url", Requests.networks + bean.getAppFormUrl() +
+                            "&id=" + bean.getId() +
+                            "&modelId=" + bean.getModelId()));
+        } else {
+            ToastUtils.showShortToast("请前往pc端处理");
         }
     }
 

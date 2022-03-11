@@ -7,10 +7,9 @@ import com.example.administrator.yanghu.pzgc.activity.home.NoticeActivity;
  * 版本：1.0
  * 创建日期：{2019/3/4 0004}
  * 描述：代办事项
- *{@link NoticeActivity}
+ * {@link NoticeActivity}
  */
 public class AgencyBean {
-
     /**
      * id : d3486d6f0262488498e47f7911b591d1
      * isDeal : 1
@@ -32,7 +31,7 @@ public class AgencyBean {
     private String modelCode;
     private String modelId;
     private String modelName;
-    private int modelType;
+    private String modelType;
     private String receiveOrgId;
     private String receiveOrgName;
     private String receivePerson;
@@ -40,6 +39,42 @@ public class AgencyBean {
     private String sendOrgId;
     private String sendOrgName;
     private String sendPerson;
+    private String checkUrl;
+    private String appFormUrl;
+    private String showContent;
+    private String appCheckUrl;
+
+    public String getAppCheckUrl() {
+        return appCheckUrl;
+    }
+
+    public void setAppCheckUrl(String appCheckUrl) {
+        this.appCheckUrl = appCheckUrl;
+    }
+
+    public String getShowContent() {
+        return showContent;
+    }
+
+    public void setShowContent(String showContent) {
+        this.showContent = showContent;
+    }
+
+    public String getAppFormUrl() {
+        return appFormUrl;
+    }
+
+    public void setAppFormUrl(String appFormUrl) {
+        this.appFormUrl = appFormUrl;
+    }
+
+    public String getCheckUrl() {
+        return checkUrl;
+    }
+
+    public void setCheckUrl(String checkUrl) {
+        this.checkUrl = checkUrl;
+    }
 
     private int totalCount;//任务数量
     public String getId() {
@@ -82,11 +117,11 @@ public class AgencyBean {
         this.modelName = modelName;
     }
 
-    public int getModelType() {
+    public String getModelType() {
         return modelType;
     }
 
-    public void setModelType(int modelType) {
+    public void setModelType(String modelType) {
         this.modelType = modelType;
     }
 

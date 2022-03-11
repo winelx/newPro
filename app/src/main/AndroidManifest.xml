@@ -388,6 +388,7 @@
             android:name="com.example.administrator.yanghu.pzgc.activity.check.activity.CheckitemActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity android:name=".pzgc.activity.check.webview.CheckabfillWebActivity" />
         <activity
             android:name="com.example.administrator.yanghu.pzgc.activity.check.activity.CheckmassageActivity"
             android:screenOrientation="portrait" />

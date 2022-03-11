@@ -14,6 +14,7 @@ import com.example.administrator.yanghu.pzgc.utils.Enums;
 import com.example.administrator.yanghu.pzgc.utils.HomeApi;
 import com.example.administrator.yanghu.pzgc.utils.ListJsonUtils;
 
+import com.example.baselibrary.utils.log.LogUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.GetRequest;
@@ -89,10 +90,11 @@ public class HomeFragmentUtils {
     public static void mynotast(int page, final requestCallBack callBack) {
         OkGo.get(HomeApi.MYNOTAST)
                 .params("page", page)
-                .params("rows", 20)
+                .params("rows", 10)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        LogUtil.i("fds",s);
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
@@ -134,6 +136,7 @@ public class HomeFragmentUtils {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+
                         try {
                             JSONObject jsonObject = new JSONObject(s);
                             int ret = jsonObject.getInt("ret");
