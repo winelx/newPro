@@ -21,6 +21,7 @@ import com.example.administrator.yanghu.pzgc.activity.check.activity.Checkmanage
 import com.example.administrator.yanghu.pzgc.activity.check.activity.CheckstandardListActivity;
 import com.example.administrator.yanghu.pzgc.activity.check.activity.newcheck.activity.ExternalCheckActiviy;
 import com.example.administrator.yanghu.pzgc.activity.check.activity.record.activity.SuperviseCheckRecordActivity;
+import com.example.administrator.yanghu.pzgc.activity.check.webview.CheckabfillWebActivity;
 import com.example.administrator.yanghu.pzgc.activity.device.DeviceActivity;
 import com.example.administrator.yanghu.pzgc.activity.home.OrgrankingActivity;
 import com.example.administrator.yanghu.pzgc.activity.pchoose.activity.PchooseActivity;
@@ -63,6 +64,7 @@ public class WorkFragment extends Fragment {
     private ArrayList<bean> checklist;
     private ArrayList<bean> reportlist;
     private ArrayList<bean> special;
+    private ArrayList<bean> fengxian;
     private EmptyRecyclerView workRecycler;
     private ArrayList<ItemBean> list;
     private MessageFragmentAdapter adapter;
@@ -79,6 +81,7 @@ public class WorkFragment extends Fragment {
             tasklist = new ArrayList<>();
             checklist = new ArrayList<>();
             special = new ArrayList<>();
+            fengxian = new ArrayList<>();
             list = new ArrayList<>();
             emptyUtils = new EmptyUtils(mContext);
             //初始化控件Id
@@ -176,6 +179,22 @@ public class WorkFragment extends Fragment {
                     case "监督检查记录":
                         startActivity(new Intent(mContext, SuperviseCheckRecordActivity.class));
                         break;
+                    case "风险管控任务":
+                        startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                                .putExtra("url", Requests.networks + "/h5/taskcheck/index.html#/task/list?code=PCYH"));
+                        break;
+                    case "隐患台账":
+                        startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                                .putExtra("url", Requests.networks + "/h5/taskcheck/index.html#/hiddenbook"));
+                        break;
+                    case "整改通知单":
+                        startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                                .putExtra("url", Requests.networks + "/h5/taskcheck/index.html#/mendnotice"));
+                        break;
+                    case "回复验证单":
+                        startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                                .putExtra("url", Requests.networks + "/h5/taskcheck/index.html#/replyVerList"));
+                        break;
                     default:
                         break;
                 }
@@ -198,6 +217,7 @@ public class WorkFragment extends Fragment {
                                 tasklist.clear();
                                 checklist.clear();
                                 special.clear();
+                                fengxian.clear();
                                 for (int i = 0; i < data.length(); i++) {
                                     JSONObject json = data.getJSONObject(i);
                                     if ("true".equals(json.getString("审核报表"))) {
@@ -248,8 +268,20 @@ public class WorkFragment extends Fragment {
                                     if ("true".equals(json.getString("方案管理"))) {
                                         special.add(new bean("方案管理", R.mipmap.programme));
                                     }
-                                    if ("true".equals(json.getString("监督检查记录"))){
+                                    if ("true".equals(json.getString("监督检查记录"))) {
                                         special.add(new bean("监督检查记录", R.mipmap.work_check_record));
+                                    }
+                                    if ("true".equals(json.getString("风险管控任务"))) {
+                                        fengxian.add(new bean("风险管控任务", R.mipmap.fr_work_statistical));
+                                    }
+                                    if ("true".equals(json.getString("隐患台账"))) {
+                                        fengxian.add(new bean("隐患台账", R.mipmap.work_check_record));
+                                    }
+                                    if ("true".equals(json.getString("整改通知单"))) {
+                                        fengxian.add(new bean("整改通知单", R.mipmap.check_notice));
+                                    }
+                                    if ("true".equals(json.getString("回复验证单"))) {
+                                        fengxian.add(new bean("回复验证单", R.mipmap.reply_verification));
                                     }
 
                                 }
@@ -264,6 +296,9 @@ public class WorkFragment extends Fragment {
                                 }
                                 if (special.size() > 0) {
                                     list.add(new ItemBean(special, "专项施工方案"));
+                                }
+                                if (fengxian.size() > 0) {
+                                    list.add(new ItemBean(fengxian, "风险源管理"));
                                 }
                                 adapter.setNewData(list);
                             } else {
