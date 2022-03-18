@@ -26,6 +26,7 @@ import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
+import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -168,6 +169,13 @@ public class CheckabfillWebActivity extends BaseActivity {
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
                 //Android使用WebView加载https地址打不开的问题  小米
                 handler.proceed();
+                if (error.getPrimaryError()==404){
+                    lean = false;
+                    //6.0以上执行
+                    linProbar.setVisibility(View.GONE);
+                    nonet.setVisibility(View.VISIBLE);
+                    mWebView.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -197,7 +205,7 @@ public class CheckabfillWebActivity extends BaseActivity {
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
-                LogUtil.i(error.getDescription().toString());
+
                 if (!error.getDescription().toString().contains("ERR_FAILED")) {
                     lean = false;
                     //6.0以上执行
@@ -369,16 +377,23 @@ public class CheckabfillWebActivity extends BaseActivity {
     //退出界面
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            if (url.equals(mWebView.getUrl())) {
-                this.finish();
-            } else {
-                //后退
-                mWebView.goBack();
-            }
-            return true;
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            return false;
         }
-        return false;
+        if (mWebView.canGoBack()) {
+            //获取webView的浏览记录
+            WebBackForwardList mWebBackForwardList = mWebView.copyBackForwardList();
+            //这里的判断是为了让页面在有上一个页面的情况下，跳转到上一个html页面，而不是退出当前activity
+            if (mWebBackForwardList.getCurrentIndex() > 0) {
+                String historyUrl = mWebBackForwardList.getItemAtIndex(mWebBackForwardList.getCurrentIndex() - 1).getUrl();
+                mWebView.goBack();
+                return true;
+
+            }
+        } else {
+            finish();
+        }
+        return true;
     }
 
     @Override
@@ -457,4 +472,6 @@ public class CheckabfillWebActivity extends BaseActivity {
             activity.finsh();
         }
     }
+
+
 }

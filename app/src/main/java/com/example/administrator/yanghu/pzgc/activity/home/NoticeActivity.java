@@ -11,7 +11,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.WebBackForwardList;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -170,6 +173,8 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             mynotast();
         } else if (Enums.COMPLETE.equals(content)) {
             myyestast();
+        } else {
+
         }
 
     }
@@ -405,8 +410,11 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         } else if (modelname == 999) {
             startActivity(new Intent(mContext, CheckabfillWebActivity.class)
                     .putExtra("url", Requests.networks + bean.getAppFormUrl() +
-                            "&id=" + bean.getTaskid() +
-                            "&modelId=" + bean.getModelId()));
+                            "&taskId=" + bean.getTaskid() +
+                            "&modelName=" + bean.getModelName() +
+                            "&id=" + bean.getModelId()));
+        } else {
+            ToastUtils.showShortToast("请前往pc端处理");
         }
     }
 
@@ -463,22 +471,11 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
             startActivity(new Intent(mContext, CheckabfillWebActivity.class)
                     .putExtra("url", Requests.networks + "/h5/check/index.html#/?id=" + bean.getModelId()));
         } else if ("activity".equals(modelType)) {
-            LogUtil.i(
-                    Requests.networks + bean.getAppCheckUrl() +
-                            "?modelName=" + bean.getModelName() +
-                            "&id=" + bean.getId() +
-                            "&modelId=" + bean.getModelId() +
-                            "&appurl=" + bean.getAppFormUrl()
-            );
             startActivity(new Intent(mContext, CheckabfillWebActivity.class)
-                    .putExtra("url",
-                            Requests.networks + bean.getAppCheckUrl() +
-                                    "?modelName=" + bean.getModelName() +
-                                    "&id=" + bean.getId() +
-                                    "&modelId=" + bean.getModelId() +
-                                    "&apphost=" + bean.getAppFormUrl().split("#/")[0] +
-                                    "&appurl=" + bean.getAppFormUrl().split("#/")[1]
-                    ));
+                    .putExtra("url", Requests.networks + bean.getAppFormUrl() +
+                            "&taskId=" + bean.getId() +
+                            "&modelName=" + bean.getModelName() +
+                            "&id=" + bean.getModelId()));
 
         } else {
             ToastUtils.showShortToast("请前往pc端处理");
@@ -543,8 +540,9 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         } else if ("activity".equals(modelType)) {
             startActivity(new Intent(mContext, CheckabfillWebActivity.class)
                     .putExtra("url", Requests.networks + bean.getAppFormUrl() +
-                            "&id=" + bean.getId() +
-                            "&modelId=" + bean.getModelId()));
+                            "&taskId=" + bean.getId() +
+                            "&modelName=" + bean.getModelName() +
+                            "&id=" + bean.getModelId()));
         } else {
             ToastUtils.showShortToast("请前往pc端处理");
         }

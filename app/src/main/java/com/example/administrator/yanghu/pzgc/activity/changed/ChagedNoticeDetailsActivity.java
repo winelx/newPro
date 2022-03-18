@@ -10,9 +10,11 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.yanghu.R;
 import com.example.administrator.yanghu.pzgc.utils.Enums;
@@ -294,25 +296,6 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
         });
     }
 
-    /**
-     * .----.
-     * _.'__    `.
-     * .--(Q)(OK)---/$\
-     * .' @          /$$\
-     * :         ,   $$$
-     * `-..__.-' _.-\$$/
-     * `;_:    `"'
-     * .'"""""`.
-     * /,  FLY  ,\
-     * //         \\
-     * `-._______.-'
-     * ___`. | .'___
-     * (______|______)
-     * </pre>
-     */
-
-
-
     /*确认签字失败*/
     public void dialog() {
         BaseDialog.confirmmessagedialog(mContext,
@@ -329,4 +312,15 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                     }
                 });
     }
+
+    //连续两次退出App
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            finish();
+        }
+        return true;
+    }
+
+
 }
