@@ -47,7 +47,6 @@ public class ProgrammeDetailScircuitFragment extends LazyloadFragment {
                         } else {
                             emptyUtils.noData("暂无记录");
                         }
-
                     }
                 });
         emptyUtils = new EmptyUtils(getContext());
@@ -62,56 +61,58 @@ public class ProgrammeDetailScircuitFragment extends LazyloadFragment {
 
     }
 
-    public void process(ArrayList<ProDetails.RecordListBean> list,String status) {
+    public void process(ArrayList<ProDetails.RecordListBean> list, String status) {
         ArrayList<String> title = new ArrayList<>();
         title.add("头部");
         for (int i = 0; i < list.size(); i++) {
             String org = list.get(i).getOwnOrg();
-            if ("0".equals(org)) {
-                if (!title.contains("申报")) {
-                    title.add("申报");
-                    procedure(list, "申报", org);
-                }
+            if (org != null) {
+                if ("0".equals(org)) {
+                    if (!title.contains("申报")) {
+                        title.add("申报");
+                        procedure(list, "申报", org);
+                    }
+                } else if ("1".equals(org)) {
+                    if (!title.contains("申报单位审查意见")) {
+                        title.add("申报单位审查意见");
+                        procedure(list, "申报单位审查意见", org);
+                    }
 
-            } else if ("1".equals(org)) {
-                if (!title.contains("申报单位审查意见")) {
-                    title.add("申报单位审查意见");
-                    procedure(list, "申报单位审查意见", org);
-                }
-
-            } else if ("2".equals(org)) {
-                if (!title.contains("分公司审查意见")) {
-                    title.add("分公司审查意见");
-                    procedure(list, "分公司审查意见", org);
-                }
-            } else if ("3".equals(org)) {
-                if (!title.contains("集团公司总工办时效审查")) {
-                    title.add("集团公司总工办时效审查");
-                    procedure(list, "集团公司总工办时效审查", org);
-                }
-            } else if ("4".equals(org)) {
-                if (!title.contains("集团公司总工办及相关部门审查")) {
-                    title.add("集团公司总工办及相关部门审查");
-                    procedure(list, "集团公司总工办及相关部门审查", org);
-                }
-            } else if ("5".equals(org)) {
-                if (!title.contains("集团公司总工程师审批")) {
-                    title.add("集团公司总工程师审批");
-                    procedure(list, "集团公司总工程师审批", org);
+                } else if ("2".equals(org)) {
+                    if (!title.contains("分公司审查意见")) {
+                        title.add("分公司审查意见");
+                        procedure(list, "分公司审查意见", org);
+                    }
+                } else if ("3".equals(org)) {
+                    if (!title.contains("集团公司总工办时效审查")) {
+                        title.add("集团公司总工办时效审查");
+                        procedure(list, "集团公司总工办时效审查", org);
+                    }
+                } else if ("4".equals(org)) {
+                    if (!title.contains("集团公司总工办及相关部门审查")) {
+                        title.add("集团公司总工办及相关部门审查");
+                        procedure(list, "集团公司总工办及相关部门审查", org);
+                    }
+                } else if ("5".equals(org)) {
+                    if (!title.contains("集团公司总工程师审批")) {
+                        title.add("集团公司总工程师审批");
+                        procedure(list, "集团公司总工程师审批", org);
+                    }
                 }
             }
-
         }
         title.add("尾部");
-        mAdapter.setNewData(map, title,status);
+        mAdapter.setNewData(map, title, status);
     }
 
     public void procedure(ArrayList<ProDetails.RecordListBean> list, String str, String num) {
         ArrayList<ProDetails.RecordListBean> data = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            String org = list.get(i).getOwnOrg();
-            if (org.equals(num)) {
-                data.add(list.get(i));
+        if (list != null) {
+            for (int i = 0; i < list.size(); i++) {
+                String org = list.get(i).getOwnOrg() != null ? list.get(i).getOwnOrg() : "";
+                if (org.equals(num)) {
+                    data.add(list.get(i));
+                }
             }
         }
         map.put(str, data);

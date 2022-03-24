@@ -124,9 +124,13 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
                 break;
             case R.id.device_details_assign:
                 /*指派*/
-                Intent intent = new Intent(mContext, ChagedContactsActivity.class);
-                intent.putExtra("orgId", orgId);
-                startActivityForResult(intent, 3);
+                if (orgId != null) {
+                    Intent intent = new Intent(mContext, ChagedContactsActivity.class);
+                    intent.putExtra("orgId", orgId);
+                    startActivityForResult(intent, 3);
+                } else {
+                    ToastUtils.showShortToast("没有组织Id");
+                }
                 break;
             case R.id.device_details_result:
                 if (onclickstatus) {

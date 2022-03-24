@@ -99,9 +99,9 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.all {
             if (variant.name.equalsIgnoreCase('release')) {
-                outputFileName = "品质工程正式版.apk"
+                outputFileName = "品质工程(建养).apk"
             } else {
-                outputFileName = "品质工程测试版.apk"
+                outputFileName = "品质工程(建养).apk"
             }
         }
     }

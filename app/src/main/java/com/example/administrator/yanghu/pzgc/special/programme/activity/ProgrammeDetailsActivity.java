@@ -54,7 +54,7 @@ public class ProgrammeDetailsActivity extends BaseActivity implements View.OnCli
         mContext = this;
         mFragment = new ArrayList<>();
         mFragment.add(new ProgrammeDetailsContentFragment());
-        mFragment.add(new ProgrammeDetailScircuitFragment());
+     mFragment.add(new ProgrammeDetailScircuitFragment());
         adapter = new PshooseFragAdapte(getSupportFragmentManager(), mFragment);
         checkDownMe = (TextView) findViewById(R.id.check_down_me);
         checkDownAll = (TextView) findViewById(R.id.check_down_all);

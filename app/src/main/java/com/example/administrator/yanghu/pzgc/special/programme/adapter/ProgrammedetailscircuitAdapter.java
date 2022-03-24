@@ -69,7 +69,7 @@ public class ProgrammedetailscircuitAdapter extends RecyclerView.Adapter<Recycle
         runEnterAnimation(holder.itemView, position);
         if (holder instanceof TypeHeadViewHolder) {
         } else if (holder instanceof TypeEndViewHolder) {
-                if (status.equals("4")){
+                if ("4".equals(status)){
                     ((TypeEndViewHolder) holder).footer.setVisibility(View.VISIBLE);
                 }else {
                     ((TypeEndViewHolder) holder).footer.setVisibility(View.GONE);
