@@ -12,7 +12,7 @@ android {
         //noinspection OldTargetApi
         targetSdkVersion 26
         versionCode 1
-        versionName "3.6.6"
+        versionName "3.6.7"
         resConfigs "zh-rCN"
         multiDexEnabled true
         ndk {
@@ -25,7 +25,6 @@ android {
                 JPUSH_APPKEY : "f050fc1f161dd2f848ac1f58",
                 JPUSH_CHANNEL: "developer-default",
         ]
-
     }
     packagingOptions {//打包时的相关配置
         //pickFirsts做用是 当有重复文件时 打包会报错 这样配置会使用第一个匹配的文件打包进入apk

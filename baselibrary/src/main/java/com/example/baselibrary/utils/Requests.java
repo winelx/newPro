@@ -11,13 +11,12 @@ public class Requests {
     //测试
     //    public static final String networks = "http://192.168.20.120:8087/pzgc/";
     //
-    public static final String networks = "http://172.17.5.103:8095/pzgc/";
+    //   public static final String networks = "http://172.17.5.103:8095/pzgc/";
     //正式
-    //  public static final String networks = "http://117.135.213.87:96/pzgc/";
+    public static final String networks = "http://117.135.213.87:96/pzgc/";
 
     public static final String webbaseurl = networks + "/h5/taskcheck/#/";
     /**
-     * VirtualBox
      * 登录
      */
     public static final String Login = networks + "admin/login";
