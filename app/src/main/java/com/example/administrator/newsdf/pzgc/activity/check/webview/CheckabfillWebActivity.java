@@ -100,7 +100,6 @@ public class CheckabfillWebActivity extends BaseActivity {
         nonet = (RelativeLayout) findViewById(R.id.nonet);
         mWebView = (WebView) findViewById(R.id.check);
         text = (TextView) findViewById(R.id.text);
-
         reloadTv = (TextView) findViewById(R.id.reload_tv);
         textclick();
         initWebView();

@@ -182,7 +182,7 @@
         </provider>
 
         <activity
-            android:name=".pzgc.activity.BootupActivity"
+            android:name="com.example.administrator.newsdf.pzgc.activity.BootupActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/StartTheme"

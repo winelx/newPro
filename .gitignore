@@ -54,3 +54,13 @@ freeline.py
 freeline/
 freeline_project_description.json
 app/src/main/java/com/example/administrator/newsdf/adapter/Adapter.java
+.svn/
+.idea/encodings.xml
+.svn/format
+.svn/pristine/
+.svn/tmp/
+.svn/wc.db
+.svn/wc.db-journal
+app/src/main/res/unifiedbackgroud.png
+app/src/test/
+baselibrary/src/main/java/com/example/baselibrary/view/LazyFragment.java
