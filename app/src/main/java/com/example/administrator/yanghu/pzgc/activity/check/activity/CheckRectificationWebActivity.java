@@ -40,11 +40,11 @@ import okhttp3.Cookie;
 import okhttp3.HttpUrl;
 
 /**
-* @author lx
-* @data :2019/3/26 0026
-* @描述 : 整改报表
-*@see
-*/
+ * @author lx
+ * @data :2019/3/26 0026
+ * @描述 : 整改报表
+ * @see
+ */
 public class CheckRectificationWebActivity extends BaseActivity {
     boolean lean = true;
     private TextView text;
@@ -52,9 +52,10 @@ public class CheckRectificationWebActivity extends BaseActivity {
     private Context mContext;
     private TextView reloadTv;
     private RelativeLayout linProbar, nonet;
-  // private String url = "http://192.168.20.25:8080/m/";
-    private String url = "http://120.79.142.15/m/";
+    // private String url = "http://192.168.20.25:8080/m/";
+    private String url = "http://117.135.213.87:96/m/";
     private List<Cookie> cookies;
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override

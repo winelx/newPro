@@ -54,7 +54,7 @@ public class CheckTaskWebActivity extends BaseActivity {
     private RelativeLayout linProbar, nonet;
     private  List<Cookie> cookies;
     // private String url = "http://192.168.1.119:8088/m/TaskList";
-    private String url = "http://120.79.142.15/m/#/tasklist";
+    private String url = "http://117.135.213.87:96/m/#/tasklist";
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
