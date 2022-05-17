@@ -21,7 +21,7 @@ public class Api {
      */
     public static final String SPECIALITEMPROJECT = Requests.networks + "iface/mobile/special/getSpecialitemproject";
     /**
-     *  施工方案报批 我的列表
+     * 施工方案报批 我的列表
      */
     public static final String MYSPECIALITEMPROJECT = Requests.networks + "iface/mobile/special/getMySpecialitemproject";
     /**
@@ -29,7 +29,7 @@ public class Api {
      */
     public static final String SPECIALITEMPROJECTDETAIL = Requests.networks + "iface/mobile/special/getSpecialitemprojectDetail";
     /**
-     *审核
+     * 审核
      */
     public static final String SPECIALITEMPROJECTVERIFICATION = Requests.networks + "iface/mobile/special/specialItemProjectVerification";
     /**
