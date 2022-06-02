@@ -5,15 +5,20 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +26,7 @@ import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.GreenDao.LoveDao;
 import com.example.administrator.newsdf.GreenDao.Shop;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.check.webview.CheckabfillWebActivity;
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
@@ -35,6 +41,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -54,13 +61,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
      * 状态图片
      */
     private CheckBox checkBox;
-
+    private ImageView pwdcon;
     //用户名密码1
     private ClearEditText username, password;
     private Context mContext;
     private Button login;
     public static Dialog progressDialog = null;
-    Date now = new Date();
+    private Boolean oldstatus = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,13 +75,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         setContentView(R.layout.activity_login);
         mContext = LoginActivity.this;
         //点击背景关闭软键盘
+        pwdcon = findViewById(R.id.pwdcon);
+        pwdcon.setBackgroundResource(R.mipmap.pwd_gone);
         findViewById(R.id.backgroud).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hintKeyBoard();
             }
         });
-
         findViewById(R.id.forget_password).setOnClickListener(this);
         login = (Button) findViewById(R.id.login);
         login.setOnClickListener(this);
@@ -83,8 +91,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         checkBox = findViewById(R.id.login_pass_img);
         username.setText(SPUtils.getString(mContext, "user", ""));
         password.setText(SPUtils.getString(mContext, "password", ""));
-
-
+        pwdcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                password.requestFocus();
+                if (oldstatus) {
+                    pwdcon.setBackgroundResource(R.mipmap.pwd_gone);
+                    password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    oldstatus = false;
+                } else {
+                    pwdcon.setBackgroundResource(R.mipmap.pwd_version);
+                    password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    oldstatus = true;
+                }
+            }
+        });
     }
 
     @Override
@@ -122,6 +143,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         cookieStore.removeCookie(httpUrl);
         OkGo.post(Requests.networks)
                 .execute(new StringCallback() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         login(user, passowd);
@@ -139,11 +161,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 });
     }
 
+    @SuppressLint("NewApi")
     void login(final String user, final String password) {
         OkGo.post(Requests.Login)
                 .tag("login")
-                .params("username", user)
-                .params("password", password)
+                .params("username", Base64.getEncoder().encodeToString(user.getBytes()))
+                .params("password", Base64.getEncoder().encodeToString(password.getBytes()))
                 .params("mobileLogin", true)
                 .execute(new StringCallback() {
                     @Override
@@ -158,6 +181,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 JSONObject jsom = jsonObject.getJSONObject("data");
                                 JSONObject extend = jsonObject.getJSONObject("extend");
                                 App.getInstance().jsonId = extend.getString("JSESSIONID");
+                                try {
+                                    if (extend.getBoolean("isWeakPassword")) {
+                                        startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                                                .putExtra("url", Requests.networks + "/h5/check/index.html#/password")
+                                                .putExtra("isBack", false)
+                                        );
+                                        finish();
+                                        return;
+                                    }
+                                } catch (Exception e) {
+
+                                }
                                 String id;
                                 try {
                                     id = jsom.getString("id");

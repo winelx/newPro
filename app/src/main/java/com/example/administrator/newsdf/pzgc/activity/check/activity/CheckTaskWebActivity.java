@@ -1,6 +1,7 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -87,7 +88,7 @@ public class CheckTaskWebActivity extends BaseActivity {
         webSettings.setJavaScriptEnabled(true);
         mWebView.loadUrl(url);
         //AndroidtoJS类对象映射到js的view对象
-        mWebView.addJavascriptInterface(new AndroidtoJs(mContext, "task"), "view");
+        mWebView.addJavascriptInterface(new AndroidtoJs((Activity) mContext, "task"), "view");
         //加载进度
         mWebView.setWebChromeClient(new WebChromeClient() {
             @SuppressLint("SetTextI18n")

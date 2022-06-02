@@ -30,6 +30,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
 import com.example.administrator.newsdf.pzgc.activity.AddFrileUpdataActivity;
+import com.example.administrator.newsdf.pzgc.activity.check.webview.CheckabfillWebActivity;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.activity.LoginActivity;
 import com.example.administrator.newsdf.pzgc.activity.MainActivity;
@@ -164,7 +165,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     @SuppressLint("HandlerLeak")
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
             //切换组织
             case R.id.organizationa:
@@ -183,7 +183,11 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             //修改密码
             case R.id.changepassword:
-                startActivity(new Intent(getActivity(), PasswordActvity.class));
+       //   startActivity(new Intent(getActivity(), PasswordActvity.class));
+                startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                        .putExtra("url", Requests.networks + "/h5/check/index.html#/password?showTitle=true")
+                        .putExtra("isBack", true)
+                );
                 break;
             //系统设置
             case R.id.mine_setting:
@@ -198,7 +202,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                     public void onGranted() {
                         startActivityForResult(new Intent(mContext, CaptureActivity.class), REQUEST_CODE_SCAN);
                     }
-
                     @Override
                     public void onDenied(List<String> deniedPermission) {
                         for (String permission : deniedPermission) {

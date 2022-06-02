@@ -1,9 +1,12 @@
 package com.example.administrator.newsdf.pzgc.activity.check.activity;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 
+import com.example.administrator.newsdf.pzgc.activity.LoginActivity;
 import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.utils.rx.LiveDataBus;
 
@@ -13,11 +16,11 @@ import com.example.baselibrary.utils.rx.LiveDataBus;
  * @description:
  */
 public class AndroidtoJs {
-    private Context mContext;
+    private Activity activity;
     private String str;
 
-    public AndroidtoJs(Context mContext, String str) {
-        this.mContext = mContext;
+    public AndroidtoJs(Activity activity, String str) {
+        this.activity = activity;
         this.str = str;
     }
 
@@ -25,29 +28,26 @@ public class AndroidtoJs {
     // 被JS调用的方法必须加入@JavascriptInterface注解
     @JavascriptInterface
     public void back(String msg) {
-        if ("task".equals(str)) {
-            CheckTaskWebActivity activity = (CheckTaskWebActivity) mContext;
-            activity.finsh();
-        } else {
-            CheckRectificationWebActivity activity = (CheckRectificationWebActivity) mContext;
-            activity.finsh();
-        }
+        activity.finish();
     }
 
     // 定义JS需要调用的方法
     // 被JS调用的方法必须加入@JavascriptInterface注解
     @JavascriptInterface
     public void back() {
-        CheckRectificationWebActivity activity = (CheckRectificationWebActivity) mContext;
-        activity.finsh();
-
+        activity.finish();
     }
 
     // 定义JS需要调用的方法
     // 被JS调用的方法必须加入@JavascriptInterface注解
     @JavascriptInterface
     public void finsh() {
-        CheckRectificationWebActivity activity = (CheckRectificationWebActivity) mContext;
-        activity.finsh();
+        activity.finish();
+    }
+
+    @JavascriptInterface
+    public void toLogin() {
+        activity.startActivity(new Intent(activity, LoginActivity.class));
+        finsh();
     }
 }

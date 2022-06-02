@@ -134,7 +134,7 @@ public class CheckRectificationWebActivity extends BaseActivity {
         mWebView.setHorizontalScrollBarEnabled(false);
         mWebView.setVerticalScrollbarOverlay(true);
         //AndroidtoJS类对象映射到js的view对象
-        mWebView.addJavascriptInterface(new AndroidtoJs(mContext, "str"), "view");
+        mWebView.addJavascriptInterface(new AndroidtoJs((Activity) mContext, "str"), "view");
         //加载进度
         mWebView.setWebChromeClient(new WebChromeClient() {
             @Override

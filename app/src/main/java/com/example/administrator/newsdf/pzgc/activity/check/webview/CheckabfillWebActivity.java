@@ -36,16 +36,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.newsdf.R;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.AndroidtoJs;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckRectificationWebActivity;
-import com.example.administrator.newsdf.pzgc.activity.check.activity.CheckTaskWebActivity;
+import com.example.administrator.newsdf.pzgc.activity.LoginActivity;
 import com.example.administrator.newsdf.pzgc.activity.check.activity.newcheck.bean.Enum;
 import com.example.administrator.newsdf.pzgc.utils.PopCameraFragment;
 import com.example.administrator.newsdf.pzgc.utils.TakePictureManager;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;
 import com.example.baselibrary.utils.dialog.BaseDialogUtils;
-import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.utils.network.NetworkAdapter;
 import com.example.baselibrary.utils.rx.LiveDataBus;
 import com.example.baselibrary.view.PermissionListener;
@@ -72,6 +69,7 @@ public class CheckabfillWebActivity extends BaseActivity {
     private TextView reloadTv;
     private RelativeLayout linProbar, nonet;
     private String url;
+    private Boolean isBack;
     private List<Cookie> cookies;
     private TakePictureManager takePictureManager;
     private Uri[] results;
@@ -93,6 +91,7 @@ public class CheckabfillWebActivity extends BaseActivity {
         hideBottomUIMenu();
         takePictureManager = new TakePictureManager(this);
         url = getIntent().getStringExtra("url");
+        isBack = getIntent().getBooleanExtra("isBack", true);
         CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
         HttpUrl httpUrl = HttpUrl.parse(Requests.networks);
         cookies = cookieStore.getCookie(httpUrl);
@@ -139,7 +138,6 @@ public class CheckabfillWebActivity extends BaseActivity {
         /* 设置显示水平滚动条,就是网页右边的滚动条.我这里设置的不显示 */
         mWebView.setHorizontalScrollBarEnabled(false);
         mWebView.setVerticalScrollbarOverlay(true);
-
         //AndroidtoJS类对象映射到js的view对象
         mWebView.addJavascriptInterface(new AndroidtoJss(mContext, "str"), "phone");
         //加载进度
@@ -367,14 +365,17 @@ public class CheckabfillWebActivity extends BaseActivity {
     //退出界面
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            if (url.equals(mWebView.getUrl())) {
-                this.finish();
-            } else {
-                //后退
-                mWebView.goBack();
+        if (isBack) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (url.equals(mWebView.getUrl())) {
+                    this.finish();
+                } else {
+                    //后退
+                    mWebView.goBack();
+                }
+                return true;
             }
-            return true;
+            return false;
         }
         return false;
     }
@@ -438,8 +439,7 @@ public class CheckabfillWebActivity extends BaseActivity {
         // 被JS调用的方法必须加入@JavascriptInterface注解
         @JavascriptInterface
         public void back() {
-            CheckabfillWebActivity activity = (CheckabfillWebActivity) mContext;
-            activity.finsh();
+            finsh();
             try {
                 LiveDataBus.get().with("mynotast").postValue("刷新待办列表");
             } catch (Exception e) {
@@ -451,8 +451,17 @@ public class CheckabfillWebActivity extends BaseActivity {
         // 被JS调用的方法必须加入@JavascriptInterface注解
         @JavascriptInterface
         public void finsh() {
-            CheckabfillWebActivity activity = (CheckabfillWebActivity) mContext;
-            activity.finsh();
+            try {
+                Activity activity = (Activity) mContext;
+                activity.finish();
+            } catch (Exception e) {
+            }
+        }
+
+        @JavascriptInterface
+        public void toLogin() {
+            startActivity(new Intent(mContext, LoginActivity.class));
+            finsh();
         }
     }
 }

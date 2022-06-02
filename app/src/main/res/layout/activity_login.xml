@@ -69,16 +69,34 @@
             android:layout_gravity="center"
             android:background="@mipmap/login_password" />
 
-        <com.example.baselibrary.view.ClearEditText
-            android:id="@+id/login_password"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:background="@null"
-            android:hint="密码"
-            android:inputType="textPassword"
-            android:text="123456"
-            android:textSize="15sp" />
+            android:layout_height="50dp"
+            android:layout_marginRight="@dimen/dp_10"
+            android:background="@color/white">
+
+            <com.example.baselibrary.view.ClearEditText
+                android:id="@+id/login_password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="30dp"
+                android:background="@null"
+                android:hint="密码"
+                android:inputType="textPassword"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/pwdcon"
+                android:layout_width="20dp"
+                android:layout_height="18dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@mipmap/pwd_gone" />
+
+        </RelativeLayout>
+
+
     </LinearLayout>
 
     <View

@@ -115,7 +115,6 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$lifecycle"
     implementation project(':baselibrary')
     implementation project(':timepickter')
-    api 'com.tencent.tbs.tbssdk:sdk:43903'
     //阿里热修复
     implementation 'com.aliyun.ams:alicloud-android-hotfix:3.2.18'
 }

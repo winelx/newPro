@@ -1,5 +1,6 @@
 package com.example.administrator.newsdf.pzgc.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import android.view.WindowManager;
 
 import com.example.administrator.newsdf.App;
 import com.example.administrator.newsdf.R;
+import com.example.administrator.newsdf.pzgc.activity.check.webview.CheckabfillWebActivity;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
 import com.example.baselibrary.base.BaseActivity;
@@ -25,6 +27,8 @@ import com.lzy.okgo.cookie.store.CookieStore;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Base64;
 
 import okhttp3.Call;
 import okhttp3.HttpUrl;
@@ -121,10 +125,11 @@ public class BootupActivity extends BaseActivity {
      * @param user
      * @param password
      */
+    @SuppressLint("NewApi")
     private void login(final String user, final String password) {
         OkGo.post(Requests.Login)
-                .params("username", user)
-                .params("password", password)
+                .params("username", Base64.getEncoder().encodeToString(user.getBytes()))
+                .params("password", Base64.getEncoder().encodeToString(password.getBytes()))
                 .params("mobileLogin", true)
                 .execute(new StringCallback() {
                     @Override
@@ -191,7 +196,20 @@ public class BootupActivity extends BaseActivity {
                                         }
                                     }
                                 }
-                                startactivity();
+                                try {
+                                    if (extend.getBoolean("isWeakPassword")) {
+                                        startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                                                .putExtra("url", Requests.networks + "/h5/check/index.html#/password")
+                                                .putExtra("isBack", false)
+                                        );
+                                        finish();
+                                        return;
+                                    }else {
+                                        startactivity();
+                                    }
+
+                                } catch (Exception e) {
+                                }
 
                             } else {
                                 ToastUtils.showLongToast(message);

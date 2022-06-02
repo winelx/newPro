@@ -1,11 +1,15 @@
 package com.example.administrator.newsdf.pzgc.activity.mine;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.administrator.newsdf.R;
@@ -18,6 +22,8 @@ import com.lzy.okgo.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Base64;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -33,15 +39,67 @@ import okhttp3.Response;
 public class PasswordActvity extends BaseActivity implements View.OnClickListener {
     private Button commint;
     private AppCompatEditText pass_old, pass_new, pass_newtoo;
+    private ImageView pass_old_icon, pass_new_icon, pass_newtoo_icon;
+    private boolean oldstatus = false, newstatus = false, newstatustoo = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password_actvity);
-
-        pass_old = (AppCompatEditText) findViewById(R.id.password_old);
-        pass_new = (AppCompatEditText) findViewById(R.id.password_new);
-        pass_newtoo = (AppCompatEditText) findViewById(R.id.password_newtoo);
+        pass_old = findViewById(R.id.password_old);
+        pass_new = findViewById(R.id.password_new);
+        pass_newtoo = findViewById(R.id.password_newtoo);
+        pass_old_icon = findViewById(R.id.password_old_icon);
+        pass_new_icon = findViewById(R.id.password_new_icon);
+        pass_newtoo_icon = findViewById(R.id.password_newtoo_icon);
+        pass_old_icon.setBackgroundResource(R.mipmap.pwd_gone);
+        pass_new_icon.setBackgroundResource(R.mipmap.pwd_gone);
+        pass_newtoo_icon.setBackgroundResource(R.mipmap.pwd_gone);
+        pass_old_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pass_old.requestFocus();
+                if (oldstatus) {
+                    pass_old_icon.setBackgroundResource(R.mipmap.pwd_gone);
+                    pass_old.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    oldstatus = false;
+                } else {
+                    pass_old_icon.setBackgroundResource(R.mipmap.pwd_version);
+                    pass_old.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    oldstatus = true;
+                }
+            }
+        });
+        pass_new_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pass_new.requestFocus();
+                if (oldstatus) {
+                    pass_new_icon.setBackgroundResource(R.mipmap.pwd_gone);
+                    pass_new.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    newstatus = false;
+                } else {
+                    pass_new_icon.setBackgroundResource(R.mipmap.pwd_version);
+                    pass_new.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    newstatus = true;
+                }
+            }
+        });
+        pass_newtoo_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pass_newtoo.requestFocus();
+                if (oldstatus) {
+                    pass_newtoo_icon.setBackgroundResource(R.mipmap.pwd_gone);
+                    pass_newtoo.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    newstatustoo = false;
+                } else {
+                    pass_newtoo_icon.setBackgroundResource(R.mipmap.pwd_version);
+                    pass_newtoo.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    newstatustoo = true;
+                }
+            }
+        });
         findViewById(R.id.password_commint).setOnClickListener(this);
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,10 +136,11 @@ public class PasswordActvity extends BaseActivity implements View.OnClickListene
     /**
      * 网络请求
      */
+    @SuppressLint("NewApi")
     void okgo(String old, String news) {
         OkGo.post(Requests.AlterPwd)
-                .params("oldPwd", old)
-                .params("newPwd", news)
+                .params("oldPwd", Base64.getEncoder().encodeToString(old.getBytes()))
+                .params("newPwd", Base64.getEncoder().encodeToString(news.getBytes()))
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
