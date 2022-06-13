@@ -30,6 +30,7 @@ import com.example.administrator.newsdf.pzgc.activity.check.webview.CheckabfillW
 import com.example.administrator.newsdf.pzgc.utils.SPUtils;
 import com.example.administrator.newsdf.pzgc.utils.ToastUtils;
 import com.example.administrator.newsdf.pzgc.utils.Utils;
+import com.example.administrator.newsdf.pzgc.utils.base64.Coder;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;
 import com.example.baselibrary.view.ClearEditText;
@@ -41,6 +42,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.Charset;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -146,7 +148,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        login(user, passowd);
+                        try {
+                            login(user, passowd);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     //这个错误是网络级错误，不是请求失败的错误
@@ -162,11 +168,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     @SuppressLint("NewApi")
-    void login(final String user, final String password) {
+    void login(final String user, final String password) throws Exception {
         OkGo.post(Requests.Login)
                 .tag("login")
-                .params("username", Base64.getEncoder().encodeToString(user.getBytes()))
-                .params("password", Base64.getEncoder().encodeToString(password.getBytes()))
+                .params("username", Coder.encryptBASE64(user.getBytes(Charset.forName("UTF-8"))))
+                .params("password", Coder.encryptBASE64(password.getBytes(Charset.forName("UTF-8"))))
                 .params("mobileLogin", true)
                 .execute(new StringCallback() {
                     @Override
