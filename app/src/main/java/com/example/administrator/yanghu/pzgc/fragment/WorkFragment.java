@@ -38,6 +38,7 @@ import com.example.baselibrary.adapter.MessageFragmentItemAdapter;
 import com.example.baselibrary.bean.ItemBean;
 import com.example.baselibrary.bean.bean;
 import com.example.baselibrary.utils.Requests;
+import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.view.EmptyRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -136,6 +137,7 @@ public class WorkFragment extends Fragment {
                         startActivity(new Intent(mContext, CheckmanagementActivity.class));
                         break;
                     case "整改通知":
+                        LogUtil.i(SPUtils.getString(mContext, "orgId", null));
                         startActivity(new Intent(mContext, CheckdownMessageActivity.class));
                         break;
                     case "特种设备":
@@ -195,6 +197,18 @@ public class WorkFragment extends Fragment {
                         startActivity(new Intent(mContext, CheckabfillWebActivity.class)
                                 .putExtra("url", Requests.networks + "/h5/taskcheck/index.html#/replyVerList"));
                         break;
+                    case "内业检查（三级检查）":
+                        startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                                .putExtra("url", Requests.networks + "/h5/taskcheck/index.html#/innerPageCheck?menuId=86f4bac8267f40b9b7263a879fcedaa0&type=3"));
+                        break;
+                    case "分公司内业检查":
+                        startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                                .putExtra("url", Requests.networks + "/h5/taskcheck/index.html#/innerPageCheck?menuId=86f4bac8267f40b9b7263a879fcedaa0&type=1"));
+                        break;
+                    case "外业检查（三级检查）":
+                        startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                                .putExtra("url", Requests.networks + "/h5/taskcheck/index.html#/outPageCheck?menuId=86f4bac8267f40b9b7263a879fcedaa0"));
+                        break;
                     default:
                         break;
                 }
@@ -247,11 +261,17 @@ public class WorkFragment extends Fragment {
                                     if ("true".equals(json.getString("检查标准"))) {
                                         checklist.add(new bean("检查标准", R.mipmap.check_standard));
                                     }
-                                    if ("true".equals(json.getString("监管检查"))) {
-                                        checklist.add(new bean("监管检查", R.mipmap.check_management));
-                                    }
                                     if ("true".equals(json.getString("整改通知"))) {
                                         checklist.add(new bean("整改通知", R.mipmap.check_notice));
+                                    }
+                                    if ("true".equals(json.getString("内业检查（三级检查）"))) {
+                                        checklist.add(new bean("内业检查（三级检查）", R.mipmap.fr_work_miss));
+                                    }
+                                    if ("true".equals(json.getString("分公司内业检查"))) {
+                                        checklist.add(new bean("分公司内业检查", R.mipmap.check_notice));
+                                    }
+                                    if ("true".equals(json.getString("外业检查（三级检查）"))) {
+                                        checklist.add(new bean("外业检查（三级检查）", R.mipmap.reply_external));
                                     }
                                     if ("true".equals(json.getString("回复验证"))) {
                                         checklist.add(new bean("回复验证", R.mipmap.reply_verification));
@@ -283,7 +303,6 @@ public class WorkFragment extends Fragment {
                                     if ("true".equals(json.getString("回复验证单"))) {
                                         fengxian.add(new bean("回复验证单", R.mipmap.reply_verification));
                                     }
-
                                 }
                                 if (tasklist.size() > 0) {
                                     list.add(new ItemBean(tasklist, "任务管理"));

@@ -130,7 +130,7 @@ public class CheckabfillWebActivity extends BaseActivity {
         settings.setAppCacheEnabled(true);
         settings.setAllowFileAccess(true);
         //下面两个解决网页自适应问题
-        settings.setLoadWithOverviewMode(true);
+        settings.setLoadWithOverviewMode(true); 
         settings.setUseWideViewPort(true);
         /* 提高网页渲染的优先级 */
         settings.setRenderPriority(WebSettings.RenderPriority.HIGH);
@@ -141,7 +141,6 @@ public class CheckabfillWebActivity extends BaseActivity {
         /* 设置显示水平滚动条,就是网页右边的滚动条.我这里设置的不显示 */
         mWebView.setHorizontalScrollBarEnabled(false);
         mWebView.setVerticalScrollbarOverlay(true);
-
         //AndroidtoJS类对象映射到js的view对象
         mWebView.addJavascriptInterface(new AndroidtoJss(mContext, "str"), "phone");
         //加载进度
@@ -169,7 +168,7 @@ public class CheckabfillWebActivity extends BaseActivity {
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
                 //Android使用WebView加载https地址打不开的问题  小米
                 handler.proceed();
-                if (error.getPrimaryError()==404){
+                if (error.getPrimaryError() == 404) {
                     lean = false;
                     //6.0以上执行
                     linProbar.setVisibility(View.GONE);

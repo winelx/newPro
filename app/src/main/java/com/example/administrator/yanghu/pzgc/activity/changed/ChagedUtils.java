@@ -114,7 +114,7 @@ public class ChagedUtils implements Serializable {
         if (authority != null) {
             strt.params("authority", authority);
         }
-        if (sysMsgNoticeId!=null){
+        if (sysMsgNoticeId != null) {
             strt.params("sysMsgNoticeId", sysMsgNoticeId);
         }
         strt.execute(new StringCallback() {

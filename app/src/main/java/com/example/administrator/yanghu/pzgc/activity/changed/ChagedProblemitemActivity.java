@@ -227,7 +227,7 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
             //显示删除按钮
             checkItemDelete.setVisibility(View.VISIBLE);
         }
-        //1导入的外业检查，0为添加问题
+        //导入的外业检查，为添加问题
         if (!TextUtils.isEmpty(iwork)) {
             importWarning.setVisibility(View.GONE);
             chagedPositionLin.setVisibility(View.GONE);
@@ -423,10 +423,10 @@ public class ChagedProblemitemActivity extends BaseActivity implements View.OnCl
         }
         //整改部位ID
         map.put("rectificationPart", chagedpositionId);
-        //整改通知单Id
-        map.put("noticeId ", noticeId);
         //整改部位名称
         map.put("rectificationPartName", chagedPosition.getText().toString());
+        //整改通知单Id
+        map.put("noticeId ", noticeId);
         //临时部位
         map.put("partDetails", exitextPosition.getText().toString());
         //整改期限
