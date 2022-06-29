@@ -99,9 +99,7 @@ public class ChagedNoticeDetailsActivity extends BaseActivity implements View.On
         adapter = new ChagedNoticeDetailsAdapter(mContext, list);
         recycler.setAdapter(adapter);
         utils.setMargins(recycler, 0, 0, 0, 0);
-
         request();
-
         adapter.setOnClickListener(new ChagedNoticeDetailsAdapter.OnClickListener() {
             @Override
             public void onClick(int position, String string) {

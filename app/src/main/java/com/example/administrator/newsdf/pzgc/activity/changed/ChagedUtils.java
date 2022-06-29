@@ -126,7 +126,6 @@ public class ChagedUtils implements Serializable {
                     if (jsonObject.getInt("ret") == 0) {
                         JSONObject data = jsonObject.getJSONObject("data");
                         ChagedNoticeDetails item = com.alibaba.fastjson.JSONObject.parseObject(data.toString(), ChagedNoticeDetails.class);
-                        int permission = item.getPermission();
                         map.put("bean", item);
                         JSONArray details = data.getJSONArray("details");
                         List<ChagedNoticeDetailslsit> list1 = ListJsonUtils.getListByArray(ChagedNoticeDetailslsit.class, details.toString());
