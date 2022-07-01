@@ -10,7 +10,7 @@ import com.example.baselibrary.base.BaseActivity;
 
 /**
  * @author lx
- *         这关于我们的界面
+ * 这关于我们的界面
  */
 public class AboutmeActivity extends BaseActivity {
     String version;
@@ -20,8 +20,7 @@ public class AboutmeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aboutme);
-
-        versions = (TextView) findViewById(R.id.text_version);
+        versions = findViewById(R.id.text_version);
         findViewById(R.id.com_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

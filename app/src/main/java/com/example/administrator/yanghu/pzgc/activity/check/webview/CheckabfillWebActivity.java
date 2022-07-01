@@ -97,10 +97,10 @@ public class CheckabfillWebActivity extends BaseActivity {
         CookieStore cookieStore = OkGo.getInstance().getCookieJar().getCookieStore();
         HttpUrl httpUrl = HttpUrl.parse(Requests.networks);
         cookies = cookieStore.getCookie(httpUrl);
-        linProbar = (RelativeLayout) findViewById(R.id.lin_probar);
-        nonet = (RelativeLayout) findViewById(R.id.nonet);
-        mWebView = (WebView) findViewById(R.id.check);
-        text = (TextView) findViewById(R.id.text);
+        linProbar = findViewById(R.id.lin_probar);
+        nonet = findViewById(R.id.nonet);
+        mWebView = findViewById(R.id.check);
+        text = findViewById(R.id.text);
 
         reloadTv = (TextView) findViewById(R.id.reload_tv);
         textclick();
@@ -130,7 +130,7 @@ public class CheckabfillWebActivity extends BaseActivity {
         settings.setAppCacheEnabled(true);
         settings.setAllowFileAccess(true);
         //下面两个解决网页自适应问题
-        settings.setLoadWithOverviewMode(true); 
+        settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
         /* 提高网页渲染的优先级 */
         settings.setRenderPriority(WebSettings.RenderPriority.HIGH);
