@@ -1,7 +1,15 @@
 package com.example.administrator.yanghu.pzgc.activity.check.activity;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
+
+import com.alibaba.fastjson.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author lx
@@ -9,11 +17,11 @@ import android.webkit.JavascriptInterface;
  * @description:
  */
 public class AndroidtoJs {
-    private Context mContext;
+    private Activity activity;
     private String str;
 
-    public AndroidtoJs(Context mContext, String str) {
-        this.mContext = mContext;
+    public AndroidtoJs(Activity activity, String str) {
+        this.activity = activity;
         this.str = str;
     }
 
@@ -21,13 +29,14 @@ public class AndroidtoJs {
     // 被JS调用的方法必须加入@JavascriptInterface注解
     @JavascriptInterface
     public void back(String msg) {
-        if ("task".equals(str)) {
-            CheckTaskWebActivity activity = (CheckTaskWebActivity) mContext;
-            activity.finsh();
-        } else {
-            CheckRectificationWebActivity activity = (CheckRectificationWebActivity) mContext;
-            activity.finsh();
+        try {
+            activity.finish();
+        } catch (Exception e) {
         }
 
+
     }
+
+
+
 }

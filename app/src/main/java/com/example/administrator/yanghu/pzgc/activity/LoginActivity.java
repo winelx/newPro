@@ -1,5 +1,6 @@
 package com.example.administrator.yanghu.pzgc.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -21,12 +22,16 @@ import com.example.administrator.yanghu.App;
 import com.example.administrator.yanghu.GreenDao.LoveDao;
 import com.example.administrator.yanghu.GreenDao.Shop;
 import com.example.administrator.yanghu.R;
+import com.example.administrator.yanghu.pzgc.activity.check.webview.CheckabfillWebActivity;
 import com.example.administrator.yanghu.pzgc.utils.SPUtils;
 import com.example.administrator.yanghu.pzgc.utils.ToastUtils;
 import com.example.administrator.yanghu.pzgc.utils.Utils;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;
+import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.view.ClearEditText;
+import com.example.baselibrary.view.PermissionListener;
+import com.example.baselibrary.zxing.android.CaptureActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.cookie.store.CookieStore;
@@ -60,7 +65,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private Context mContext;
     private Button login;
     public static Dialog progressDialog = null;
-    Date now = new Date();
+    private static final int REQUEST_CODE = 0x0001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +88,28 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         checkBox = findViewById(R.id.login_pass_img);
         username.setText(SPUtils.getString(mContext, "user", ""));
         password.setText(SPUtils.getString(mContext, "password", ""));
+        findViewById(R.id.register).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestRunPermisssion(new String[]{Manifest.permission.CAMERA,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionListener() {
+                    @Override
+                    public void onGranted() {
+                        startActivityForResult(new Intent(mContext, CaptureActivity.class), REQUEST_CODE);
 
+                    }
+
+                    @Override
+                    public void onDenied(List<String> deniedPermission) {
+                        for (String permission : deniedPermission) {
+                            Toast.makeText(mContext, "被拒绝的权限：" +
+                                    permission, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
 
     }
 
@@ -220,6 +246,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 SPUtils.putString(mContext, "username", orgName);
                                 //真实姓名
                                 SPUtils.putString(mContext, "staffName", staffName);
+                                try {
+                                    SPUtils.putString(mContext, "usertype", jsom.getString("type"));
+                                } catch (Exception e) {
+                                    SPUtils.putString(mContext, "usertype", "1");
+                                }
                                 //id
                                 SPUtils.putString(mContext, "id", id);
                                 //头像
@@ -348,5 +379,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == 101) {
+            if (data != null) {
+                startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                        .putExtra("url", Requests.networks + data.getStringExtra("url")));
+            }
+        }
+    }
 
 }

@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -34,6 +36,8 @@ import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.example.administrator.yanghu.App;
 import com.example.administrator.yanghu.GreenDao.LoveDao;
 import com.example.administrator.yanghu.GreenDao.Shop;
@@ -50,11 +54,14 @@ import com.example.administrator.yanghu.pzgc.callback.TaskCallbackUtils;
 import com.example.administrator.yanghu.pzgc.service.LocationService;
 import com.example.administrator.yanghu.pzgc.utils.Dates;
 import com.example.administrator.yanghu.pzgc.utils.FloatMeunAnims;
+import com.example.administrator.yanghu.pzgc.utils.LocationgroupService;
 import com.example.administrator.yanghu.pzgc.utils.ToastUtils;
 import com.example.administrator.yanghu.pzgc.utils.WbsDialog;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;
 import com.example.baselibrary.utils.dialog.BaseDialogUtils;
+import com.example.baselibrary.utils.log.LogUtil;
+import com.example.baselibrary.utils.network.NetworkAdapter;
 import com.example.baselibrary.view.PermissionListener;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
@@ -119,7 +126,6 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
     private boolean drew = true;
     private int num = 0;
     private String titlename;
-
     //弹出框
     private CircleImageView fab;
     private LinearLayout meunStandard, meunPhoto;
@@ -205,6 +211,13 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
         } else if (type == 1) {
             locationService.setLocationOption(locationService.getOption());
         }
+        LocationClient mLocationClient = new LocationClient(mContext);
+        LocationClientOption option = new LocationClientOption();
+        option.setOpenGps(true);
+        option.setIsNeedAddress(true);
+        option.setCoorType("gcj02");
+        option.setScanSpan(5000);
+        mLocationClient.setLocOption(option);
         locationService.start();// 定位SDK
     }
 
@@ -623,6 +636,20 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
             } else {
                 Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
             }
+        } else if (requestCode == 1055 && requestCode == 0) {
+            if (isopen()) {
+                loaction();//定位
+            } else {
+                BaseDialogUtils.openAppDetails(mContext, "请求位置需要定位权限,请到权限管理中心打开", new NetworkAdapter() {
+                    @Override
+                    public void onsuccess() {
+                        super.onsuccess();
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        // 设置完成后返回到原来的界面
+                        startActivityForResult(intent, 1055);
+                    }
+                });
+            }
         } else {
             //返回图片
             CropImageUtils.getInstance().onActivityResult(this, requestCode, resultCode, data, new CropImageUtils.OnResultListener() {
@@ -659,8 +686,12 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onStop() {
         //注销掉监听
-        locationService.unregisterListener(mListener);
-        locationService.stop(); //停止定位服务
+        if (locationService != null) {
+            if (mListener != null) {
+                locationService.unregisterListener(mListener);
+            }
+            locationService.stop(); //停止定位服务
+        }
         super.onStop();
     }
 
@@ -671,6 +702,7 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
     private BDAbstractLocationListener mListener = new BDAbstractLocationListener() {
         @Override
         public void onReceiveLocation(BDLocation location) {
+            LogUtil.i("定位", latitude);
             if (null != location && location.getLocType() != BDLocation.TypeServerError) {
                 StringBuffer sb = new StringBuffer(256);
                 sb.append("time : ");
@@ -748,7 +780,20 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
             @SuppressLint("HandlerLeak")
             @Override
             public void onGranted() {
-                loaction();//定位
+                if (isopen()) {
+                    loaction();//定位
+                } else {
+                    BaseDialogUtils.openAppDetails(mContext, "请求位置需要定位权限,请到权限管理中心打开", new NetworkAdapter() {
+                        @Override
+                        public void onsuccess() {
+                            super.onsuccess();
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            // 设置完成后返回到原来的界面
+                            startActivityForResult(intent, 1055);
+                        }
+                    });
+                }
+
             }
 
             @Override
@@ -768,4 +813,18 @@ public class ReplyActivity extends BaseActivity implements View.OnClickListener 
         locationService.stop();
         super.onDestroy();
     }
+
+    //判断是否开启gps
+    public boolean isopen() {
+        LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        // 通过GPS卫星定位，定位级别可以精确到街（通过24颗卫星定位，在室外和空旷的地方定位准确、速度快）
+        boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        // 通过WLAN或移动网络(3G/2G)确定的位置（也称作AGPS，辅助GPS定位。主要用于在室内或遮盖物（建筑群或茂密的深林等）密集的地方定位）
+        boolean network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        if (gps || network) {
+            return true;
+        }
+        return false;
+    }
+
 }

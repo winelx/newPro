@@ -1,6 +1,7 @@
 package com.example.administrator.yanghu.pzgc.activity.check.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -79,7 +80,7 @@ public class CheckRectificationWebActivity extends BaseActivity {
         webSettings.setUseWideViewPort(true);
         mWebView.getSettings().setDomStorageEnabled(true);
         //AndroidtoJS类对象映射到js的view对象
-        mWebView.addJavascriptInterface(new AndroidtoJs(mContext, "str"), "view");
+        mWebView.addJavascriptInterface(new AndroidtoJs((Activity) mContext, "str"), "view");
         sycCook();
         //加载url
         mWebView.loadUrl(url);

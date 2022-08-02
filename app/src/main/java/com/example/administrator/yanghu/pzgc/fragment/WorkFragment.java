@@ -131,14 +131,21 @@ public class WorkFragment extends Fragment {
                         startActivity(new Intent(mContext, CheckstandardListActivity.class));
                         break;
                     case "回复验证":
-                        startActivity(new Intent(mContext, ChagedreplyActivity.class));
+                        //   startActivity(new Intent(mContext, ChagedreplyActivity.class));
+                        startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                                .putExtra("url",
+                                        Requests.networks + "/h5/taskcheck/index.html#/replay/provingorglist?" +
+                                                "menuId=86f4bac8267f40b9b7263a879fcedaa0"));
                         break;
                     case "监管检查":
                         startActivity(new Intent(mContext, CheckmanagementActivity.class));
                         break;
                     case "整改通知":
-                        LogUtil.i(SPUtils.getString(mContext, "orgId", null));
-                        startActivity(new Intent(mContext, CheckdownMessageActivity.class));
+                        //    startActivity(new Intent(mContext, CheckdownMessageActivity.class));
+                        startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                                .putExtra("url",
+                                        Requests.networks + "/h5/taskcheck/index.html#/notice/noticeorglist?" +
+                                                "menuId=86f4bac8267f40b9b7263a879fcedaa0"));
                         break;
                     case "特种设备":
                         startActivity(new Intent(mContext, DeviceActivity.class));
@@ -159,9 +166,7 @@ public class WorkFragment extends Fragment {
                         startActivity(new Intent(mContext, CheckTaskWebActivity.class));
                         break;
                     case "审核报表":
-                        Intent intent = new Intent(mContext, ReportActivity.class);
-                        intent.putExtra("orgid", SPUtils.getString(mContext, "orgId", ""));
-                        startActivity(intent);
+                        startActivity(new Intent(mContext, ReportActivity.class));
                         break;
                     case "整改统计":
                         startActivity(new Intent(mContext, CheckRectificationWebActivity.class));
@@ -258,9 +263,14 @@ public class WorkFragment extends Fragment {
                                     if ("true".equals(json.getString("主动任务"))) {
                                         tasklist.add(new bean("主动任务", R.mipmap.fr_work_upload));
                                     }
-                                    if ("true".equals(json.getString("检查标准"))) {
-                                        checklist.add(new bean("检查标准", R.mipmap.check_standard));
+                                    try {
+                                        if ("true".equals(json.getString("检查标准"))) {
+                                            checklist.add(new bean("检查标准", R.mipmap.check_standard));
+                                        }
+                                    } catch (Exception e) {
+
                                     }
+
                                     if ("true".equals(json.getString("整改通知"))) {
                                         checklist.add(new bean("整改通知", R.mipmap.check_notice));
                                     }

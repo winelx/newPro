@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,14 +28,18 @@ import com.example.administrator.yanghu.pzgc.activity.work.BrightspotFragment;
 import com.example.administrator.yanghu.pzgc.bean.Tab;
 import com.example.administrator.yanghu.pzgc.callback.JPushCallUtils;
 import com.example.administrator.yanghu.pzgc.fragment.HomeFragment;
+import com.example.administrator.yanghu.pzgc.fragment.HomesFragment;
 import com.example.administrator.yanghu.pzgc.fragment.IndexFrament;
 import com.example.administrator.yanghu.pzgc.fragment.MineFragment;
 import com.example.administrator.yanghu.pzgc.fragment.WorkFragment;
+import com.example.administrator.yanghu.pzgc.fragment.WorksFragment;
 import com.example.administrator.yanghu.pzgc.utils.AppUtils;
 import com.example.administrator.yanghu.pzgc.utils.SPUtils;
+import com.example.administrator.yanghu.pzgc.utils.ToastUtils;
 import com.example.administrator.yanghu.pzgc.utils.Utils;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.Requests;
+import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.view.PermissionListener;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -100,7 +105,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mian);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         mContext = this;
         workbtight = false;
         //红点控件
@@ -188,15 +192,41 @@ public class MainActivity extends BaseActivity {
     public void initTab() {
         //添加tab信息，存入集合进行展示
         Tab tab_index = new Tab(IndexFrament.class, R.string.message, R.drawable.tab_index_style, 0);
-        Tab tab_home = new Tab(HomeFragment.class, R.string.home, R.drawable.tab_home_style, 0);
-        Tab tab_work = new Tab(WorkFragment.class, R.string.work, R.drawable.tab_work_style, 0);
+        Tab tab_home = null;
+        if (!TextUtils.isEmpty(SPUtils.getString(mContext, "usertype", ""))) {
+            if ("2".equals(SPUtils.getString(mContext, "usertype", ""))) {
+                //农民工
+                tab_home = new Tab(HomesFragment.class, R.string.home, R.drawable.tab_home_style, 0);
+            } else {
+                //职员
+                tab_home = new Tab(HomeFragment.class, R.string.home, R.drawable.tab_home_style, 0);
+            }
+        } else {
+            tab_home = new Tab(HomeFragment.class, R.string.home, R.drawable.tab_home_style, 0);
+        }
+//        Tab tab_work = new Tab(WorkFragment.class, R.string.work, R.drawable.tab_work_style, 0);
+        Tab tab_work = new Tab(WorksFragment.class, R.string.work, R.drawable.tab_work_style, 0);
         Tab tab_check = new Tab(BrightspotFragment.class, R.string.check, R.drawable.tab_check_style, 0);
         Tab tab_mine = new Tab(MineFragment.class, R.string.mine, R.drawable.tab_mine_style, 0);
-        mTabs.add(tab_home);
-        mTabs.add(tab_index);
-        mTabs.add(tab_work);
-        mTabs.add(tab_check);
-        mTabs.add(tab_mine);
+        if (!TextUtils.isEmpty(SPUtils.getString(mContext, "usertype", ""))) {
+            if ("2".equals(SPUtils.getString(mContext, "usertype", ""))) {
+                mTabs.add(tab_home);
+                mTabs.add(tab_mine);
+            } else {
+                mTabs.add(tab_home);
+                mTabs.add(tab_index);
+                mTabs.add(tab_work);
+                mTabs.add(tab_check);
+                mTabs.add(tab_mine);
+            }
+        } else {
+            mTabs.add(tab_home);
+            mTabs.add(tab_index);
+            mTabs.add(tab_work);
+            mTabs.add(tab_check);
+            mTabs.add(tab_mine);
+        }
+
 
         mTabHost = (FragmentTabHost) findViewById(R.id.mFragmentTabHost);
         for (Tab tab : mTabs) {

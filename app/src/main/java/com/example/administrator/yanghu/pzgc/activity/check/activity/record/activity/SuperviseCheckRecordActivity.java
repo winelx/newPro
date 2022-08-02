@@ -16,6 +16,7 @@ import com.example.administrator.yanghu.pzgc.activity.check.activity.newcheck.be
 import com.example.administrator.yanghu.pzgc.activity.check.activity.record.utils.RecordApi;
 import com.example.administrator.yanghu.pzgc.utils.ToastUtils;
 import com.example.baselibrary.base.BaseActivity;
+import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.utils.network.NetWork;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -130,9 +131,12 @@ public class SuperviseCheckRecordActivity extends BaseActivity implements View.O
                                 List<CheckOrgBean> datas = new ArrayList<CheckOrgBean>();
                                 for (CheckOrgBean item : checklist) {
                                     String name = item.getParentName();
-                                    if (str.equals(name)) {
-                                        datas.add(item);
-                                        map.put(str, datas);
+
+                                    if (str!=null&&name!=null){
+                                        if (str.equals(name)) {
+                                            datas.add(item);
+                                            map.put(str, datas);
+                                        }
                                     }
                                 }
                             }
@@ -142,6 +146,7 @@ public class SuperviseCheckRecordActivity extends BaseActivity implements View.O
                         ToastUtils.showShortToast(jsonObject.getString("msg"));
                     }
                 } catch (JSONException e) {
+                    LogUtil.i("失败 ");
                     e.printStackTrace();
                 }
             }

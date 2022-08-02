@@ -204,7 +204,6 @@ public class HomeFragmentUtils {
                                     AgencyBean agencyBean = com.alibaba.fastjson.JSONObject.parseObject(myNewNoTask.toString(), AgencyBean.class);
                                     map.put("agency", agencyBean);
                                 } catch (Exception e) {
-                                    myNewNoTask = new JSONObject();
                                 }
                                 /*我的已办*/
                                 JSONObject myNewYesTask;

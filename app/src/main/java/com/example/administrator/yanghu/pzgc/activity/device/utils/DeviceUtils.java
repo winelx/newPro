@@ -113,7 +113,12 @@ public class DeviceUtils {
 //                                    String org_type = json.getString("org_type");
                                     //父级
                                     String parentId = json.getString("parentId");
-                                    String parentName = json.getString("parentName");
+                                    String parentName;
+                                    try {
+                                        parentName = json.getString("parentName");
+                                    } catch (Exception e) {
+                                        parentName = "";
+                                    }
                                     //将组织所属公司添加到集合
                                     if (!list.contains(parentName)) {
                                         list.add(parentName);
@@ -172,7 +177,12 @@ public class DeviceUtils {
                                         String name = jsonObject1.getString("name");
                                         String orgtype = jsonObject1.getString("count");
                                         String parentId = jsonObject1.getString("parentId");
-                                        String parentName = jsonObject1.getString("parentName");
+                                        String parentName;
+                                        try {
+                                            parentName = jsonObject1.getString("parentName");
+                                        } catch (Exception e) {
+                                            parentName = "";
+                                        }
                                         mData.add(new Home_item("", "", id, "", name, orgtype, "", parentName, parentId, false));
                                     }
                                 }
@@ -528,7 +538,7 @@ public class DeviceUtils {
                     int ret = jsonObject.getInt("ret");
                     if (ret == 0) {
                         tener.success("", "");
-                    }else {
+                    } else {
                         ToastUtils.showLongToast(jsonObject.getString("msg"));
                     }
                 } catch (JSONException e) {

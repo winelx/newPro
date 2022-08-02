@@ -40,6 +40,6 @@ public class NoticedBeanItemProvider extends BaseItemProvider<NoticedBean, BaseV
             holder.setText(R.id.noticed_content, bean.getShowContent());
         }
         TextView isread = holder.getView(R.id.isread);
-        isread.setVisibility(bean.getIsRead().equals("1") ? View.VISIBLE : View.GONE);
+        isread.setVisibility("1".equals(bean.getIsRead()) ? View.VISIBLE : View.GONE);
     }
 }

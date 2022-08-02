@@ -16,10 +16,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.yanghu.App;
 import com.example.administrator.yanghu.R;
 import com.example.administrator.yanghu.pzgc.activity.AddFrileUpdataActivity;
+import com.example.administrator.yanghu.pzgc.activity.check.webview.CheckabfillWebActivity;
 import com.example.administrator.yanghu.pzgc.utils.ToastUtils;
 import com.example.administrator.yanghu.pzgc.activity.LoginActivity;
 import com.example.administrator.yanghu.pzgc.activity.MainActivity;
@@ -75,21 +78,24 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private CircleImageView mineAvatar;
     private Context mContext;
     private static final int PERMISSION_REQUESTCODE = 10086;
-    private TextView mineOrganization, staffName;
+    private TextView mineOrganization, staffName, usertype;
     private String version;
     private TextView mineUploading;
     private AlertDialog dialog;
     private RequestOptions options;
     private PermissionListener mListener;
     private static final int REQUEST_CODE_SCAN = 0x0000;
+    private static final int REQUEST_CODE = 0x0001;
+    private RelativeLayout organizationa, mine_autograph;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//避免重复绘制界面
+        //避免重复绘制界面
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_mine, null);
             //我的组织
-            rootView.findViewById(R.id.organizationa).setOnClickListener(this);
+            organizationa = rootView.findViewById(R.id.organizationa);
+            organizationa.setOnClickListener(this);
             //扫二维码上传附件
             rootView.findViewById(R.id.scancode).setOnClickListener(this);
             //项目成员
@@ -112,12 +118,14 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             rootView.findViewById(R.id.staffName).setOnClickListener(this);
             //退出
             rootView.findViewById(R.id.BackTo).setOnClickListener(this);
-            //我的清明
-            rootView.findViewById(R.id.mine_autograph).setOnClickListener(this);
+            //我的签名
+            mine_autograph = rootView.findViewById(R.id.mine_autograph);
+            mine_autograph.setOnClickListener(this);
             mineUploading = rootView.findViewById(R.id.mine_uploadings);
             mineAvatar = rootView.findViewById(R.id.mine_avatar);
             mineOrganization = rootView.findViewById(R.id.mine_organization);
             staffName = rootView.findViewById(R.id.staffName);
+            usertype = rootView.findViewById(R.id.type);
         }
         mContext = getActivity();
         version = AppUtils.getVersionName(getActivity());
@@ -136,8 +144,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         if (parent != null) {
             parent.removeView(rootView);
         }
-//        double totalSize = Dates.getDirSize(new File("/storage/emulated/0/Android/data/com.example.administrator.newsdf"));
-//        totalSize = totalSize * 1024 * 1024 * 1024;
         return rootView;
     }
 
@@ -151,7 +157,15 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         mineOrganization.setText(SPUtils.getString(mContext, "username", ""));
         //名字
         staffName.setText(SPUtils.getString(mContext, "staffName", ""));
-
+        if (!TextUtils.isEmpty(SPUtils.getString(mContext, "usertype", ""))) {
+            if ("2".equals(SPUtils.getString(mContext, "usertype", ""))) {
+                usertype.setText("(农民工)");
+                organizationa.setVisibility(View.GONE);
+                mine_autograph.setVisibility(View.GONE);
+            } else {
+                usertype.setText("(职员)");
+            }
+        }
     }
 
 
@@ -190,7 +204,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                         Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionListener() {
                     @Override
                     public void onGranted() {
-                        startActivityForResult(new Intent(mContext, CaptureActivity.class), REQUEST_CODE_SCAN);
+                        startActivityForResult(new Intent(mContext, CaptureActivity.class), REQUEST_CODE);
                     }
 
                     @Override
@@ -235,7 +249,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                         Dates.clearFiles(paths);
                         //glide缓存
                         Glide.get(mContext).clearDiskCache();
-                        ToastUtils.showShortToast("缓存清理成功成功");
+
                     }
                 };
                 break;
@@ -454,7 +468,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_SCAN && requestCode == 0) {
+        if (resultCode == 0) {
             if (data != null) {
                 startActivity(new Intent(App.getInstance(), AddFrileUpdataActivity.class)
                         .putExtra("billId", data.getStringExtra("billId"))
@@ -462,6 +476,11 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                         .putExtra("relateTable", data.getStringExtra("relateTable"))
                         .putExtra("url", data.getStringExtra("url"))
                         .putExtra("ty", data.getStringExtra("ty")));
+            }
+        } else if (resultCode == 101) {
+            if (data != null) {
+                startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                        .putExtra("url", Requests.networks + data.getStringExtra("url")));
             }
         }
     }

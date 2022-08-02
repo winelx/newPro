@@ -17,6 +17,7 @@ import com.example.baselibrary.base.BaseActivity;
 import com.example.administrator.yanghu.pzgc.utils.Dates;
 import com.example.baselibrary.utils.Requests;
 import com.example.administrator.yanghu.pzgc.utils.SPUtils;
+import com.example.baselibrary.utils.log.LogUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.cookie.store.CookieStore;
@@ -31,6 +32,7 @@ import okhttp3.Response;
 
 /**
  * description: 启动页
+ *
  * @author lx
  * date: 2018/3/9 0009 下午 2:15
  * update: 2018/3/9 0009
@@ -151,6 +153,14 @@ public class BootupActivity extends BaseActivity {
                                     e.printStackTrace();
                                     staffName = "";
                                 }
+                                String usertype;
+                                try {
+                                    usertype = jsom.getString("type");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    usertype = "";
+                                }
+
                                 //所在组织id
                                 String orgId = jsom.getString("orgId");
                                 //手机号
@@ -170,6 +180,7 @@ public class BootupActivity extends BaseActivity {
                                 SPUtils.putString(mContext, "orgId", orgId);
                                 //手机
                                 SPUtils.putString(mContext, "phone", phone);
+                                SPUtils.putString(mContext, "usertype", usertype);
                                 //是否保存数据
                                 SPUtils.putString(mContext, "user", user);
                                 SPUtils.putString(mContext, "password", password);
@@ -178,9 +189,9 @@ public class BootupActivity extends BaseActivity {
                                     for (int i = 0; i < qclist.length(); i++) {
                                         JSONObject jsonOb = qclist.getJSONObject(i);
                                         if ("1".equals(jsonOb.getString("type"))) {
-                                            SPUtils.putString(mContext, "androidimg", Requests.networks+Utils.isNull(jsonOb.getString("qrcodeUrl")));
+                                            SPUtils.putString(mContext, "androidimg", Requests.networks + Utils.isNull(jsonOb.getString("qrcodeUrl")));
                                         } else if ("2".equals(jsonOb.getString("type"))) {
-                                            SPUtils.putString(mContext, "iosimg", Requests.networks+Utils.isNull(jsonOb.getString("qrcodeUrl")));
+                                            SPUtils.putString(mContext, "iosimg", Requests.networks + Utils.isNull(jsonOb.getString("qrcodeUrl")));
                                         }
                                     }
                                 }

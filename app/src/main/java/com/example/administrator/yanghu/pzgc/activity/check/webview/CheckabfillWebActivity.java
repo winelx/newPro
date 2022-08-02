@@ -1,5 +1,6 @@
 package com.example.administrator.yanghu.pzgc.activity.check.webview;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
@@ -35,8 +36,10 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.yanghu.R;
+import com.example.administrator.yanghu.pzgc.activity.LoginActivity;
 import com.example.administrator.yanghu.pzgc.activity.check.activity.AndroidtoJs;
 import com.example.administrator.yanghu.pzgc.activity.check.activity.CheckRectificationWebActivity;
 import com.example.administrator.yanghu.pzgc.activity.check.activity.CheckTaskWebActivity;
@@ -50,6 +53,7 @@ import com.example.baselibrary.utils.log.LogUtil;
 import com.example.baselibrary.utils.network.NetworkAdapter;
 import com.example.baselibrary.utils.rx.LiveDataBus;
 import com.example.baselibrary.view.PermissionListener;
+import com.example.baselibrary.zxing.android.CaptureActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cookie.store.CookieStore;
 
@@ -83,6 +87,7 @@ public class CheckabfillWebActivity extends BaseActivity {
     private ValueCallback<Uri[]> mUploadCallbackAboveL;
     // 表单的结果回调
     private final static int FILECHOOSER_RESULTCODE = 1;
+    private static final int REQUEST_CODE = 0x0001;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
@@ -101,7 +106,6 @@ public class CheckabfillWebActivity extends BaseActivity {
         nonet = findViewById(R.id.nonet);
         mWebView = findViewById(R.id.check);
         text = findViewById(R.id.text);
-
         reloadTv = (TextView) findViewById(R.id.reload_tv);
         textclick();
         initWebView();
@@ -142,7 +146,7 @@ public class CheckabfillWebActivity extends BaseActivity {
         mWebView.setHorizontalScrollBarEnabled(false);
         mWebView.setVerticalScrollbarOverlay(true);
         //AndroidtoJS类对象映射到js的view对象
-        mWebView.addJavascriptInterface(new AndroidtoJss(mContext, "str"), "phone");
+        mWebView.addJavascriptInterface(new AndroidtoJss((Activity) mContext, "str"), "phone");
         //加载进度
         mWebView.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -201,10 +205,10 @@ public class CheckabfillWebActivity extends BaseActivity {
             }
 
             //处理网页加载失败时
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
-
                 if (!error.getDescription().toString().contains("ERR_FAILED")) {
                     lean = false;
                     //6.0以上执行
@@ -291,6 +295,9 @@ public class CheckabfillWebActivity extends BaseActivity {
                 mUploadMessage.onReceiveValue(result);
                 mUploadMessage = null;
             }
+        } else if (requestCode == REQUEST_CODE) {
+            /*二维码扫码*/
+            startActivityForResult(new Intent(mContext, CaptureActivity.class), REQUEST_CODE);
         }
     }
 
@@ -442,11 +449,11 @@ public class CheckabfillWebActivity extends BaseActivity {
     }
 
     public class AndroidtoJss {
-        private Context mContext;
+        private Activity activity;
         private String str;
 
-        public AndroidtoJss(Context mContext, String str) {
-            this.mContext = mContext;
+        public AndroidtoJss(Activity activity, String str) {
+            this.activity = activity;
             this.str = str;
         }
 
@@ -454,8 +461,7 @@ public class CheckabfillWebActivity extends BaseActivity {
         // 被JS调用的方法必须加入@JavascriptInterface注解
         @JavascriptInterface
         public void back() {
-            CheckabfillWebActivity activity = (CheckabfillWebActivity) mContext;
-            activity.finsh();
+            activity.finish();
             try {
                 LiveDataBus.get().with("mynotast").postValue("刷新待办列表");
             } catch (Exception e) {
@@ -467,8 +473,35 @@ public class CheckabfillWebActivity extends BaseActivity {
         // 被JS调用的方法必须加入@JavascriptInterface注解
         @JavascriptInterface
         public void finsh() {
-            CheckabfillWebActivity activity = (CheckabfillWebActivity) mContext;
-            activity.finsh();
+            activity.finish();
+        }
+
+        // 定义JS需要调用的方法
+        // 被JS调用的方法必须加入@JavascriptInterface注解
+        @JavascriptInterface
+        public void toLogin() {
+            startActivity(new Intent(mContext, LoginActivity.class));
+            finsh();
+        }
+
+        @JavascriptInterface
+        public void qrCode() {
+            requestRunPermisssion(new String[]{Manifest.permission.CAMERA,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionListener() {
+                @Override
+                public void onGranted() {
+                    startActivityForResult(new Intent(mContext, CaptureActivity.class), REQUEST_CODE);
+                }
+
+                @Override
+                public void onDenied(List<String> deniedPermission) {
+                    for (String permission : deniedPermission) {
+                        Toast.makeText(mContext, "被拒绝的权限：" +
+                                permission, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
     }
 

@@ -45,9 +45,9 @@ import okhttp3.Response;
  * description:审核统计报表
  *
  * @author lx
- *         date: 2018/7/3 0003 上午 9:37
- *         update: 2018/7/3 0003
- *         version:
+ * date: 2018/7/3 0003 上午 9:37
+ * update: 2018/7/3 0003
+ * version:
  */
 
 public class ReportActivity extends BaseActivity implements View.OnClickListener {
@@ -72,13 +72,11 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
-
-        Intent intent=getIntent();
-        orgId= intent.getStringExtra("orgid");
         //初始化控件
         mContext = this;
         mData = new ArrayList<>();
         mDatas2 = new ArrayList<>();
+        orgId = SPUtils.getString(mContext, "orgId", "");
         findView();
         //初始化数据
         initData();
@@ -120,6 +118,7 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
         reportViewpager.setOffscreenPageLimit(3);
         reportViewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             private int currentPosition = 0;
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (position > currentPosition) {
@@ -318,7 +317,7 @@ public class ReportActivity extends BaseActivity implements View.OnClickListener
         for (int i = 0; i < mData.size(); i++) {
             String pid = mData.get(i).getParentId();
             if (str.equals(pid)) {
-                mAdapter.addExtraNode(position, mData.get(i).getName(), mData.get(i).getId(), mData.get(i).getParentId(),mData.get(i).getType());
+                mAdapter.addExtraNode(position, mData.get(i).getName(), mData.get(i).getId(), mData.get(i).getParentId(), mData.get(i).getType());
             }
         }
 

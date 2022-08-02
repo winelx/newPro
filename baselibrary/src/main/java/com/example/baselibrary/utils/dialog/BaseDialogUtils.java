@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 
+import com.example.baselibrary.utils.network.NetworkAdapter;
+
 public class BaseDialogUtils {
     /**
      * @内容: 权限的提示，开APP 的详情设置
@@ -27,6 +29,18 @@ public class BaseDialogUtils {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
                 mContext.startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("取消", null);
+        builder.show();
+    }
+    public static void openAppDetails(final Context mContext, String str, NetworkAdapter adapter) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage(str);
+        builder.setPositiveButton("去设置", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                adapter.onsuccess();
             }
         });
         builder.setNegativeButton("取消", null);

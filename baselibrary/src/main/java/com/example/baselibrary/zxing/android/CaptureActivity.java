@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -22,7 +23,6 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -70,12 +70,13 @@ public final class CaptureActivity extends BaseActivity implements
         viewfinderView.drawViewfinder();
     }
 
+    private String code;
+
     /**
      * OnCreate中初始化一些辅助类，如InactivityTimer（休眠）、Beep（声音）以及AmbientLight（闪光灯）
      */
     @Override
     public void onCreate(Bundle icicle) {
-
         super.onCreate(icicle);
         // 保持Activity处于唤醒状态
         Window window = getWindow();
@@ -91,6 +92,7 @@ public final class CaptureActivity extends BaseActivity implements
                 finish();
             }
         });
+
     }
 
     @Override
@@ -176,24 +178,26 @@ public final class CaptureActivity extends BaseActivity implements
         boolean fromLiveScan = barcode != null;
         //这里处理解码完成后的结果，此处将参数回传到Activity处理
         if (fromLiveScan) {
-            beepManager.playBeepSoundAndVibrate();
             try {
-                JSONObject jsonObject = new JSONObject(rawResult.getText());
-                String url = jsonObject.getString("url");
-                String str = ASEUtil.Decrypt(url, "1234567890123456");
-                setResult(RESULT_OK, getIntent()
-                        .putExtra("billId", jsonObject.getString("billId"))
-                        .putExtra("relateFeild", jsonObject.getString("relateFeild"))
-                        .putExtra("relateTable", jsonObject.getString("relateTable"))
-                        .putExtra("url", str)
-                        .putExtra("ty", jsonObject.getString("ty"))
-                );
-                Toast.makeText(this, "扫描成功", Toast.LENGTH_SHORT).show();
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "二维码失败失败", Toast.LENGTH_SHORT).show();
+                JSONObject json = new JSONObject(rawResult.getText());
+                if (!TextUtils.isEmpty(json.getString("qrType"))) {
+                    String url = json.getString("url");
+                    String str = ASEUtil.Decrypt(url, "1234567890123456");
+                    setResult(101, getIntent().putExtra("url", str));
+                } else {
+                    String url = json.getString("url");
+                    String str = ASEUtil.Decrypt(url, "1234567890123456");
+                    setResult(RESULT_OK, getIntent()
+                            .putExtra("billId", json.getString("billId"))
+                            .putExtra("relateFeild", json.getString("relateFeild"))
+                            .putExtra("relateTable", json.getString("relateTable"))
+                            .putExtra("url", str)
+                            .putExtra("ty", json.getString("ty"))
+                    );
+                    Toast.makeText(this, "扫描成功", Toast.LENGTH_SHORT).show();
+                }
             } catch (Exception e) {
-                e.printStackTrace();
+                Toast.makeText(this, "扫描失败", Toast.LENGTH_SHORT).show();
             }
             finish();
         }
