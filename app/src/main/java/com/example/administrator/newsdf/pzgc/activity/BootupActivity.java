@@ -95,7 +95,6 @@ public class BootupActivity extends BaseActivity {
             }
             //表示发送任务
         }).sendEmptyMessageDelayed(0, 1000);
-
     }
 
     //假登录
@@ -134,6 +133,7 @@ public class BootupActivity extends BaseActivity {
                     .params("username", Coder.encryptBASE64(user.getBytes(Charset.forName("UTF-8"))))
                     .params("password", Coder.encryptBASE64(password.getBytes(Charset.forName("UTF-8"))))
                     .params("mobileLogin", true)
+                    .params("encryption", true)
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String msg, Call call, Response response) {
@@ -210,7 +210,6 @@ public class BootupActivity extends BaseActivity {
                                         } else {
                                             startactivity();
                                         }
-
                                     } catch (Exception e) {
                                     }
 

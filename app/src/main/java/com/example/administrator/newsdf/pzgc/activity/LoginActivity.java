@@ -174,6 +174,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 .params("username", Coder.encryptBASE64(user.getBytes(Charset.forName("UTF-8"))))
                 .params("password", Coder.encryptBASE64(password.getBytes(Charset.forName("UTF-8"))))
                 .params("mobileLogin", true)
+                .params("encryption", true)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String result, Call call, Response respons) {
@@ -189,11 +190,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 App.getInstance().jsonId = extend.getString("JSESSIONID");
                                 try {
                                     if (extend.getBoolean("isWeakPassword")) {
+                                        progressDialog = null;
                                         startActivity(new Intent(mContext, CheckabfillWebActivity.class)
                                                 .putExtra("url", Requests.networks + "/h5/check/index.html#/password")
                                                 .putExtra("isBack", false)
                                         );
-                                        finish();
                                         return;
                                     }
                                 } catch (Exception e) {
@@ -290,11 +291,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                     finish();
                                 }
-                                progressDialog.dismiss();
-                                progressDialog = null;
+                                if (progressDialog.isShowing()) {
+                                    progressDialog.dismiss();
+                                    progressDialog = null;
+                                }
                             } else {
-                                progressDialog.dismiss();
-                                progressDialog = null;
+                                if (progressDialog.isShowing()) {
+                                    progressDialog.dismiss();
+                                    progressDialog = null;
+                                }
                                 login.setVisibility(View.VISIBLE);
                                 ToastUtils.showLongToast(jsonObject.getString("msg"));
                             }
@@ -334,7 +339,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     List<Shop> list;
 
     /**
-     * @内容: 获取数据举数据
+     * @内容: 获取数据
      * @author lx
      * @date: 2019/1/2 0002 下午 5:06
      */
