@@ -3,6 +3,7 @@ package com.example.administrator.yanghu.pzgc.fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,6 +33,7 @@ import com.example.administrator.yanghu.App;
 import com.example.administrator.yanghu.R;
 import com.example.administrator.yanghu.pzgc.activity.AddFrileUpdataActivity;
 import com.example.administrator.yanghu.pzgc.activity.check.webview.CheckabfillWebActivity;
+import com.example.administrator.yanghu.pzgc.utils.NetUtils;
 import com.example.administrator.yanghu.pzgc.utils.ToastUtils;
 import com.example.administrator.yanghu.pzgc.activity.LoginActivity;
 import com.example.administrator.yanghu.pzgc.activity.MainActivity;
@@ -41,9 +43,13 @@ import com.example.administrator.yanghu.pzgc.activity.mine.PasswordActvity;
 import com.example.administrator.yanghu.pzgc.activity.mine.ProjectMembersTreeActivity;
 import com.example.administrator.yanghu.pzgc.utils.AppUtils;
 import com.example.administrator.yanghu.pzgc.utils.Dates;
+import com.example.baselibrary.utils.Api;
+import com.example.baselibrary.utils.QrConfig;
 import com.example.baselibrary.utils.Requests;
 import com.example.administrator.yanghu.pzgc.utils.SPUtils;
 import com.example.baselibrary.ui.activity.SignatureViewActivity;
+import com.example.baselibrary.utils.network.NetWork;
+import com.example.baselibrary.utils.network.NetworkAdapter;
 import com.example.baselibrary.utils.screen.ScreenUtil;
 import com.example.baselibrary.view.PermissionListener;
 import com.example.baselibrary.zxing.android.CaptureActivity;
@@ -87,6 +93,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private static final int REQUEST_CODE_SCAN = 0x0000;
     private static final int REQUEST_CODE = 0x0001;
     private RelativeLayout organizationa, mine_autograph;
+    public static Dialog progressDialog = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -296,10 +303,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         staffName.setText(SPUtils.getString(mContext, "staffName", ""));
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
 
     /**
      * 自动检测升级
@@ -468,21 +471,90 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 0) {
-            if (data != null) {
-                startActivity(new Intent(App.getInstance(), AddFrileUpdataActivity.class)
-                        .putExtra("billId", data.getStringExtra("billId"))
-                        .putExtra("relateFeild", data.getStringExtra("relateFeild"))
-                        .putExtra("relateTable", data.getStringExtra("relateTable"))
-                        .putExtra("url", data.getStringExtra("url"))
-                        .putExtra("ty", data.getStringExtra("ty")));
-            }
-        } else if (resultCode == 101) {
-            if (data != null) {
+        if (data != null) {
+            if (resultCode == QrConfig.REQUEST_UPLOAD) {
+                getDialogs((Activity) mContext, "正在处理数据...");
+                getBaseUrl(data.getStringExtra("appid"), new NetworkAdapter() {
+                    @Override
+                    public void onsuccess(String base) {
+                        super.onsuccess(base);
+                        startActivity(new Intent(App.getInstance(), AddFrileUpdataActivity.class)
+                                .putExtra("url", base + data.getStringExtra("url"))
+                        );
+                    }
+                });
+            } else if (resultCode == QrConfig.REQUEST_WEB) {
                 startActivity(new Intent(mContext, CheckabfillWebActivity.class)
-                        .putExtra("url", Requests.networks + data.getStringExtra("url")));
+                        .putExtra("url", data.getStringExtra("url")));
+            } else if (resultCode == QrConfig.REQUEST_H5) {
+                getDialogs((Activity) mContext, "正在处理数据...");
+                getBaseUrl(data.getStringExtra("appid"), new NetworkAdapter() {
+                    @Override
+                    public void onsuccess(String base) {
+                        super.onsuccess(base);
+                        startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                                .putExtra("url", base + data.getStringExtra("url"))
+                                .putExtra("color", "#5096F8"));
+                    }
+                });
             }
         }
+
+    }
+
+
+    /**
+     * 展示dailog
+     */
+    public static void getDialogs(Activity activity, String str) {
+        if (progressDialog == null) {
+            progressDialog = new Dialog(activity, R.style.progress_dialog);
+            progressDialog.setContentView(R.layout.waiting_dialog);
+            //点击外部取消
+            progressDialog.setCanceledOnTouchOutside(false);
+//            //物理返回键
+            progressDialog.setCancelable(false);
+            progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            TextView text = progressDialog.findViewById(R.id.id_tv_loadingmsg);
+            text.setText(str);
+            progressDialog.show();
+        }
+    }
+
+    public static void disDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+
+    }
+
+    public void getBaseUrl(String str, NetworkAdapter adapter) {
+        NetWork.getHttp(Api.GetBaseUrl + str, null, new NetWork.networkCallBack() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                    progressDialog = null;
+                }
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    if (jsonObject.optInt("ret") == 0) {
+                        String baseurl = jsonObject.getString("data");
+                        adapter.onsuccess(baseurl);
+                    } else {
+                        ToastUtils.showShortToast("无法解析二维码");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    ToastUtils.showShortToast("无法解析二维码");
+                }
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                ToastUtils.showShortToast("无法解析二维码");
+            }
+        });
     }
 }
 

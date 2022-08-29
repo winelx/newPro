@@ -11,6 +11,7 @@ import android.view.WindowManager;
 
 import com.example.administrator.yanghu.App;
 import com.example.administrator.yanghu.R;
+import com.example.administrator.yanghu.pzgc.activity.check.webview.CheckabfillWebActivity;
 import com.example.administrator.yanghu.pzgc.utils.ToastUtils;
 import com.example.administrator.yanghu.pzgc.utils.Utils;
 import com.example.baselibrary.base.BaseActivity;
@@ -162,9 +163,20 @@ public class BootupActivity extends BaseActivity {
                                 }
 
                                 //所在组织id
-                                String orgId = jsom.getString("orgId");
+                                String orgId;
+                                try {
+                                    orgId = jsom.getString("orgId");
+                                } catch (Exception e) {
+                                    orgId = "";
+                                }
                                 //手机号
-                                String phone = jsom.getString("phone");
+                                String phone;
+                                try {
+                                    phone = jsom.getString("phone");
+                                } catch (Exception e) {
+                                    phone = "";
+                                }
+
                                 SPUtils.deleAll(mContext);
                                 //职员ID
                                 SPUtils.putString(mContext, "staffId", staffId);
@@ -195,8 +207,7 @@ public class BootupActivity extends BaseActivity {
                                         }
                                     }
                                 }
-                                startActivity(new Intent(BootupActivity.this, MainActivity.class));
-                                finish();
+                                toActivity();
                             } else {
                                 ToastUtils.showLongToast(message);
                                 startActivity(new Intent(BootupActivity.this, LoginActivity.class));
@@ -230,5 +241,21 @@ public class BootupActivity extends BaseActivity {
                 });
     }
 
-
+    public void toActivity() {
+        if (!TextUtils.isEmpty(SPUtils.getString(mContext, "usertype", ""))) {
+            if ("2".equals(SPUtils.getString(mContext, "usertype", ""))) {
+                //农民工
+                startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                        .putExtra("url", Requests.networks + "/h5/study/index.html").putExtra("color", "#E22719"));
+                finish();
+            } else {
+                //职员
+                startActivity(new Intent(BootupActivity.this, MainActivity.class));
+                finish();
+            }
+        } else {
+            startActivity(new Intent(BootupActivity.this, MainActivity.class));
+            finish();
+        }
+    }
 }

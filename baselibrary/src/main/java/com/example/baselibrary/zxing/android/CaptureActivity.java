@@ -1,6 +1,7 @@
 package com.example.baselibrary.zxing.android;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,17 +18,24 @@ import android.widget.Toast;
 import com.example.baselibrary.R;
 import com.example.baselibrary.base.BaseActivity;
 import com.example.baselibrary.utils.ASEUtil;
+import com.example.baselibrary.utils.Api;
+import com.example.baselibrary.utils.QrConfig;
+import com.example.baselibrary.utils.network.NetWork;
 import com.example.baselibrary.zxing.camera.CameraManager;
 import com.example.baselibrary.zxing.view.ViewfinderView;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
+import com.google.zxing.qrcode.encoder.QRCode;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * 这个activity打开相机，在后台线程做常规的扫描；它绘制了一个结果view来帮助正确地显示条形码，在扫描的时候显示反馈信息，
@@ -178,27 +186,32 @@ public final class CaptureActivity extends BaseActivity implements
         boolean fromLiveScan = barcode != null;
         //这里处理解码完成后的结果，此处将参数回传到Activity处理
         if (fromLiveScan) {
-            try {
-                JSONObject json = new JSONObject(rawResult.getText());
-                if (!TextUtils.isEmpty(json.getString("qrType"))) {
-                    String url = json.getString("url");
-                    String str = ASEUtil.Decrypt(url, "1234567890123456");
-                    setResult(101, getIntent().putExtra("url", str));
-                } else {
-                    String url = json.getString("url");
-                    String str = ASEUtil.Decrypt(url, "1234567890123456");
-                    setResult(RESULT_OK, getIntent()
-                            .putExtra("billId", json.getString("billId"))
-                            .putExtra("relateFeild", json.getString("relateFeild"))
-                            .putExtra("relateTable", json.getString("relateTable"))
-                            .putExtra("url", str)
-                            .putExtra("ty", json.getString("ty"))
-                    );
-                    Toast.makeText(this, "扫描成功", Toast.LENGTH_SHORT).show();
+            if (rawResult.getText().contains("http")) {
+                /*打开网页*/
+                setResult(QrConfig.REQUEST_WEB, getIntent().putExtra("url", rawResult.getText()));
+            } else {
+                try {
+                    JSONObject json = new JSONObject(rawResult.getText());
+                    if (!TextUtils.isEmpty(json.getString("qrType"))) {
+                        String appid = json.getString("appId");
+                        String url = json.getString("url");
+                        if (QrConfig.H5.equals(json.getString("qrType"))) {
+                            setResult(QrConfig.REQUEST_H5, getIntent()
+                                    .putExtra("url", url)
+                                    .putExtra("appid", appid)
+                            );
+                        } else if (QrConfig.UPLOAD.equals(json.getString("qrType"))) {
+                            setResult(QrConfig.REQUEST_UPLOAD, getIntent()
+                                    .putExtra("url",  url)
+                                    .putExtra("appid",  appid)
+                            );
+                        }
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(this, "无法识二维码", Toast.LENGTH_SHORT).show();
                 }
-            } catch (Exception e) {
-                Toast.makeText(this, "扫描失败", Toast.LENGTH_SHORT).show();
             }
+
             finish();
         }
     }

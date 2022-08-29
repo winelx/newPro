@@ -23,12 +23,19 @@ import com.example.administrator.yanghu.GreenDao.LoveDao;
 import com.example.administrator.yanghu.GreenDao.Shop;
 import com.example.administrator.yanghu.R;
 import com.example.administrator.yanghu.pzgc.activity.check.webview.CheckabfillWebActivity;
+import com.example.administrator.yanghu.pzgc.bean.Tab;
+import com.example.administrator.yanghu.pzgc.fragment.HomeFragment;
+import com.example.administrator.yanghu.pzgc.fragment.HomesFragment;
 import com.example.administrator.yanghu.pzgc.utils.SPUtils;
 import com.example.administrator.yanghu.pzgc.utils.ToastUtils;
 import com.example.administrator.yanghu.pzgc.utils.Utils;
 import com.example.baselibrary.base.BaseActivity;
+import com.example.baselibrary.utils.Api;
+import com.example.baselibrary.utils.QrConfig;
 import com.example.baselibrary.utils.Requests;
 import com.example.baselibrary.utils.log.LogUtil;
+import com.example.baselibrary.utils.network.NetWork;
+import com.example.baselibrary.utils.network.NetworkAdapter;
 import com.example.baselibrary.view.ClearEditText;
 import com.example.baselibrary.view.PermissionListener;
 import com.example.baselibrary.zxing.android.CaptureActivity;
@@ -79,7 +86,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 hintKeyBoard();
             }
         });
-
         findViewById(R.id.forget_password).setOnClickListener(this);
         login = (Button) findViewById(R.id.login);
         login.setOnClickListener(this);
@@ -274,12 +280,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 if (checkBox.isChecked()) {
                                     SPUtils.putString(mContext, "user", user);
                                     SPUtils.putString(mContext, "password", password);
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                    finish();
-                                } else {
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                    finish();
                                 }
+                                toActivity();
                                 progressDialog.dismiss();
                                 progressDialog = null;
                             } else {
@@ -382,12 +384,82 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE && resultCode == 101) {
-            if (data != null) {
+        if (data != null) {
+            if (resultCode == QrConfig.REQUEST_UPLOAD) {
+                getDialogs(this, "正在处理数据...");
+                getBaseUrl(data.getStringExtra("appid"), new NetworkAdapter() {
+                    @Override
+                    public void onsuccess(String base) {
+                        super.onsuccess(base);
+                        startActivity(new Intent(App.getInstance(), AddFrileUpdataActivity.class)
+                                .putExtra("url", base + data.getStringExtra("url"))
+                        );
+                    }
+                });
+            } else if (resultCode == QrConfig.REQUEST_WEB) {
                 startActivity(new Intent(mContext, CheckabfillWebActivity.class)
-                        .putExtra("url", Requests.networks + data.getStringExtra("url")));
+                        .putExtra("url", data.getStringExtra("url")));
+            } else if (resultCode == QrConfig.REQUEST_H5) {
+                getDialogs(this, "正在处理数据...");
+                getBaseUrl(data.getStringExtra("appid"), new NetworkAdapter() {
+                    @Override
+                    public void onsuccess(String base) {
+                        super.onsuccess(base);
+                        startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                                .putExtra("url", base + data.getStringExtra("url"))
+                                .putExtra("color", "#5096F8"));
+                    }
+                });
             }
+        }
+
+    }
+
+    public void toActivity() {
+        if (!TextUtils.isEmpty(SPUtils.getString(mContext, "usertype", ""))) {
+            if ("2".equals(SPUtils.getString(mContext, "usertype", ""))) {
+                //农民工
+                //职员
+                startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                        .putExtra("url", Requests.networks + "/h5/study/index.html").putExtra("color", "#E22719"));
+                finish();
+            } else {
+                //职员
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            }
+        } else {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
         }
     }
 
+    public void getBaseUrl(String str, NetworkAdapter adapter) {
+        NetWork.getHttp(Api.GetBaseUrl + str, null, new NetWork.networkCallBack() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                    progressDialog = null;
+                }
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    if (jsonObject.optInt("ret") == 0) {
+                        String baseurl = jsonObject.getString("data");
+                        adapter.onsuccess(baseurl);
+                    } else {
+                        ToastUtils.showShortToast("无法解析二维码");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    ToastUtils.showShortToast("无法解析二维码");
+                }
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                ToastUtils.showShortToast("无法解析二维码");
+            }
+        });
+    }
 }

@@ -149,13 +149,13 @@ public class AddFrileUpdataActivity extends BaseActivity {
             list.add(new File(pathlist.get(i).getPhotopath()));
         }
         Map<String, String> map = new HashMap<>();
-        map.put("relateFeild", relateFeild);
+     /*   map.put("relateFeild", relateFeild);
         map.put("relateTable", relateTable);
         map.put("billId", billId);
         map.put("ty", ty);
-        map.put("userId", SPUtils.getString(mContext, "id", ""));
+        map.put("userId", SPUtils.getString(mContext, "id", ""));*/
         Dates.getDialogs((Activity) mContext, "正在提交数据...");
-        NetWork.postHttp(Requests.networks + url, map, list, true, new NetWork.networkCallBack() {
+        NetWork.postHttp(url, map, list, true, new NetWork.networkCallBack() {
             @Override
             public void onSuccess(String s, Call call, Response response) {
                 Dates.disDialog();

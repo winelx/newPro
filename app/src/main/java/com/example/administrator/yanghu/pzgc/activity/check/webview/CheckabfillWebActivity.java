@@ -54,6 +54,7 @@ import com.example.baselibrary.utils.network.NetworkAdapter;
 import com.example.baselibrary.utils.rx.LiveDataBus;
 import com.example.baselibrary.view.PermissionListener;
 import com.example.baselibrary.zxing.android.CaptureActivity;
+import com.gyf.immersionbar.ImmersionBar;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cookie.store.CookieStore;
 
@@ -94,6 +95,11 @@ public class CheckabfillWebActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getIntent().getStringExtra("color") != null) {
+            ImmersionBar.with(this).statusBarColor(getIntent().getStringExtra("color")).fitsSystemWindows(false).init();
+        } else {
+            ImmersionBar.with(this).statusBarDarkFont(true).fitsSystemWindows(false).init();
+        }
         setContentView(R.layout.activity_check_task_web);
         mContext = this;
         hideBottomUIMenu();
@@ -185,15 +191,10 @@ public class CheckabfillWebActivity extends BaseActivity {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 //加载完成
-                if (lean) {
-                    mWebView.setVisibility(View.VISIBLE);
-                    nonet.setVisibility(View.GONE);
-                    linProbar.setVisibility(View.GONE);
-                } else {
-                    mWebView.setVisibility(View.GONE);
-                    nonet.setVisibility(View.VISIBLE);
-                    linProbar.setVisibility(View.GONE);
-                }
+                mWebView.setVisibility(View.VISIBLE);
+                nonet.setVisibility(View.GONE);
+                linProbar.setVisibility(View.GONE);
+
             }
 
             @Override

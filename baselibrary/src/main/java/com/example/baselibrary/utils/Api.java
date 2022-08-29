@@ -64,4 +64,7 @@ public class Api {
     public static final String ORGINFOBYCNFBYPROJECT = Requests.networks + "iface/mobile/special/getOrgInfoBycnfByProject";
 
 
+    /**qr基础路径*/
+    public static final String GetBaseUrl = Requests.networks + "/admin/qrcode/projecturl/getBaseUrl?appId=";
+
 }
