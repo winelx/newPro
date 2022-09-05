@@ -3,6 +3,7 @@ package com.example.administrator.yanghu.pzgc.activity.check.webview;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
@@ -46,10 +47,14 @@ import com.example.administrator.yanghu.pzgc.activity.check.activity.CheckTaskWe
 import com.example.administrator.yanghu.pzgc.activity.check.activity.newcheck.bean.Enum;
 import com.example.administrator.yanghu.pzgc.utils.PopCameraFragment;
 import com.example.administrator.yanghu.pzgc.utils.TakePictureManager;
+import com.example.administrator.yanghu.pzgc.utils.ToastUtils;
 import com.example.baselibrary.base.BaseActivity;
+import com.example.baselibrary.utils.Api;
+import com.example.baselibrary.utils.QrConfig;
 import com.example.baselibrary.utils.Requests;
 import com.example.baselibrary.utils.dialog.BaseDialogUtils;
 import com.example.baselibrary.utils.log.LogUtil;
+import com.example.baselibrary.utils.network.NetWork;
 import com.example.baselibrary.utils.network.NetworkAdapter;
 import com.example.baselibrary.utils.rx.LiveDataBus;
 import com.example.baselibrary.view.PermissionListener;
@@ -58,11 +63,16 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cookie.store.CookieStore;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.List;
 
+import okhttp3.Call;
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
+import okhttp3.Response;
 
 /**
  * 说明：AB类风险管控
@@ -98,7 +108,7 @@ public class CheckabfillWebActivity extends BaseActivity {
         if (getIntent().getStringExtra("color") != null) {
             ImmersionBar.with(this).statusBarColor(getIntent().getStringExtra("color")).fitsSystemWindows(false).init();
         } else {
-            ImmersionBar.with(this).statusBarDarkFont(true).fitsSystemWindows(false).init();
+            ImmersionBar.with(this).statusBarColor("#5096F8").statusBarDarkFont(true).fitsSystemWindows(false).init();
         }
         setContentView(R.layout.activity_check_task_web);
         mContext = this;
@@ -269,7 +279,20 @@ public class CheckabfillWebActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == FILECHOOSER_RESULTCODE) {
+        if (resultCode == QrConfig.REQUEST_WEB) {
+            startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                    .putExtra("url", data.getStringExtra("url")));
+        } else if (resultCode == QrConfig.REQUEST_H5) {
+            getBaseUrl(data.getStringExtra("appid"), new NetworkAdapter() {
+                @Override
+                public void onsuccess(String base) {
+                    super.onsuccess(base);
+                    startActivity(new Intent(mContext, CheckabfillWebActivity.class)
+                            .putExtra("url", base + data.getStringExtra("url"))
+                            .putExtra("color", "#5096F8"));
+                }
+            });
+        } else if (requestCode == FILECHOOSER_RESULTCODE) {
             //接受相册返回数据
             if (null == mUploadMessage && null == mUploadCallbackAboveL) {
                 return;
@@ -506,5 +529,35 @@ public class CheckabfillWebActivity extends BaseActivity {
         }
     }
 
+    public static Dialog progressDialog = null;
+
+    public void getBaseUrl(String str, NetworkAdapter adapter) {
+        NetWork.getHttp(Api.GetBaseUrl + str, null, new NetWork.networkCallBack() {
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                    progressDialog = null;
+                }
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    if (jsonObject.optInt("ret") == 0) {
+                        String baseurl = jsonObject.getString("data");
+                        adapter.onsuccess(baseurl);
+                    } else {
+                        ToastUtils.showShortToast("无法解析二维码");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    ToastUtils.showShortToast("无法解析二维码");
+                }
+            }
+
+            @Override
+            public void onError(Call call, Response response, Exception e) {
+                ToastUtils.showShortToast("无法解析二维码");
+            }
+        });
+    }
 
 }
